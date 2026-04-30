@@ -10,7 +10,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     protected boolean isPlayed;
     protected boolean isBye;
     protected boolean isDraw;
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Match.class);
 
 
     // --- CONSTRUCTOR ---

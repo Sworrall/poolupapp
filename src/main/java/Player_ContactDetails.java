@@ -3,7 +3,6 @@ import org.slf4j.Logger;
 
 public class Player_ContactDetails{
     private int phoneNumber;
-
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
 

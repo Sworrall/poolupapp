@@ -9,7 +9,6 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
     private final Match_Factory<S> matchFactory;
     private final Leaderboard<S> leaderboard;
     private final Ranking_Points<S> rankingStrategy;
-
     private static final Logger log = LoggerFactory.getLogger(Tournament_RoundRobin.class);
 
 

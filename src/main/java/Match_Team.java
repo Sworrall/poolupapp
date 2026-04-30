@@ -7,7 +7,6 @@ public class Match_Team extends Match<Team>{
     private final BaseStats_Key key2;
     private ArrayList<Frame<Team>> frames;
     private final FrameFactory<Team> frameFactory;
-
     private static final Logger log = LoggerFactory.getLogger(Match_Team.class);
 
 

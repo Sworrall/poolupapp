@@ -18,7 +18,7 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = false;
         super.isDraw = false;
-        log.info("Created Match_Singles: " + p1.getName() + " vs " + p2.getName() + " with " + frameCount + " frames.");
+        log.info("Created Match_Singles: {} vs {} with {} frames.", p1.getName(), p2.getName(), frameCount);
     }
 
     public Match_Singles(Player p, int frameCount, FrameFactory<Player> frameFactory){

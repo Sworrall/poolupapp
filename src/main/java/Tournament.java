@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-
 public abstract class Tournament<S extends StatHolder<S>> extends ID{
     protected ArrayList<S> partyList;
     protected ArrayList<Match<S>> matchList;
@@ -11,7 +10,6 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID{
     protected S place3;
     protected S place4;
     protected boolean isComplete;
-
     private static final Logger log = LoggerFactory.getLogger(Tournament.class);
 
 

@@ -14,14 +14,14 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = isRandom;
-        log.info("Random Killer Tournament created with " + allParties.size() + " parties");
+        log.info("Random Killer Tournament created with {} parties", allParties.size());
     }
 
     public Tournament_Killer(ArrayList<S> allParties, Match_Factory<S> matchFactory) {
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = true;
-        log.info("Organised Killer Tournament created with " + allParties.size() + " parties");
+        log.info("Organised Killer Tournament created with {} parties", allParties.size());
     }
 
 
@@ -29,7 +29,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
     public void generateTeamList() {
         if(super.partyList.size() % 2 == 1) partyList.add(partyList.getFirst().createByeParty());
         if(this.isRandom) Collections.shuffle(partyList);
-        log.info("Team list generated with " + partyList.size() + " parties, is Random?: " + isRandom);
+        log.info("Team list generated with {} parties, is Random?: {}", partyList.size(), isRandom);
     }
 
     public void generateFixturesRR(int frameCount){
@@ -40,7 +40,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
             }
         }
         if(this.isRandom) Collections.shuffle(matchList);
-        log.info("Killer fixtures generated with " + matchList.size() + " matches.");
+        log.info("Killer fixtures generated with {} matches.", matchList.size());
     }
 
     public ArrayList<S> playAll(ArrayList<Match<S>> matchList) {
@@ -51,7 +51,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
                 winners.add(m.getWinner());
             }
         }
-        log.info("All matches played, " + winners.size() + " winners.");
+        log.info("All matches played, {} winners.", winners.size());
         return winners;
     }
 }

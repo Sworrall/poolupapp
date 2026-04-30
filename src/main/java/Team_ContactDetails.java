@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 public class Team_ContactDetails{
     private int locationPhoneNumber;
     private String address;
-
     private static final Logger log = LoggerFactory.getLogger(Team_ContactDetails.class);
 
 

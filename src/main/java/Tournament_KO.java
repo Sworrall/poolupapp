@@ -5,14 +5,11 @@ import org.slf4j.Logger;
 
 public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     private final int frameCount;
-
     private final ArrayList<ArrayList<Match<S>>> fixtures;
-
     private final Match_Factory<S> matchFactory;
     private final Leaderboard<S> leaderboard;
     private final Ranking_Elimination<S> eliminationStrategy;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament_KO.class);
 
     // todo - 1st place 2nd place 3rd place 4th place
 
@@ -26,10 +23,10 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
         generatePartyList();
         if (super.getAllParties().size() < 4) {
-            log.error("Not enough Parties to create this tournament. Minimum 4 parties required, but only " + super.getAllParties().size() + " provided.");
+            log.error("Not enough Parties to create this tournament. Minimum 4 parties required, but only {} provided.", super.getAllParties().size());
             throw new IllegalStateException("Not enough Parties to create this tournament");
         }else{
-            log.info("Tournament created with " + super.getAllParties().size() + " parties, and " + getRounds() + " rounds.");
+            log.info("Tournament created with {} parties, and {} rounds.", super.getAllParties().size(), getRounds());
         }
     }
 
@@ -42,7 +39,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             rounds++;
             size = size / 2;
         }
-        log.info("Number of rounds calculated: " + rounds);
+        log.info("Number of rounds calculated: {}", rounds);
         return rounds;
     }
 
@@ -55,7 +52,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
         }
         Collections.shuffle(super.getAllParties());
         super.partyList = parties;
-        log.info("Party list generated with " + super.getAllParties().size() + " parties.");
+        log.info("Party list generated with {} parties.", super.getAllParties().size());
     }
 
     public ArrayList<Match<S>> generateKORoundFixtures(ArrayList<S> partyList) {
@@ -65,7 +62,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             super.matchList.add(matchList.getLast());
         }
         this.fixtures.add(matchList);
-        log.info("K.O. round fixtures generated with " + matchList.size() + " matches.");
+        log.info("K.O. round fixtures generated with {} matches.", matchList.size());
         return matchList;
     }
 
@@ -75,7 +72,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             m.playMatch();
             partiesThrough.add(m.getWinner());
         }
-        log.info("Parties through to next round: " + partiesThrough.size());
+        log.info("Parties through to next round: {}", partiesThrough.size());
         return partiesThrough;
     }
 
@@ -93,6 +90,6 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             setPlace1(throughParties.getFirst());
             System.out.println("Winner: " + throughParties.getFirst().getName());
         }
-        log.info("Tournament simulation complete. Winner: " + throughParties.getFirst().getName());
+        log.info("Tournament simulation complete. Winner: {}", throughParties.getFirst().getName());
     }
 }

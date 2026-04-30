@@ -4,7 +4,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class Ranking_Elimination<S extends StatHolder<S>> implements Ranking<S> {
-
     private static final Logger log = LoggerFactory.getLogger(Ranking_Elimination.class);
 
 

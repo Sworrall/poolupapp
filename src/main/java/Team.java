@@ -10,7 +10,6 @@ public class Team extends ID implements StatHolder<Team> {
     private final ArrayList<Player> players;
     private final Map<BaseStats_Key, BaseStats> stats;
     private final boolean isBye;
-
     private static final Logger log = LoggerFactory.getLogger(Team.class);
 
 

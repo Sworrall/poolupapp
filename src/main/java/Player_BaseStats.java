@@ -7,7 +7,6 @@ public class Player_BaseStats <S extends StatHolder<S>> {
     private final int playerID;
     private Map<BaseStats_Key, BaseStats> stats;
     private final int GLOBAL = 0;
-
     private static final Logger log = LoggerFactory.getLogger(Player_BaseStats.class);
 
 
