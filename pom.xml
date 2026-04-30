@@ -3,72 +3,46 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>
-        4.0.0
-    </modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>
-        com.stephen
-    </groupId>
-
-    <artifactId>
-        pool
-    </artifactId>
-
-    <version>
-        1.0-SNAPSHOT
-    </version>
-
-    <name>
-        PoolManager
-    </name>
+    <groupId>com.stephen</groupId>
+    <artifactId>pool</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>PoolManager</name>
 
     <properties>
-    
-        <maven.compiler.source>
-            23
-        </maven.compiler.source>
-
-        <maven.compiler.target>
-            23
-        </maven.compiler.target>
-
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
     </properties>
 
     <dependencies>
 
         <!-- SLF4J API -->
         <dependency>
-
-            <groupId>
-                org.slf4j
-            </groupId>
-
-            <artifactId>
-                slf4j-api
-            </artifactId>
-
-            <version>
-                2.0.12
-            </version>
-
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.12</version>
         </dependency>
 
         <!-- Logback Classic -->
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.13</version>
+        </dependency>
 
-            <groupId>
-                ch.qos.logback
-            </groupId>
+        <!-- Firebase Admin SDK -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.3.0</version>
+        </dependency>
 
-            <artifactId>
-                logback-classic
-            </artifactId>
-
-            <version>
-                1.5.6
-            </version>
-
+        <!-- Google Cloud Firestore -->
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-firestore</artifactId>
+            <version>3.15.0</version>
         </dependency>
 
     </dependencies>
