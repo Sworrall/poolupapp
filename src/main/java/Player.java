@@ -1,4 +1,6 @@
 import java.util.*;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Player extends ID implements StatHolder<Player> {
     private static final int GLOBAL = 0;
@@ -9,8 +11,7 @@ public class Player extends ID implements StatHolder<Player> {
     private final boolean isBye;
     private boolean isCaptain;
     private final Map<BaseStats_Key, BaseStats> playerStatsMap;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Player.class);
 
 
     // --- CONSTRUCTORS ---
@@ -23,7 +24,7 @@ public class Player extends ID implements StatHolder<Player> {
         this.isCaptain = false;
         this.playerStatsMap = new HashMap<>();
         this.playerStatsMap.put(new BaseStats_Key(GLOBAL, null), new BaseStats());
-        info.log("Created player: " + getFullName());
+        log.info("Created player: {}", getFullName());
     }
 
     Player() {
@@ -35,61 +36,60 @@ public class Player extends ID implements StatHolder<Player> {
         this.isBye = true;
         this.isCaptain = false;
         this.playerStatsMap = new HashMap<>();
-        info.log("Created bye player");
+        log.info("Created bye player");
     }
 
 
     // --- FACTORY ---
     public static Player createBye(){
-        info.log("Creating bye player");
+        log.info("Creating bye player");
         return new Player();
     }
 
     public Player createByeParty(){
-        info.log("Creating bye party");
+        log.info("Creating bye party");
         return new Player();
     }
-
 
 
     // --- INTERFACE ---
     @Override
     public String getName() {
-        info.log("Getting name for player: " + getFullName());
+        log.info("Getting name for player: {}", getFullName());
         return getFullName();
     }
 
     @Override
     public boolean isBye(){
-        info.log("Checking if player is bye: " + getFullName() + " - " + isBye);
+        log.info("Checking if player is bye: {} - {}", getFullName(), isBye);
         return isBye;
     }
 
     @Override
     public BaseStats getOrCreateStats(BaseStats_Key K) {
-        info.log("Getting or creating stats for player: " + getFullName() + " - Key: " + K);
+        log.info("Getting or creating stats for player: {} - Key: {}", getFullName(), K);
         return playerStatsMap.computeIfAbsent(K, _ -> new BaseStats());
     }
 
 
     // --- GETTERS ---
     public String getFirstName() {
-        info.log("Getting first name for player: " + getFullName());
+        log.info("Getting first name for player: {}", getFullName());
         return firstName;
     }
 
     public String getLastName() {
-        info.log("Getting last name for player: " + getFullName());
+        log.info("Getting last name for player: {}", getFullName());
         return lastName;
     }
 
     public String getNickName() {
-        info.log("Getting nickname for player: " + getFullName());
+        log.info("Getting nickname for player: {}", getFullName());
         return (nickName == null || nickName.isBlank()) ? "" : nickName;
     }
 
     public boolean isCaptain() {
-        info.log("Checking if player is captain: " + getFullName() + " - " + isCaptain);
+        log.info("Checking if player is captain: {} - {}", getFullName(), isCaptain);
         return isCaptain;
     }
 
@@ -98,12 +98,12 @@ public class Player extends ID implements StatHolder<Player> {
         String name = (nickName != null && !nickName.isBlank())
                 ? firstName + " \"" + nickName + "\" " + lastName
                 : firstName + " " + lastName;
-        info.log("Getting full name for player: " + getFullName());
+        log.info("Getting full name for player: {}", getFullName());
         return (isCaptain ? "(C) " : "") + name;
     }
 
     public Player_ContactDetails getContactDetails(){
-        info.log("Getting contact details for player: " + getFullName());
+        log.info("Getting contact details for player: {}", getFullName());
         return this.contactDetails;
     }
 
@@ -113,26 +113,26 @@ public class Player extends ID implements StatHolder<Player> {
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
         updateNickName(nickName);
-        info.log("Set name for player: " + getFullName());
+        log.info("Set name for player: {}", getFullName());
     }
 
     public void makeCaptain() {
         this.isCaptain = true;
-        info.log("Made player captain: " + getFullName());
+        log.info("Made player captain: {}", getFullName());
     }
 
     public void removeCaptain() {
         this.isCaptain = false;
-        info.log("Removed captain status from player: " + getFullName());
+        log.info("Removed captain status from player: {}", getFullName());
     }
 
     public void updateNickName(String nickName) {
         this.nickName = (nickName == null || nickName.isBlank()) ? null : nickName;
-        info.log("Updated nickname for player: " + getFullName() + " - New Nickname: " + this.nickName);
+        log.info("Updated nickname for player: {} - New Nickname: {}", getFullName(), this.nickName);
     }
 
     public void setMobileNumber(int number) {
         contactDetails.setPhoneNumber(number);
-        info.log("Set mobile number for player: " + getFullName() + " - New Mobile Number: " + number);
+        log.info("Set mobile number for player: {} - New Mobile Number: {}", getFullName(), number);
     }
 }

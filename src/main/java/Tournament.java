@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 
 public abstract class Tournament<S extends StatHolder<S>> extends ID{
@@ -10,7 +12,7 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID{
     protected S place4;
     protected boolean isComplete;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament.class);
 
 
     // --- CONSTRUCTOR ---
@@ -18,8 +20,8 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID{
         super();
         this.partyList = participants;
         this.matchList = new ArrayList<>();
-        isComplete = false;\
-        log.info("Tournament created with ID: " + super.getID());
+        isComplete = false;
+        log.info("Tournament created with ID: {}", super.getID());
     }
 
 

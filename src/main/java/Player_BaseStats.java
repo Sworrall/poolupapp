@@ -1,12 +1,14 @@
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Player_BaseStats <S extends StatHolder<S>> {
     private final int playerID;
     private Map<BaseStats_Key, BaseStats> stats;
     private final int GLOBAL = 0;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Player_BaseStats.class);
 
 
     // --- CONSTRUCTOR ---

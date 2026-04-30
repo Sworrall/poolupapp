@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<S>{
     private final int frameCount;
@@ -9,7 +10,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
     private final Leaderboard<S> leaderboard;
     private final Ranking_Points<S> rankingStrategy;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament_RoundRobin.class);
 
 
     // --- CONSTRUCTOR ---
@@ -76,8 +77,6 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
             log.warn("Not all matches have been played. getPremoted failed.");
             throw new IllegalStateException("Not all matches have been played. getPremoted failed.");
         }
-        log.info("Premoted parties retrieved in Round Robin Tournament.");
-        return new ArrayList<>();
     }
     
     public ArrayList<S> getDemote(int DemoteAmount){
@@ -88,7 +87,5 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
             log.warn("Not all matches have been played. getDemote failed.");
             throw new IllegalStateException("Not all matches have been played. getDemote failed.");
         }
-        log.info("Demoted parties retrieved in Round Robin Tournament.");
-        return new ArrayList<>();
     }
 }

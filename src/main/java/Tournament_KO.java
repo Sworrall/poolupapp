@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     private final int frameCount;
@@ -12,8 +14,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
 
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
-    // todo
-    // 1st place 2nd place 3rd place 4th place
+    // todo - 1st place 2nd place 3rd place 4th place
 
     // --- CONSTRUCTOR ---
     public Tournament_KO(ArrayList<S> partyList, int frameCount, Match_Factory<S> matchFactory){

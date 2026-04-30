@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
     private final Match_Factory<S> matchFactory;
     private final boolean isRandom;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament_Killer.class);
 
 
     // CONSTRUCTOR
@@ -13,14 +14,14 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = isRandom;
-        info("Tournament_Killer created with " + allParties.size() + " parties, is Random?: " + isRandom);
+        log.info("Random Killer Tournament created with " + allParties.size() + " parties");
     }
 
     public Tournament_Killer(ArrayList<S> allParties, Match_Factory<S> matchFactory) {
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = true;
-        info("Tournament_Killer created with " + allParties.size() + " parties, is Random?: " + isRandom);
+        log.info("Organised Killer Tournament created with " + allParties.size() + " parties");
     }
 
 

@@ -1,15 +1,13 @@
 import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Match_Doubles extends Match<Doubles>{
     private final BaseStats_Key matchKeyA;
     private final BaseStats_Key matchKeyB;
-
     private ArrayList<Frame<Doubles>> frames;
-
     private final FrameFactory<Doubles> frameFactory;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
-
+    private static final Logger log = LoggerFactory.getLogger(Match_Doubles.class);
 
 
     // --- CONSTRUCTOR ---
@@ -22,7 +20,7 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
-        log.info("Created Match_Doubles: " + super.errorCapture() + " with " + frameCount + " frames.");
+        log.info("Created Match_Doubles: {} with {} frames.", super.errorCapture(), frameCount);
     }
 
     public Match_Doubles(Doubles team, int frameCount, FrameFactory<Doubles> frameFactory) {
@@ -34,7 +32,7 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Doubles with bye: BYE vs " + team.getName() + " with 0 frames.");
+        log.info("Created Match_Doubles with bye: BYE vs {} with 0 frames.", team.getName());
     }
 
     public Match_Doubles(FrameFactory<Doubles> frameFactory) {
@@ -64,24 +62,24 @@ public class Match_Doubles extends Match<Doubles>{
         recordDoublesTeam_Match();
         recordDoublesPlayer_Match();
         isPlayed = true;
-        log.info("Played Match_Doubles: " + super.errorCapture() + ". Result: " + (isDraw ? "Draw" : (getWinner().getName() + " wins")));
+        log.info("Played Match_Doubles: {}. Result: {}", super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
     @Override
     public Doubles createByeParty() {
-        log.info("Creating bye party for Match_Doubles: " + super.errorCapture());
+        log.info("Creating bye party for Match_Doubles: {}", super.errorCapture());
         return Doubles.createBye();
     }
 
 
     // --- GETTERS ---
     public Player getDoublesPlayer1() {
-        log.info("Getting doubles player 1 for Match_Doubles: " + super.errorCapture());
+        log.info("Getting doubles player 1 for Match_Doubles: {}", super.errorCapture());
         return super.party1.getPlayers().getFirst();
     }
 
     public Player getDoublesPlayer2() {
-        log.info("Getting doubles player 2 for Match_Doubles: " + super.errorCapture());
+        log.info("Getting doubles player 2 for Match_Doubles: {}", super.errorCapture());
         return super.party1.getPlayers().getLast();
     }
 
@@ -117,7 +115,7 @@ public class Match_Doubles extends Match<Doubles>{
                 BaseStats_Service.applyEvent(key2, StatField.MATCH_WIN, t2p2);
             }
         }
-        log.info("Recorded player stats for Match_Doubles: " + super.errorCapture());
+        log.info("Recorded player stats for Match_Doubles: {}", super.errorCapture());
     }
 
     public void recordDoublesTeam_Match() {
@@ -135,6 +133,6 @@ public class Match_Doubles extends Match<Doubles>{
             BaseStats_Service.applyEvent(matchKeyA, StatField.MATCH_LOSS, d1);
             BaseStats_Service.applyEvent(matchKeyB, StatField.MATCH_WIN, d2);
         }
-        log.info("Recorded team stats for Match_Doubles: " + super.errorCapture());
+        log.info("Recorded team stats for Match_Doubles: {}", super.errorCapture());
     }
 }

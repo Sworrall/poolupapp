@@ -1,15 +1,19 @@
 import java.util.ArrayList;
 import java.util.Collections;
-
 import static java.lang.Math.random;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class UserInput {
+    private static final Logger log = LoggerFactory.getLogger(UserInput.class);
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
+    // --- CONSTRUCTOR ---
     public UserInput(){
     }
 
+
+    // --- GETTERS ---
     public static boolean getFrameResult(){
         log.info("Simulating user input for frame result...");
         boolean user1Input = getRandomBool();
@@ -26,12 +30,6 @@ public class UserInput {
         return random() > 0.5;
     }
 
-    public static Player pickPlayer(ArrayList<Player> playerArrayList){
-        log.info("Picking player from list...");
-        Collections.shuffle(playerArrayList);
-        return playerArrayList.getFirst();
-    }
-
     public static boolean getBreakDish(){
         double r = random();
         log.info("Checking if break dish occurs...");
@@ -40,6 +38,14 @@ public class UserInput {
         }else{
             return false;
         }
+    }
+
+
+    // --- LOGIC ---
+    public static Player pickPlayer(ArrayList<Player> playerArrayList){
+        log.info("Picking player from list...");
+        Collections.shuffle(playerArrayList);
+        return playerArrayList.getFirst();
     }
 
     public static boolean shotResult_KILLER(){

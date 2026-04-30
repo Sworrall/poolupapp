@@ -1,3 +1,5 @@
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public abstract class Match <S extends StatHolder<S>> extends ID {
     protected final S party1;
@@ -8,7 +10,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     protected boolean isPlayed;
     protected boolean isBye;
     protected boolean isDraw;
-
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
 
@@ -21,7 +22,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = false;
         this.isPlayed = false;
         this.isDraw = false;
-        log.info("Match created: " + errorCapture());
+        log.info("Match created: {}", errorCapture());
     }
 
 
@@ -33,7 +34,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = true;
         this.isPlayed = false;
         this.isDraw = false;
-        log.info("Match created: " + errorCapture());
+        log.info("Match created: {}", errorCapture());
     }
 
 
@@ -46,59 +47,59 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- FACTORY ---
     public boolean isByeMatch(){
         handleByeMatch();
+        log.info("isMatchBye check");
         return this.isBye;
-        log.info("Bye match detected: " + errorCapture());
     }
 
 
     // --- GETTERS ---
     public S getParty1() {
-        log.info("Getting party1: " + party1.getName());
+        log.info("Getting party1: {}", party1.getName());
         return this.party1;
     }
 
     public S getParty2() {
-        log.info("Getting party2: " + party2.getName());
+        log.info("Getting party2: {}", party2.getName());
         return this.party2;
     }
 
     public int getFrameCount() {
-        log.info("Getting frame count: " + frameCount);
+        log.info("Getting frame count: {}", frameCount);
         return this.frameCount;
     }
 
     public boolean isPlayed() {
-        log.info("Checking if match is played: " + errorCapture() + " - " + isPlayed);
+        log.info("Checking if match is played: {} - {}", errorCapture(), isPlayed);
         return isPlayed;
     }
 
     public boolean isDraw(){
-        log.info("Checking if match is a draw: " + errorCapture() + " - " + isDraw);
+        log.info("Checking if match is a draw: {} - {}", errorCapture(), isDraw);
         if(this.isPlayed){
             return this.isDraw;
         }else{
-            log.error("Match is unplayed");
-            throw new IllegalArgumentException("Match is unplayed");
+            log.error("Match is unplayed, cannot continue");
+            throw new IllegalArgumentException("Match is unplayed, cannot continue");
         }
     }
 
     public boolean isBye(){
-        log.info("Checking if match is a bye: " + errorCapture() + " - " + isBye);
+        log.info("Checking if match is a bye: {} ", isBye);
         return isBye;
     }
 
     public S getWinner(){
-        log.info("Getting winner: " + errorCapture());
+        log.info("Getting winner: {}", errorCapture());
         if(this.isPlayed){
             return this.winner;
         }else{
-            log.error("Match is unplayed");
-            throw new IllegalArgumentException("Match is unplayed");
+            log.error("Match is unplayed: {}", errorCapture());
+            throw new IllegalArgumentException("Match is unplayed: cannot continue");
         }
     }
 
     public S getLoser(){
-        log.info("Getting loser: " + errorCapture());
+        log.info("Getting loser: {}", errorCapture());
         if(this.isPlayed){
             return this.loser;
         }else{
@@ -124,7 +125,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
                 isPlayed = true;
             }
         }
-        log.info("Handled bye match: " + errorCapture() + " - isBye: " + isBye + ", isPlayed: " + isPlayed);
+        log.info("Handled bye match: {} - isBye: {}, isPlayed: {}", errorCapture(), isBye, isPlayed);
     }
 
 

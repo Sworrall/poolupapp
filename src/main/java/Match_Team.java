@@ -1,4 +1,6 @@
 import java.util.*;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Match_Team extends Match<Team>{
     private final BaseStats_Key key1;
@@ -6,7 +8,7 @@ public class Match_Team extends Match<Team>{
     private ArrayList<Frame<Team>> frames;
     private final FrameFactory<Team> frameFactory;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Match_Team.class);
 
 
     // --- CONSTRUCTOR ---
@@ -18,7 +20,7 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
-        log.info("Created Match_Team: " + teamA.getName() + " vs " + teamB.getName() + " with " + frameCount + " frames.");
+        log.info("Created Match_Team: {} vs {} with {} frames.", teamA.getName(), teamB.getName(), frameCount);
     }
 
     public Match_Team(Team team, int frameCount, FrameFactory<Team> frameFactory) {
@@ -30,13 +32,13 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Team with bye: " + team.getName() + " vs BYE with " + frameCount + " frames.");
+        log.info("Created Match_Team with bye: {} vs BYE with {} frames.", team.getName(), frameCount);
     }
 
     public Match_Team(FrameFactory<Team> frameFactory) {
         super(Team.createBye(), Team.createBye(), 0);
         this.key1 = new BaseStats_Key(super.getID(), 0);
-        this.key2 = new BaseStats_Key(super.getID(), 0);=
+        this.key2 = new BaseStats_Key(super.getID(), 0);
         this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         this.isPlayed = false;
@@ -66,13 +68,13 @@ public class Match_Team extends Match<Team>{
         recordPlayerInTeam_Match();
         recordTeam_Match();
         isPlayed = true;
-        log.info("Played Match_Team: " + party1.getName() + " vs " + party2.getName() + ". Result: " + (isDraw ? "Draw" : (getWinner().getName() + " wins")));
+        log.info("Played Match_Team: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
 
     // --- GETTERS ---
     public ArrayList<Frame<Team>>getFrames(){
-        log.info("Getting frames for Match_Team: " + party1.getName() + " vs " + party2.getName() + ". Total frames: " + frames.size());
+        log.info("Getting frames for Match_Team: {} vs {}. Total frames: {}", party1.getName(), party2.getName(), frames.size());
         return this.frames;
     }
 
@@ -81,7 +83,7 @@ public class Match_Team extends Match<Team>{
         for (Frame<Team> f : this.frames) {
             partyList.add(f.getPlayersA().getFirst());
         }
-        log.info("Getting participants for Team A in Match_Team: " + party1.getName() + " vs " + party2.getName() + ". Participants: " + partyList.size());
+        log.info("Getting participants for Team A in Match_Team: {} vs {}. Participants: {}", party1.getName(), party2.getName(), partyList.size());
         return partyList;
     }
 
@@ -90,7 +92,7 @@ public class Match_Team extends Match<Team>{
         for (Frame<Team> f : this.frames) {
             partyList.add(f.getPlayersB().getFirst());
         }
-        log.info("Getting participants for Team B in Match_Team: " + party1.getName() + " vs " + party2.getName() + ". Participants: " + partyList.size());
+        log.info("Getting participants for Team B in Match_Team: {} vs {}. Participants: {}", party1.getName(), party2.getName(), partyList.size());
         return partyList;
     }
 
@@ -109,7 +111,7 @@ public class Match_Team extends Match<Team>{
             BaseStats_Service.applyEvent(key1, StatField.MATCH_LOSS, getParty1());
             BaseStats_Service.applyEvent(key2, StatField.MATCH_WIN, getParty2());
         }
-        log.info("Recorded team stats for Match_Team: " + party1.getName() + " vs " + party2.getName() + ". Result: " + (isDraw ? "Draw" : (getWinner().getName() + " wins")));
+        log.info("Recorded team stats for Match_Team: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
     public void recordPlayerInTeam_Match(){
@@ -132,7 +134,7 @@ public class Match_Team extends Match<Team>{
                 BaseStats_Service.applyEvent(p2Key, StatField.MATCH_WIN, p2);
             }
         }
-        log.info("Recorded player stats for Match_Team: " + party1.getName() + " vs " + party2.getName());
+        log.info("Recorded player stats for Match_Team: {} vs {}", party1.getName(), party2.getName());
     }
 }
 

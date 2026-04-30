@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Leaderboard<S extends StatHolder<S>> {
     private ArrayList<S> ranked;
     private final int eventID;
     private final Ranking<S> strategy;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Leaderboard.class);
 
 
     // --- CONSTRUCTOR ---

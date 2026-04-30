@@ -1,4 +1,6 @@
 import java.util.*;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S> {
     private final int groupCount;
@@ -9,7 +11,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     private final Leaderboard<S> leaderboard;
     private final Ranking_Elimination<S> eliminationStrategy;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament_GroupStage.class);
 
 
     // --- CONSTRUCTOR ---
@@ -23,10 +25,10 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         this.eliminationStrategy = eliminationStrategy;
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
         if (partyList.size() < 4) {
-            log.info("GroupStage Tournament initialization failed. Not enough participants: " + partyList.size());
+            log.info("GroupStage Tournament initialization failed. Not enough participants: {}", partyList.size());
             throw new IllegalStateException("Not enough participants");
         }
-        log.info("GroupStage Tournament initialized with " + partyList.size() + " parties, " + groupCount + " groups, and " + frameCount + " frames per match.");
+        log.info("GroupStage Tournament initialized with {} parties, {} groups, and {} frames per match.", partyList.size(), groupCount, frameCount);
     }
 
     public void simTournament() {
@@ -43,7 +45,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             partyList.add(partyList.getFirst().createByeParty());
         }
         Collections.shuffle(partyList);
-        log.info("GroupStage Party list generated and shuffled. Total parties: " + partyList.size());
+        log.info("GroupStage Party list generated and shuffled. Total parties: {}", partyList.size());
     }
 
     public void generatePartyGrouping() {
@@ -56,7 +58,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             grouped.add(group);
         }
         this.partyGrouped = grouped;
-        log.info("GroupStage Party grouping generated with " + partyGrouped.size() + " groups.");
+        log.info("GroupStage Party grouping generated with {} groups.", partyGrouped.size());
     }
 
     public void generateGroupStageFixtures() {
@@ -67,15 +69,12 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
                     S p1 = group.get(i);
                     S p2 = group.get(j);
                     matchFixtures.add(matchFactory.createMatch(p1, p2, this.frameCount));
-                    matchList.add(matchFixtures.getLast());
                 }
             }
-            for (int i = 0; i < matchList.size(); i++) {
-                matchList.add(matchList.get(i));
-            }
+            super.matchList.addAll(matchFixtures);
             groupMatchFixtures.add(matchFixtures);
         }
-        log.info("GroupStage match fixtures generated. Total matches: " + matchList.size());
+        log.info("GroupStage match fixtures generated. Total matches: {}", matchList.size());
     }
 
     public void playAllGroupStage() {

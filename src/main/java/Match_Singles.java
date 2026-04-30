@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Match_Singles extends Match<Player>{
     public BaseStats_Key matchKey;
     private ArrayList<Frame<Player>> frames;
     private final FrameFactory<Player> frameFactory;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Match_Singles.class);
 
 
     // --- CONSTRUCTOR ---
@@ -28,7 +29,7 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = true;
         super.isDraw = false;
-        log.info("Created Match_Singles: (Bye vs " + p.getName() + ")");
+        log.info("Created Match_Singles: (Bye vs {})", p.getName());
     }
 
     public Match_Singles(FrameFactory<Player> frameFactory){
@@ -56,7 +57,7 @@ public class Match_Singles extends Match<Player>{
         }
         recordPlayer_Match(this);
         isPlayed = true;
-        log.info("Played Match_Singles: " + party1.getName() + " vs " + party2.getName() + ". Result: " + (isDraw ? "Draw" : (getWinner().getName() + " wins")));
+        log.info("Played Match_Singles: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class Match_Singles extends Match<Player>{
 
     // --- GETTERS ---
     public int getTotalFrames(){
-        log.info("Getting total frames for Match_Singles: " + getFrameCount());
+        log.info("Getting total frames for Match_Singles: {}", getFrameCount());
         return super.getFrameCount();
     }
 
@@ -91,6 +92,6 @@ public class Match_Singles extends Match<Player>{
                 BaseStats_Service.applyEvent(matchKey, StatField.MATCH_WIN, p2);
             }
         }
-        log.info("Recorded player match stats for Match_Singles: " + p1.getName() + " vs " + p2.getName());
+        log.info("Recorded player match stats for Match_Singles: {} vs {}", p1.getName(), p2.getName());
     }
 }
