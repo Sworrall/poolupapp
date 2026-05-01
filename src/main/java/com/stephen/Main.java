@@ -12,3 +12,5 @@ public class Main {
         FirebaseConfig.initialise();
     }
 }
+
+// todo WORKING!
