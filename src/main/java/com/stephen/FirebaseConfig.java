@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 
 public class FirebaseConfig {
@@ -15,9 +15,14 @@ public class FirebaseConfig {
 
     public static void initialise() {
         try {
-            FileInputStream serviceAccount = new FileInputStream(
-                    "poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json"
-            );
+            InputStream serviceAccount = FirebaseConfig.class
+                    .getClassLoader()
+                    .getResourceAsStream("poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json");
+
+            if (serviceAccount == null) {
+                log.error("Firebase credentials file not found!");
+                return;
+            }
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
