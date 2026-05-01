@@ -1,5 +1,7 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 
 public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
@@ -12,7 +14,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
     private final BaseStats_Key frameKeyA;
     private final BaseStats_Key frameKeyB;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Frame_Doubles.class);
 
 
     // --- CONSTRUCTOR ---
@@ -24,7 +26,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = doubles2.getPlayers().getLast();        
         this.frameKeyA = new BaseStats_Key(super.getID(), doubles1.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), doubles2.getID());
-        log.info("Created Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Created Frame_Doubles with ID: " + super.getID());
     }
 
     public Frame_Doubles(Doubles doubles){
@@ -35,7 +37,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = new Player();  
         this.frameKeyA = new BaseStats_Key(super.getID(), doubles.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        log.info("Created Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Created Frame_Doubles with ID: {}", super.getID());
     }
 
     public Frame_Doubles(){
@@ -46,7 +48,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = new Player();  
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        log.info("Created Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Created Frame_Doubles with ID: {}", super.getID());
     }
 
 
@@ -55,35 +57,35 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
     public void PlayOutFrame() {
         this.handleBye(super.getParty1(), super.getParty2());
         this.playFrame();
-        log.info("Played out Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Played out Frame_Doubles with ID: {}", super.getID());
     }
 
     @Override
     public void recordFrame() {
         recordDoublesTeam_Frame();
         recordDoublesPlayer_Frame();
-        log.info("Recorded Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Recorded Frame_Doubles with ID: {}", super.getID());
     }
 
 
     // --- GETTERS ---
     public Player getTeamAPlayerA(){
-        log.info("Getting Team A Player A for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Getting Team A Player A for Frame_Doubles with ID: {}", super.getID());
         return this.teamAPlayer1;
     }
     
     public Player getTeamAPlayerB(){
-        log.info("Getting Team A Player B for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Getting Team A Player B for Frame_Doubles with ID: {}", super.getID());
         return this.teamAPlayer2;
     }
 
     public Player getTeamBPlayerA(){
-        log.info("Getting Team B Player A for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Getting Team B Player A for Frame_Doubles with ID: {}", super.getID());
         return this.teamBPlayer1;
     }
 
     public Player getTeamBPlayerB(){
-        log.info("Getting Team B Player B for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Getting Team B Player B for Frame_Doubles with ID: {}", super.getID());
         return this.teamBPlayer2;
     }
 
@@ -92,7 +94,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         ArrayList<Player> players = new ArrayList<>();
         players.add(getTeamAPlayerA());
         players.add(getTeamAPlayerB());
-        log.info("getPlayersA called for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("getPlayersA called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 
@@ -101,7 +103,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         ArrayList<Player> players = new ArrayList<>();
         players.add(getTeamBPlayerA());
         players.add(getTeamBPlayerB());
-        log.info("getPlayersB called for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("getPlayersB called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 
@@ -111,7 +113,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         players.add(getTeamAPlayerB());
         players.add(getTeamBPlayerA());
         players.add(getTeamBPlayerB());
-        log.info("getAllPlayers called for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("getAllPlayers called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 
@@ -127,7 +129,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
             BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_WIN, this.teamAPlayer2);
             BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_LOSS, this.teamBPlayer1);
             BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_LOSS, this.teamBPlayer2);
-            if (this.getIsBreakDish()) {
+            if (this.isBreakDish()) {
                 BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_BREAK_DISH, this.teamAPlayer1);
                 BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_BREAK_DISH, this.teamAPlayer2);
             }
@@ -136,12 +138,12 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
             BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_LOSS, this.teamAPlayer2);
             BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_WIN, this.teamBPlayer1);
             BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_WIN, this.teamBPlayer2);
-            if (this.getIsBreakDish()) {
+            if (this.isBreakDish()) {
                 BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_BREAK_DISH, this.teamBPlayer1);
                 BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_BREAK_DISH, this.teamBPlayer2);
             }
         }
-        log.info("Recorded player stats for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Recorded player stats for Frame_Doubles with ID: {}", super.getID());
     }
 
     public void recordDoublesTeam_Frame(){
@@ -150,6 +152,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, teamA);
         BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, teamB);
         BaseStats_Service.applyFrame_WIN_LOSS(frameKeyA, frameKeyB, this);
-        log.info("Recorded team stats for Frame_Doubles with ID: " + super.getID() + ". Frame:" + super.errorCapture());
+        log.info("Recorded team stats for Frame_Doubles with ID: {}", super.getID());
     }
 }

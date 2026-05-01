@@ -1,8 +1,11 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public record BaseStats_Key(int eventID, Integer teamID) {
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseStats_Key.class);
 
     public BaseStats_Key(int eventID) {
         this(eventID, null);

@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class FrameFactory_Team implements FrameFactory<Team> {
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(FrameFactory_Team.class);
 
 
     // --- CONSTRUCTORS ---

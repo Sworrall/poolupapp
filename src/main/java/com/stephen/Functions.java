@@ -9,8 +9,7 @@ public class Functions {
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
     public static double roundToNDecimalPlaces(double value, int decimalPlaces) {
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(decimalPlaces, RoundingMode.HALF_UP);
+        BigDecimal bd = new BigDecimal(Double.toString(value)).setScale(decimalPlaces, RoundingMode.HALF_UP);
         log.info("Rounded value: {}", bd.doubleValue());
         return bd.doubleValue();
     }

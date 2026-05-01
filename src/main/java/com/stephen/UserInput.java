@@ -17,9 +17,8 @@ public class UserInput {
 
     // --- GETTERS ---
     public static boolean getFrameResult(){
-        log.info("Simulating user input for frame result...");
-        boolean user1Input = getRandomBool();
-        boolean user2Input = getRandomBool();
+        boolean user1Input;
+        boolean user2Input;
         do {
             user1Input = getRandomBool();
             user2Input = getRandomBool();

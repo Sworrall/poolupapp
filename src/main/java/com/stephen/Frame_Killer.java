@@ -1,5 +1,7 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
     private final HashMap<S, Integer> partyLives;
     private final BaseStats_Key frameKey;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Frame_Killer.class);
 
 
     // --- CONSTRUCTOR ---

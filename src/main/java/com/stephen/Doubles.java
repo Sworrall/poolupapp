@@ -1,5 +1,7 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class Doubles extends ID implements StatHolder<Doubles>{
@@ -11,7 +13,7 @@ public class Doubles extends ID implements StatHolder<Doubles>{
     private final Map<BaseStats_Key, BaseStats> stats;
     private final boolean isBye;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Doubles.class);
 
 
     // --- CONSTRUCTORS ---

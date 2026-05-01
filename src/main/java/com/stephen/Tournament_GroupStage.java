@@ -114,7 +114,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     public ArrayList<S> getPremote(int premoteAmount){
         if(playAllCheck()){
             ArrayList<S> Premoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID());
-            log.info("GroupStage getPremote successful. Premoted parties: " + premoteAmount);
+            log.info("GroupStage getPremote successful. Premoted parties: {}", premoteAmount);
             return new ArrayList<>(Premoted.subList(0, premoteAmount));
         }
         log.info("GroupStage getPremote failed. Not all matches have been played.");
@@ -124,7 +124,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     public ArrayList<S> getDemote(int DemoteAmount){
         if(playAllCheck()){
             ArrayList<S> Demoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID());
-            log.info("GroupStage getDemote successful. Demoted parties: " + DemoteAmount);
+            log.info("GroupStage getDemote successful. Demoted parties: {}", DemoteAmount);
             return new ArrayList<>(Demoted.subList(Demoted.size() - DemoteAmount, Demoted.size()));
         }
         log.info("GroupStage getDemote failed. Not all matches have been played.");

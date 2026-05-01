@@ -1,15 +1,16 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BaseStats_Service <S extends StatHolder<S>>{
-
     private static final int GLOBAL = 0;
-
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseStats_Service.class);
 
 
     // --- GETTERS ---
     public int getStats(S s, int eventID,StatField field) {
-        log.info("Getting Stats for EventID: " + eventID + " and Field: " + field);
+        log.info("Getting Stats for EventID: {} and Field: {}", eventID, field);
         return s.getOrCreateStats(new BaseStats_Key(eventID, s.getID())).get(field);
     }
 
@@ -19,40 +20,40 @@ public class BaseStats_Service <S extends StatHolder<S>>{
         holder.getOrCreateStats(eventKey).increment(field);
         BaseStats_Key K = new BaseStats_Key(eventKey.eventID(), holder.getID());
         holder.getOrCreateStats(K).increment(field);
-        log.info("Applied Event: " + eventKey + " Field: " + field + " to Holder: " + holder.getID());
+        log.info("Applied Event: {} Field: {} to Holder: {}", eventKey, field, holder.getID());
     }
 
     public static void applyGLOBAL(BaseStats_Key eventKey, StatField field, StatHolder<?> holder) {
         holder.getOrCreateStats(eventKey).increment(field);
         BaseStats_Key K = new BaseStats_Key(GLOBAL, holder.getID());
         holder.getOrCreateStats(K).increment(field);
-        log.info("Applied GLOBAL Event: " + eventKey + " Field: " + field + " to Holder: " + holder.getID());
+        log.info("Applied GLOBAL Event: {} Field: {} to Holder: {}", eventKey, field, holder.getID());
     }
 
     public static<S extends StatHolder<S>> void applyFrame_WIN_LOSS(BaseStats_Key partyAKey, BaseStats_Key partyBKey, Frame<S> f){
         S sh1 = f.getParty1();
         S sh2 = f.getParty2();
-        if (f.getIsPlayed()) {
+        if (f.isPlayed()) {
             if (f.getWinner().equals(sh1)) {
                 BaseStats_Service.applyEvent(partyAKey, StatField.FRAME_WIN, sh1);
                 BaseStats_Service.applyEvent(partyBKey, StatField.FRAME_LOSS, sh2);
-                if (f.getIsBreakDish()) {
+                if (f.isBreakDish()) {
                     BaseStats_Service.applyEvent(partyAKey, StatField.FRAME_BREAK_DISH, sh1);
-                    log.info("Applied BREAK_DISH Event to Holder: " + sh1.getID());
+                    log.info("Applied BREAK_DISH Event to Holder: {}", sh1.getID());
                 }
             }else{
                 BaseStats_Service.applyEvent(partyAKey, StatField.FRAME_LOSS, sh1);
                 BaseStats_Service.applyEvent(partyBKey, StatField.FRAME_WIN, sh2);
-                if (f.getIsBreakDish()) {
+                if (f.isBreakDish()) {
                     BaseStats_Service.applyEvent(partyBKey, StatField.FRAME_BREAK_DISH, sh2);
-                    log.info("Applied BREAK_DISH Event to Holder: " + sh2.getID());
+                    log.info("Applied BREAK_DISH Event to Holder: {}", sh2.getID());
                 }
             }
         }else{
-            log.error("Attempted to apply WIN_LOSS for a frame that has not been played. Frame: " + f);
+            log.error("Attempted to apply WIN_LOSS for a frame that has not been played. Frame: {}", f);
             throw new IllegalArgumentException("Frame Not Played");
         }
-        log.info("Applied WIN_LOSS Event for Frame: " + f + " between Holders: " + sh1.getID() + " and " + sh2.getID());
+        log.info("Applied WIN_LOSS Event for Frame: {} between Holders: {} and {}", f, sh1.getID(), sh2.getID());
     }
 
     public void applyMatch_WIN_LOSS(BaseStats_Key partyAKey, BaseStats_Key partyBKey, Match<S> m){
@@ -71,9 +72,9 @@ public class BaseStats_Service <S extends StatHolder<S>>{
                 BaseStats_Service.applyEvent(partyBKey, StatField.MATCH_WIN, h2);
             }
         }else{
-            log.error("Attempted to apply WIN_LOSS for a match that has not been played. Match: " + m);
+            log.error("Attempted to apply WIN_LOSS for a match that has not been played. Match: {}", m);
             throw new IllegalArgumentException("Match Not Played");
         }
-        log.info("Applied WIN_LOSS Event for Match: " + m + " between Holders: " + h1.getID() + " and " + h2.getID());
+        log.info("Applied WIN_LOSS Event for Match: {} between Holders: {} and {}", m, h1.getID(), h2.getID());
     }
 }
