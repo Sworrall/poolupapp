@@ -9,6 +9,6 @@ public class Main {
 
     public static void main(String[] args) {
         log.info("PoolManager application starting...");
-        com.stephen.FirebaseConfig.initialise();
+        FirebaseConfig.initialise();
     }
 }

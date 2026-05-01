@@ -2,7 +2,6 @@ package com.stephen;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -10,7 +9,6 @@ public class Team_BaseStats < S extends StatHolder<S>> {
     private int GLOBAL = 0;
     private final int teamID;
     private Map<BaseStats_Key, BaseStats> stats;
-
     private static final Logger log = LoggerFactory.getLogger(Team_BaseStats.class);
 
 

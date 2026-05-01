@@ -1,5 +1,7 @@
 package com.stephen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -7,7 +9,7 @@ public class BaseStats {
     private static final int GLOBAL = 0;
     private final Map<StatField, Integer> stats;
 
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseStats.class);
 
 
     // --- CONSTRUCTOR ---

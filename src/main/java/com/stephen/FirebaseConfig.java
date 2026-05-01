@@ -16,7 +16,7 @@ public class FirebaseConfig {
     public static void initialise() {
         try {
             FileInputStream serviceAccount = new FileInputStream(
-                    "src/main/resources/poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json"
+                    "poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json"
             );
 
             FirebaseOptions options = FirebaseOptions.builder()
