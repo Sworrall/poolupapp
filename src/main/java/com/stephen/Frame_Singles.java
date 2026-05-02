@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Frame_Singles <S extends StatHolder<S>> extends Frame<Player>{
     private final BaseStats_Key frameKey;
-    private static final Logger log = LoggerFactory.getLogger(Functions.class);
+    private static final Logger log = LoggerFactory.getLogger(Frame_Singles.class);
 
 
     // --- CONSTRUCTOR ---

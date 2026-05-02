@@ -1,29 +1,36 @@
-2026-05-01 10:37:50 [INFO] com.stephen.Main - PoolManager application starting...
-2026-05-01 10:37:50 [ERROR] com.stephen.FirebaseConfig - Failed to connect to Firebase
-java.io.FileNotFoundException: poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:109)
-	at com.stephen.FirebaseConfig.initialise(FirebaseConfig.java:18)
-	at com.stephen.Main.main(Main.java:12)
-2026-05-01 10:38:47 [INFO] com.stephen.Main - PoolManager application starting...
-2026-05-01 10:38:47 [ERROR] com.stephen.FirebaseConfig - Failed to connect to Firebase
-java.io.FileNotFoundException: poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:109)
-	at com.stephen.FirebaseConfig.initialise(FirebaseConfig.java:18)
-	at com.stephen.Main.main(Main.java:12)
-2026-05-01 15:37:16 [INFO] com.stephen.Main - PoolManager application starting...
-2026-05-01 15:37:16 [ERROR] com.stephen.FirebaseConfig - Failed to connect to Firebase
-java.io.FileNotFoundException: poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:109)
-	at com.stephen.FirebaseConfig.initialise(FirebaseConfig.java:18)
-	at com.stephen.Main.main(Main.java:12)
-2026-05-01 15:38:28 [INFO] com.stephen.Main - PoolManager application starting...
-2026-05-01 15:38:29 [INFO] com.stephen.FirebaseConfig - Firebase connected successfully!
+2026-05-02 15:30:25 [INFO] com.stephen.Main - PoolManager application starting...
+2026-05-02 15:30:25 [INFO] com.stephen.FirebaseConfig - Firebase connected successfully!
+2026-05-02 15:30:25 [INFO] com.stephen.ID - Generated new ID: 1
+2026-05-02 15:30:25 [INFO] com.stephen.Player_ContactDetails - Player_ContactDetails object created with default phone number: 0
+2026-05-02 15:30:25 [INFO] com.stephen.BaseStats_Key - BaseStats_Key created with eventID: 0 and teamID: null
+2026-05-02 15:30:25 [INFO] com.stephen.BaseStats - Initialized BaseStats with default values.
+2026-05-02 15:33:46 [INFO] com.stephen.Main - PoolManager application starting...
+2026-05-02 15:33:46 [INFO] com.stephen.FirebaseConfig - Firebase connected successfully!
+2026-05-02 15:33:46 [INFO] com.stephen.ID - Generated new ID: 1
+2026-05-02 15:33:46 [INFO] com.stephen.Player_ContactDetails - Player_ContactDetails object created with default phone number: 0
+2026-05-02 15:33:46 [INFO] com.stephen.BaseStats_Key - BaseStats_Key created with eventID: 0 and teamID: null
+2026-05-02 15:33:46 [INFO] com.stephen.BaseStats - Initialized BaseStats with default values.
+2026-05-02 15:33:46 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:46 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:46 [INFO] com.stephen.Player - Created player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.PlayerRepository - PlayerRepository initialised
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting first name for player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting last name for player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting nickname for player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Checking if player is bye: Stephen Worrall - false
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Checking if player is captain: Stephen Worrall - false
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.ID - Retrieving ID: 1
+2026-05-02 15:33:48 [INFO] com.stephen.Player - Getting full name for playerID: 1, player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.PlayerRepository - Saved player: Stephen Worrall
+2026-05-02 15:33:48 [INFO] com.stephen.Main - Done!

@@ -10,6 +10,13 @@ public class Main {
     public static void main(String[] args) {
         log.info("PoolManager application starting...");
         FirebaseConfig.initialise();
+
+        // Test saving a player
+        Player player = new Player("Stephen", "Worrall");
+        PlayerRepository playerRepo = new PlayerRepository();
+        playerRepo.savePlayer(player);
+
+        log.info("Done!");
     }
 }
 

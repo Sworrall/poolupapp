@@ -101,7 +101,7 @@ public class Player extends ID implements StatHolder<Player> {
         String name = (nickName != null && !nickName.isBlank())
                 ? firstName + " \"" + nickName + "\" " + lastName
                 : firstName + " " + lastName;
-        log.info("Getting full name for player: {}", getFullName());
+        log.info("Getting full name for playerID: {}, player: {}", this.getID(), name);
         return (isCaptain ? "(C) " : "") + name;
     }
 

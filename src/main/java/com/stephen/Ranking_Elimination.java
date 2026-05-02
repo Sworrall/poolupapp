@@ -9,6 +9,8 @@ public class Ranking_Elimination<S extends StatHolder<S>> implements Ranking<S> 
     private static final Logger log = LoggerFactory.getLogger(Ranking_Elimination.class);
 
 
+    // todo fix this (MATCH_LOSS)
+
     @Override
     public ArrayList<S> rank(ArrayList<S> parties, int eventID) {
         ArrayList<S> sorted = new ArrayList<>(parties);
