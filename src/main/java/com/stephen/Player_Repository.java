@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerRepository {
+public class Player_Repository {
 
-    private static final Logger log = LoggerFactory.getLogger(PlayerRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(Player_Repository.class);
     private final Firestore db;
 
     // --- CONSTRUCTOR ---
-    public PlayerRepository() {
+    public Player_Repository() {
         this.db = FirestoreClient.getFirestore();
         log.info("PlayerRepository initialised");
     }
