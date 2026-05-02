@@ -12,12 +12,10 @@ public class Main {
         FirebaseConfig.initialise();
 
         // Test saving a player
-        Player player = new Player("Stephen", "Worrall");
+        Player player = new Player("Gerald", "Clarkson");
         PlayerRepository playerRepo = new PlayerRepository();
         playerRepo.savePlayer(player);
 
         log.info("Done!");
     }
 }
-
-// todo WORKING!

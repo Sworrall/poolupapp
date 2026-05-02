@@ -22,6 +22,8 @@ public class PlayerRepository {
     // --- SAVE ---
     public void savePlayer(Player player) {
         try {
+            log.info("Attempting to save player: {}", player.getFullName());
+
             Map<String, Object> data = new HashMap<>();
             data.put("firstName", player.getFirstName());
             data.put("lastName", player.getLastName());
@@ -29,11 +31,14 @@ public class PlayerRepository {
             data.put("isBye", player.isBye());
             data.put("isCaptain", player.isCaptain());
 
+            log.info("Data map built: {}", data);
+
             db.collection("Player")
                     .document(String.valueOf(player.getID()))
-                    .set(data);
+                    .set(data)
+                    .get();
 
-            log.info("Saved player: {}", player.getFullName());
+            log.info("Firestore write confirmed for player: {}", player.getFullName());
 
         } catch (Exception e) {
             log.error("Failed to save player: {}", player.getFullName(), e);
