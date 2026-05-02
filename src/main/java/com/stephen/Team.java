@@ -127,16 +127,17 @@ public class Team extends ID implements StatHolder<Team> {
     public void addPlayer(Player p) {
         if (p == null) {
             log.info("Player cannot be null");
-        }else if (p.isBye()) {
+        } else if (p.isBye()) {
             log.info("Cannot add Bye player to team");
-        }else if (players.contains(p)) {
+        } else if (players.contains(p)) {
             log.info("Player already in team");
-        }else if (captain == null) {
-            updateCaptain(p);
+        } else {
+            players.add(p);  // ← add first
+            if (captain == null) {
+                updateCaptain(p);  // ← then set captain
+            }
+            p.getOrCreateStats(new BaseStats_Key(GLOBAL, super.getID()));
         }
-        players.add(p);
-        assert p != null;
-        p.getOrCreateStats(new BaseStats_Key(GLOBAL, super.getID()));
         log.info("Added player: {} to team: {}", p.getName(), teamName);
     }
 
