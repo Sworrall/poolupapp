@@ -95,12 +95,8 @@ public abstract class Frame<S extends StatHolder<S>> extends ID{
     }
 
     public boolean isBreakDish(){
-        log.info("Getting breakDish for Frame ID: {}", this.getID());
-        if(!isPlayed){
-            log.warn("Attempted to get breakDish for Frame ID: {} but match isn't played", this.getID());
-            throw new IllegalArgumentException("Match isn't played");
-        }
-            return breakDish;
+        log.info("Getting isBreakDish for Frame ID: {}", this.getID());
+        return breakDish;
     }
 
 

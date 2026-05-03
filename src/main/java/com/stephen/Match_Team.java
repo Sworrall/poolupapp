@@ -7,45 +7,42 @@ import org.slf4j.Logger;
 public class Match_Team extends Match<Team>{
     private final BaseStats_Key key1;
     private final BaseStats_Key key2;
-    private ArrayList<Frame<Team>> frames;
     private final FrameFactory<Team> frameFactory;
     private static final Logger log = LoggerFactory.getLogger(Match_Team.class);
 
 
     // --- CONSTRUCTOR ---
     public Match_Team(Team teamA, Team teamB, int frameCount, FrameFactory<Team> frameFactory) {
-        super(teamA, teamB, frameCount);
+        super(teamA, teamB, frameCount, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), teamA.getID());
         this.key2 = new BaseStats_Key(super.getID(), teamB.getID());
         this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
-        log.info("Created Match_Team: {} vs {} with {} frames.", teamA.getName(), teamB.getName(), frameCount);
+        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Team(Team team, int frameCount, FrameFactory<Team> frameFactory) {
-        super(team, frameCount);
+        super(team, frameCount, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), team.getID());
         this.key2 = new BaseStats_Key(super.getID(), 0);
-        this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Team with bye: {} vs BYE with {} frames.", team.getName(), frameCount);
+        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Team(FrameFactory<Team> frameFactory) {
-        super(Team.createBye(), Team.createBye(), 0);
+        super(Team.createBye(), Team.createBye(), 0, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), 0);
         this.key2 = new BaseStats_Key(super.getID(), 0);
-        this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Team with bye: BYE vs BYE with 0 frames.");
+        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
@@ -61,24 +58,32 @@ public class Match_Team extends Match<Team>{
         handleByeMatch();
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
-                Frame<Team> f = frameFactory.createFrame(party1, party2);
-                frames.add(f);
+                Frame<Team> f = super.frameFactory.createFrame(party1, party2);
+                super.frames.add(f);
                 f.playFrame();
+            }
+            isPlayed = true;
+            long party1Wins = frames.stream().filter(f -> f.getWinner().equals(party1)).count();
+            long party2Wins = frames.stream().filter(f -> f.getWinner().equals(party2)).count();
+            if (party1Wins > party2Wins) {
+                winner = party1;
+                loser = party2;
+            } else if (party2Wins > party1Wins) {
+                winner = party2;
+                loser = party1;
+            } else {
+                isDraw = true;
+                winner = null;
+                loser = null;
             }
         }
         recordPlayerInTeam_Match();
         recordTeam_Match();
-        isPlayed = true;
         log.info("Played Match_Team: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
 
     // --- GETTERS ---
-    public ArrayList<Frame<Team>>getFrames(){
-        log.info("Getting frames for Match_Team: {} vs {}. Total frames: {}", party1.getName(), party2.getName(), frames.size());
-        return this.frames;
-    }
-
     public ArrayList<Player> getParticipantsTeamA(){
         ArrayList<Player> partyList = new ArrayList<>();
         for (Frame<Team> f : this.frames) {

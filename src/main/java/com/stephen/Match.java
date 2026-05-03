@@ -3,40 +3,61 @@ package com.stephen;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+
 public abstract class Match <S extends StatHolder<S>> extends ID {
     protected final S party1;
     protected final S party2;
     private final int frameCount;
+    ArrayList<Frame<S>> frames;
     protected S winner;
     protected S loser;
     protected boolean isPlayed;
     protected boolean isBye;
     protected boolean isDraw;
     private static final Logger log = LoggerFactory.getLogger(Match.class);
+    FrameFactory<S> frameFactory = null;
+
 
 
     // --- CONSTRUCTOR ---
-    public Match(S p1, S p2, int frameCount) {
+    public Match(S p1, S p2, int frameCount, FrameFactory<S> frameFactory) {
         super();
         this.party1 = p1;
         this.party2 = p2;
         this.frameCount = frameCount;
+        this.frames = new ArrayList<>();
+        this.frameFactory = frameFactory;
         this.isBye = false;
         this.isPlayed = false;
         this.isDraw = false;
-        log.info("Match created: {}", errorCapture());
+        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
-
-    public Match(S p1, int frameCount) {
+    public Match(S p1, int frameCount, FrameFactory<S> frameFactory) {
         super();
         this.party1 = p1;
         this.party2 = p1.createByeParty();
         this.frameCount = frameCount;
+        this.frames = new ArrayList<>();
+        this.frameFactory = frameFactory;
         this.isBye = true;
         this.isPlayed = false;
         this.isDraw = false;
-        log.info("Match created: {}", errorCapture());
+        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
+    }
+
+    public Match(FrameFactory<S> frameFactory) {
+        super();
+        this.party1 = this.createByeParty();
+        this.party2 = this.createByeParty();
+        this.frameCount = 0;
+        this.frames = new ArrayList<>();
+        this.frameFactory = frameFactory;
+        this.isBye = true;
+        this.isPlayed = false;
+        this.isDraw = false;
+        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
 
@@ -55,6 +76,11 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
 
 
     // --- GETTERS ---
+    public ArrayList<Frame<S>>getFrames(){
+        log.info("Getting {} frames: {}. Total frames: {}", this.getMatchType(), this.errorCapture(), frames.size());
+        return this.frames;
+    }
+
     public S getParty1() {
         log.info("Getting party1: {}", party1.getName());
         return this.party1;
@@ -70,19 +96,26 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         return this.frameCount;
     }
 
+    public String getMatchType(){
+        if(this instanceof Match_Singles){
+            return "Player";
+        }else if(this instanceof Match_Doubles){
+            return "Doubles";
+        }else if(this instanceof Match_Team){
+            return "Team";
+        }else{
+            return "Unknown";
+        }
+    }
+
     public boolean isPlayed() {
         log.info("Checking if match is played: {} - {}", errorCapture(), isPlayed);
         return isPlayed;
     }
 
     public boolean isDraw(){
-        log.info("Checking if match is a draw: {} - {}", errorCapture(), isDraw);
-        if(this.isPlayed){
-            return this.isDraw;
-        }else{
-            log.error("Match is unplayed, cannot continue");
-            throw new IllegalArgumentException("Match is unplayed, cannot continue");
-        }
+        log.info("Checking if match is draw: {} - {}", errorCapture(), isDraw);
+        return this.isDraw;
     }
 
     public boolean isBye(){

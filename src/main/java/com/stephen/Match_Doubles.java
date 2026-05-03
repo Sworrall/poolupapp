@@ -1,24 +1,19 @@
 package com.stephen;
 
-import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class Match_Doubles extends Match<Doubles>{
     private final BaseStats_Key matchKeyA;
     private final BaseStats_Key matchKeyB;
-    private ArrayList<Frame<Doubles>> frames;
-    private final FrameFactory<Doubles> frameFactory;
     private static final Logger log = LoggerFactory.getLogger(Match_Doubles.class);
 
 
     // --- CONSTRUCTOR ---
     public Match_Doubles(Doubles teamA, Doubles teamB, int frameCount, FrameFactory<Doubles> frameFactory){
-        super(teamA, teamB, frameCount);
+        super(teamA, teamB, frameCount, frameFactory);
         this.matchKeyA = new BaseStats_Key(super.getID(), teamA.getID());
         this.matchKeyB = new BaseStats_Key(super.getID(), teamB.getID());
-        this.frames = new ArrayList<>();
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
@@ -26,27 +21,23 @@ public class Match_Doubles extends Match<Doubles>{
     }
 
     public Match_Doubles(Doubles team, int frameCount, FrameFactory<Doubles> frameFactory) {
-        super(team, frameCount);
+        super(team, frameCount, frameFactory);
         this.matchKeyA = new BaseStats_Key(super.getID(), team.getID());
         this.matchKeyB = new BaseStats_Key(super.getID(), 0);
-        this.frames = new ArrayList<>();
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Doubles with bye: BYE vs {} with 0 frames.", team.getName());
+        log.info("Created Match_Doubles with bye: {} with {} frames.", this.errorCapture(), super.getFrameCount());
     }
 
     public Match_Doubles(FrameFactory<Doubles> frameFactory) {
-        super(Doubles.createBye(), Doubles.createBye(), 0);
+        super(Doubles.createBye(), Doubles.createBye(),0,  frameFactory);
         this.matchKeyA = new BaseStats_Key(super.getID(), 0);
         this.matchKeyB = new BaseStats_Key(super.getID(), 0);
-        this.frames = new ArrayList<>();
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Doubles with bye: BYE vs BYE with 0 frames.");
+        log.info("Created Match_Doubles with bye: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
@@ -57,14 +48,32 @@ public class Match_Doubles extends Match<Doubles>{
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
                 Frame<Doubles> f = frameFactory.createFrame(party1, party2);
-                frames.add(f); 
+                frames.add(f);
                 f.playFrame();
+            }
+            isPlayed = true;
+            long party1Wins = frames.stream()
+                    .filter(f -> f.getWinner().equals(party1))
+                    .count();
+            long party2Wins = frames.stream()
+                    .filter(f -> f.getWinner().equals(party2))
+                    .count();
+            if (party1Wins > party2Wins) {
+                winner = party1;
+                loser = party2;
+            } else if (party2Wins > party1Wins) {
+                winner = party2;
+                loser = party1;
+            } else {
+                isDraw = true;
+                winner = null;
+                loser = null;
             }
         }
         recordDoublesTeam_Match();
         recordDoublesPlayer_Match();
-        isPlayed = true;
-        log.info("Played Match_Doubles: {}. Result: {}", super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
+        log.info("Played Match_Doubles: {}. Result: {}", super.errorCapture(),
+                isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
     @Override

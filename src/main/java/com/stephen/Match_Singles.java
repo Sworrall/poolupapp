@@ -1,48 +1,43 @@
 package com.stephen;
 
-import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 public class Match_Singles extends Match<Player>{
     public BaseStats_Key matchKey;
-    private ArrayList<Frame<Player>> frames;
     private final FrameFactory<Player> frameFactory;
     private static final Logger log = LoggerFactory.getLogger(Match_Singles.class);
 
 
     // --- CONSTRUCTOR ---
     public Match_Singles(Player p1, Player p2, int frameCount, FrameFactory<Player> frameFactory) {
-        super(p1, p2, frameCount);
+        super(p1, p2, frameCount, frameFactory);
         this.matchKey = new BaseStats_Key(super.getID(), null);
-        this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         super.isPlayed = false;
         super.isBye = false;
         super.isDraw = false;
-        log.info("Created Match_Singles: {} vs {} with {} frames.", p1.getName(), p2.getName(), frameCount);
+        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Singles(Player p, int frameCount, FrameFactory<Player> frameFactory){
-        super(p, frameCount);
+        super(p, frameCount, frameFactory);
         this.matchKey = new BaseStats_Key(super.getID(), null);
-        this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         super.isPlayed = false;
         super.isBye = true;
         super.isDraw = false;
-        log.info("Created Match_Singles: (Bye vs {})", p.getName());
+        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Singles(FrameFactory<Player> frameFactory){
-        super(Player.createBye(), Player.createBye(), 0);
+        super(Player.createBye(), Player.createBye(), 0, frameFactory);
         this.matchKey = new BaseStats_Key(super.getID(), null);
-        this.frames = new ArrayList<>();
         this.frameFactory = frameFactory;
         this.isPlayed = true;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Singles (Bye vs Bye)");
+        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
@@ -52,13 +47,30 @@ public class Match_Singles extends Match<Player>{
         handleByeMatch();
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
-                Frame<Player> f = frameFactory.createFrame(party1, party2);
-                frames.add(f);
+                Frame<Player> f = super.frameFactory.createFrame(party1, party2);
+                super.frames.add(f);
                 f.playFrame();
+            }
+            isPlayed = true;
+            long party1Wins = frames.stream()
+                    .filter(f -> f.getWinner().equals(party1))
+                    .count();
+            long party2Wins = frames.stream()
+                    .filter(f -> f.getWinner().equals(party2))
+                    .count();
+            if (party1Wins > party2Wins) {
+                winner = party1;
+                loser = party2;
+            } else if (party2Wins > party1Wins) {
+                winner = party2;
+                loser = party1;
+            } else {
+                isDraw = true;
+                winner = null;
+                loser = null;
             }
         }
         recordPlayer_Match(this);
-        isPlayed = true;
         log.info("Played Match_Singles: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
