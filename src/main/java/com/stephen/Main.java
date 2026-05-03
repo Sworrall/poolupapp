@@ -24,10 +24,10 @@ public class Main{
 
         // Create and save a Team
         Team_Repository teamRepo = new Team_Repository();
-        Team team = new Team("The A Team");
-        team.addPlayer(player1);
-        team.addPlayer(player2);
-        teamRepo.saveTeam(team);
+        Team team1 = new Team("The A Team");
+        team1.addPlayer(player1);
+        team1.addPlayer(player2);
+        teamRepo.saveTeam(team1);
 
         Team team2 = new Team("The B Team");
         team2.addPlayer(player3);
@@ -36,14 +36,14 @@ public class Main{
 
         // create and save Doubles Team
         Doubles_Repository doublesRepo = new Doubles_Repository();
-        Doubles doublesTeamA = new Doubles("Double the Trouble");
-        doublesTeamA.addPlayer(player1);
-        doublesTeamA.addPlayer(player2);
-        doublesRepo.saveDoublesTeam(doublesTeamA);
-        Doubles doublesTeamB = new Doubles("Double Bubble");
-        doublesTeamB.addPlayer(player3);
-        doublesTeamB.addPlayer(player4);
-        doublesRepo.saveDoublesTeam(doublesTeamB);
+        Doubles doublesTeam1 = new Doubles("Double the Trouble");
+        doublesTeam1.addPlayer(player1);
+        doublesTeam1.addPlayer(player2);
+        doublesRepo.saveDoublesTeam(doublesTeam1);
+        Doubles doublesTeam2 = new Doubles("Double Bubble");
+        doublesTeam2.addPlayer(player3);
+        doublesTeam2.addPlayer(player4);
+        doublesRepo.saveDoublesTeam(doublesTeam2);
 
 
         // create Frame<Player>. save, then play and overwrite
@@ -58,13 +58,24 @@ public class Main{
         // create Match<Doubles> save, play and save again
         Match_Repository<Doubles> matchRepo = new Match_Repository<>();
         FrameFactory<Doubles> doublesFactory = new FrameFactory_Doubles();
-        Match<Doubles> doublesMatch = new Match_Doubles(doublesTeamA, doublesTeamB, 11, doublesFactory);
+        Match<Doubles> doublesMatch = new Match_Doubles(doublesTeam1, doublesTeam2, 11, doublesFactory);
         matchRepo.saveMatch(doublesMatch);
         log.info("DOUBLES MATCH CREATED");
         doublesMatch.playMatch();
         matchRepo.saveMatch(doublesMatch);
         log.info("DOUBLES MATCH PLAYED");
 
+        // stats have been created for player 1. upload them all to Firebase
+        var baseStatRepo = new BaseStats_Repository<Player>();
+        baseStatRepo.saveStats(player1);
+        baseStatRepo.saveStats(player2);
+        baseStatRepo.saveStats(player3);
+        baseStatRepo.saveStats(player4);
+        baseStatRepo.saveStats(team1);
+        baseStatRepo.saveStats(team2);
+        baseStatRepo.saveStats(doublesTeam1);
+        baseStatRepo.saveStats(doublesTeam2);
+        log.info("BASE STATS uploaded");
 
 
         log.info("Done!");

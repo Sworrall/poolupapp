@@ -13,7 +13,7 @@ public class Player extends ID implements StatHolder<Player> {
     private final Player_ContactDetails contactDetails;
     private final boolean isBye;
     private boolean isCaptain;
-    private final Map<BaseStats_Key, BaseStats> playerStatsMap;
+    private final Map<BaseStats_Key, BaseStats> stats;
     private static final Logger log = LoggerFactory.getLogger(Player.class);
 
 
@@ -25,8 +25,8 @@ public class Player extends ID implements StatHolder<Player> {
         this.contactDetails = new Player_ContactDetails();
         this.isBye = false;
         this.isCaptain = false;
-        this.playerStatsMap = new HashMap<>();
-        this.playerStatsMap.put(new BaseStats_Key(GLOBAL, null), new BaseStats());
+        this.stats = new HashMap<>();
+        this.stats.put(new BaseStats_Key(GLOBAL, null), new BaseStats());
         log.info("Created player: {}", getFullName());
     }
 
@@ -38,7 +38,7 @@ public class Player extends ID implements StatHolder<Player> {
         this.contactDetails = new Player_ContactDetails();
         this.isBye = true;
         this.isCaptain = false;
-        this.playerStatsMap = new HashMap<>();
+        this.stats = new HashMap<>();
         log.info("Created bye player");
     }
 
@@ -52,6 +52,10 @@ public class Player extends ID implements StatHolder<Player> {
     public Player createByeParty(){
         log.info("Creating bye party");
         return new Player();
+    }
+
+    public Map<BaseStats_Key, BaseStats> getStatsMap() {
+        return this.stats;
     }
 
 
@@ -71,7 +75,7 @@ public class Player extends ID implements StatHolder<Player> {
     @Override
     public BaseStats getOrCreateStats(BaseStats_Key K) {
         log.info("Getting or creating stats for player: {} - Key: {}", getFullName(), K);
-        return playerStatsMap.computeIfAbsent(K, _ -> new BaseStats());
+        return stats.computeIfAbsent(K, _ -> new BaseStats());
     }
 
 

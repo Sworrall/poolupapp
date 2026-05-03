@@ -72,6 +72,10 @@ public class Doubles extends ID implements StatHolder<Doubles>{
         return new Doubles();
     }
 
+    public Map<BaseStats_Key, BaseStats> getStatsMap() {
+        return this.stats;
+    }
+
 
     // -- GETTERS ---
     public String getDoublesName() {

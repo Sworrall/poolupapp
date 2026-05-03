@@ -1,8 +1,13 @@
 package com.stephen;
 
-public interface StatHolder<T> {
+import java.util.Map;
+
+
+public interface StatHolder<S> {
 
     int getID();
+
+    Map<BaseStats_Key, BaseStats> getStatsMap();
 
     String getName();
 
@@ -10,5 +15,5 @@ public interface StatHolder<T> {
 
     BaseStats getOrCreateStats(BaseStats_Key K);
 
-    T createByeParty();
+    S createByeParty();
 }

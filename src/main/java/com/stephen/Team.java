@@ -67,6 +67,10 @@ public class Team extends ID implements StatHolder<Team> {
         return getOrCreateTeamStats(K);
     }
 
+    public Map<BaseStats_Key, BaseStats> getStatsMap() {
+        return this.stats;
+    }
+
 
     // --- STATS ---
     public BaseStats getOrCreateTeamStats(BaseStats_Key K) {

@@ -4,10 +4,10 @@ FireBase
             captainID
                 String - playerID
             teamName
-                String - "Dream Team"
+                String - Team Name
             isBye
                 boolean - false
-            player <Array>
+            players <Array>
                 String - player1ID
                 String - player2ID
     Frame
@@ -74,12 +74,9 @@ FireBase
                 boolean - false
             isCaptain
                 boolean - false
-    HolderID
-        EventID
-            eventID
+    HolderID (player / doubles / team)
+            EventID (frame / match / tournament / league / season / GLOBAL)
                 String - eventID
-            teamID
-                String - teamID
             FRAME_WIN
                 int - 0
             FRAME_LOSS
