@@ -3,7 +3,7 @@ package com.stephen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Main {
+public class Main{
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
@@ -31,6 +31,15 @@ public class Main {
         doublesTeam.addPlayer(player2);
         Doubles_Repository doublesRepo = new Doubles_Repository();
         doublesRepo.saveDoublesTeam(doublesTeam);
+
+        // create Frame<Player>. save, then play and overwrite
+        Frame<Player> frame = new Frame_Singles<>(player1, player2);
+        Frame_Repository<Player> frameRepo = new Frame_Repository<>();
+        frameRepo.saveFrame(frame);
+        log.info("FRAME ADDED");
+        frame.playFrame();
+        frameRepo.saveFrame(frame);
+        log.info("FRAME PLAYED");
 
         log.info("Done!");
     }

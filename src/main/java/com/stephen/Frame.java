@@ -70,6 +70,20 @@ public abstract class Frame<S extends StatHolder<S>> extends ID{
         }
     }
 
+    public String getFrameType() {
+        if (this instanceof Frame_Killer) {
+            return "Killer";
+        } else if (this instanceof Frame_Doubles) {
+            return "Doubles";
+        } else if (this instanceof Frame_Team) {
+            return "Team";
+        } else if (this instanceof Frame_Singles) {
+            return "Singles";
+        } else {
+            return "Unknown";
+        }
+    }
+
     public boolean isBye(){
         log.info("Getting isBye for Frame ID: {}", this.getID());
         return isBye;
