@@ -1,4 +1,4 @@
-package com.stephen.FrameFactory;
+package com.stephen.Frame.FrameFactory;
 
 import com.stephen.Doubles.Doubles;
 import com.stephen.Frame.Frame;

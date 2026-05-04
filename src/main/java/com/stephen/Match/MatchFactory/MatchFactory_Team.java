@@ -1,7 +1,7 @@
-package com.stephen.MatchFactory;
+package com.stephen.Match.MatchFactory;
 
-import com.stephen.FrameFactory.FrameFactory;
-import com.stephen.FrameFactory.FrameFactory_Team;
+import com.stephen.Frame.FrameFactory.FrameFactory;
+import com.stephen.Frame.FrameFactory.FrameFactory_Team;
 import com.stephen.Match.Match;
 import com.stephen.Match.Match_Team;
 import com.stephen.Team.Team;

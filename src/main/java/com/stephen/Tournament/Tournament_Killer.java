@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Match.Match;
-import com.stephen.MatchFactory.Match_Factory;
+import com.stephen.Match.MatchFactory.Match_Factory;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;

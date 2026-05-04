@@ -1,4 +1,4 @@
-package com.stephen.MatchFactory;
+package com.stephen.Match.MatchFactory;
 
 import com.stephen.Match.Match;
 import com.stephen.BaseStats.StatHolder;

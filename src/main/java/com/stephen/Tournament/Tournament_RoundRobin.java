@@ -7,7 +7,7 @@ import com.stephen.BaseStats.StatField;
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Leaderboard.Leaderboard;
 import com.stephen.Match.Match;
-import com.stephen.MatchFactory.Match_Factory;
+import com.stephen.Match.MatchFactory.Match_Factory;
 import com.stephen.Leaderboard.Ranking_Points;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
