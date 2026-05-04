@@ -1,0 +1,104 @@
+package com.stephen.Tournament;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import com.stephen.Functions.Functions;
+import com.stephen.Leaderboard.Leaderboard;
+import com.stephen.Match.Match;
+import com.stephen.MatchFactory.Match_Factory;
+import com.stephen.Leaderboard.Ranking_Elimination;
+import com.stephen.Stats.StatHolder;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
+public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
+    private final int frameCount;
+    private final ArrayList<ArrayList<Match<S>>> fixtures;
+    private final Match_Factory<S> matchFactory;
+    private final Leaderboard<S> leaderboard;
+    private final Ranking_Elimination<S> eliminationStrategy;
+    private static final Logger log = LoggerFactory.getLogger(Tournament_KO.class);
+
+    // todo - 1st place 2nd place 3rd place 4th place
+
+    // --- CONSTRUCTOR ---
+    public Tournament_KO(ArrayList<S> partyList, int frameCount, Match_Factory<S> matchFactory){
+        super(partyList);
+        this.frameCount = frameCount;
+        this.fixtures = new ArrayList<>();
+        this.matchFactory = matchFactory;
+        this.eliminationStrategy = new Ranking_Elimination<>();
+        this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
+        generatePartyList();
+        if (super.getAllParties().size() < 4) {
+            log.error("Not enough Parties to create this tournament. Minimum 4 parties required, but only {} provided.", super.getAllParties().size());
+            throw new IllegalStateException("Not enough Parties to create this tournament");
+        }else{
+            log.info("Tournament created with {} parties, and {} rounds.", super.getAllParties().size(), getRounds());
+        }
+    }
+
+
+    // --- GETTERS ---
+    public int getRounds() {
+        int rounds = 0;
+        int size = super.getAllParties().size();
+        while (size > 1) {
+            rounds++;
+            size = size / 2;
+        }
+        log.info("Number of rounds calculated: {}", rounds);
+        return rounds;
+    }
+
+
+    // --- LOGIC ---
+    public void generatePartyList() {
+        ArrayList<S> parties = super.getAllParties();
+        while (Functions.calcPowerOf2(super.getAllParties().size())) {
+            parties.add(parties.getFirst().createByeParty());
+        }
+        Collections.shuffle(super.getAllParties());
+        super.partyList = parties;
+        log.info("Party list generated with {} parties.", super.getAllParties().size());
+    }
+
+    public ArrayList<Match<S>> generateKORoundFixtures(ArrayList<S> partyList) {
+        ArrayList<Match<S>> matchList = new ArrayList<>();
+        for (int j = 0; j < partyList.size(); j += 2) {
+            matchList.add(matchFactory.createMatch(partyList.get(j), partyList.get(j + 1), this.frameCount));
+            super.matchList.add(matchList.getLast());
+        }
+        this.fixtures.add(matchList);
+        log.info("K.O. round fixtures generated with {} matches.", matchList.size());
+        return matchList;
+    }
+
+    public ArrayList<S> playRound(ArrayList<Match<S>> matchList) {
+        ArrayList<S> partiesThrough = new ArrayList<>();
+        for (Match<S> m : matchList) {
+            m.playMatch();
+            partiesThrough.add(m.getWinner());
+        }
+        log.info("Parties through to next round: {}", partiesThrough.size());
+        return partiesThrough;
+    }
+
+    public void simPlayTournament() {
+        ArrayList<Match<S>> generatedMatches = generateKORoundFixtures(partyList);
+        ArrayList<S> throughParties = playRound(generatedMatches);
+        for (int i = 1; i < getRounds(); i++) {
+            generatedMatches = generateKORoundFixtures(throughParties);
+            throughParties = playRound(generatedMatches);
+        }
+        leaderboard.rank();
+        ArrayList<S> winnerBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getWinnerBracket(partyList, super.getID());
+        ArrayList<S> loserBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getLoserBracket(partyList, super.getID());
+        if (throughParties.size() == 1) {
+            setPlace1(throughParties.getFirst());
+            System.out.println("Winner: " + throughParties.getFirst().getName());
+        }
+        log.info("Tournament simulation complete. Winner: {}", throughParties.getFirst().getName());
+    }
+}

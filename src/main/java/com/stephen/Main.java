@@ -1,13 +1,35 @@
 package com.stephen;
 
+import com.stephen.Doubles.Doubles;
+import com.stephen.FireBase.Doubles_Repository;
+import com.stephen.FireBase.FirebaseConfig;
+import com.stephen.FireBase.Frame_Repository;
+import com.stephen.Frame.*;
+import com.stephen.FrameFactory.FrameFactory;
+import com.stephen.FrameFactory.FrameFactory_Doubles;
+import com.stephen.Match.Match;
+import com.stephen.Match.Match_Doubles;
+import com.stephen.FireBase.Match_Repository;
+import com.stephen.MatchFactory.MatchFactory_Team;
+import com.stephen.MatchFactory.Match_Factory;
+import com.stephen.Player.Player;
+import com.stephen.Player.Player_Repository;
+import com.stephen.Stats.BaseStats_Repository;
+import com.stephen.Team.Team;
+import com.stephen.Team.Team_Repository;
+import com.stephen.Tournament.Tournament_Repository;
+import com.stephen.Tournament.Tournament_RoundRobin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 
 public class Main{
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
+
         log.info("PoolManager application starting...");
         FirebaseConfig.initialise();
 
@@ -45,15 +67,14 @@ public class Main{
         doublesTeam2.addPlayer(player4);
         doublesRepo.saveDoublesTeam(doublesTeam2);
 
-
         // create Frame<Player>. save, then play and overwrite
-        Frame_Repository<Player> frameRepo = new Frame_Repository<>();
+        Frame_Repository<Player> singleFrameRepo = new Frame_Repository<>();
         Frame<Player> frame = new Frame_Singles<>(player1, player2);
-        frameRepo.saveFrame(frame);
+        singleFrameRepo.saveFrame(frame);
         log.info("FRAME ADDED");
         frame.playFrame();
-        frameRepo.saveFrame(frame);
-        log.info("FRAME PLAYED");
+        singleFrameRepo.saveFrame(frame);
+        log.info("FRAME PLAYED AND UPDATED");
 
         // create Match<Doubles> save, play and save again
         Match_Repository<Doubles> matchRepo = new Match_Repository<>();
@@ -62,11 +83,16 @@ public class Main{
         matchRepo.saveMatch(doublesMatch);
         log.info("DOUBLES MATCH CREATED");
         doublesMatch.playMatch();
+        Frame_Repository<Doubles> doublesFrameRepo = new Frame_Repository<>();
+        for(Frame<Doubles> f : doublesMatch.getFrames()) {
+            doublesFrameRepo.saveFrame(f);
+        }
         matchRepo.saveMatch(doublesMatch);
-        log.info("DOUBLES MATCH PLAYED");
+        log.info("DOUBLES MATCH PLAYED AND UPDATED");
+
 
         // stats have been created for player 1. upload them all to Firebase
-        var baseStatRepo = new BaseStats_Repository<Player>();
+        BaseStats_Repository<Player> baseStatRepo = new BaseStats_Repository<>();
         baseStatRepo.saveStats(player1);
         baseStatRepo.saveStats(player2);
         baseStatRepo.saveStats(player3);
@@ -76,6 +102,15 @@ public class Main{
         baseStatRepo.saveStats(doublesTeam1);
         baseStatRepo.saveStats(doublesTeam2);
         log.info("BASE STATS uploaded");
+
+        // upload a tournament
+        ArrayList<Team> tournamentTeams = new ArrayList<>();
+        tournamentTeams.add(team1);
+        tournamentTeams.add(team2);
+        Match_Factory<Team> mf = new MatchFactory_Team();
+        Tournament_RoundRobin<Team> RR = new Tournament_RoundRobin<>(tournamentTeams, 11, mf);
+        Tournament_Repository<Team> tournamentRepository = new Tournament_Repository<>(RR);
+        tournamentRepository.saveTournament(RR);
 
 
         log.info("Done!");
