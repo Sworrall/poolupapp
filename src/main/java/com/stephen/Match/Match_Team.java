@@ -5,9 +5,9 @@ import java.util.*;
 import com.stephen.Frame.Frame;
 import com.stephen.FrameFactory.FrameFactory;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
 import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -149,6 +149,12 @@ public class Match_Team extends Match<Team>{
             }
         }
         log.info("Recorded player stats for Match_Team: {} vs {}", party1.getName(), party2.getName());
+    }
+
+    public void recordMatch(){
+        recordPlayerInTeam_Match();
+        recordTeam_Match();
+        updateCloud_Match();
     }
 }
 

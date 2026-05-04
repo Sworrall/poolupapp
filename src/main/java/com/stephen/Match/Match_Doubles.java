@@ -4,9 +4,9 @@ import com.stephen.Doubles.Doubles;
 import com.stephen.Frame.Frame;
 import com.stephen.FrameFactory.FrameFactory;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -104,8 +104,7 @@ public class Match_Doubles extends Match<Doubles>{
 
     // --- LOGIC ---
     public void recordDoublesPlayer_Match() {
-        for (int i = 0; i < super.getFrameCount(); i++) {
-            Frame<Doubles> f = this.frames.get(i);
+        for (Frame<Doubles> f : this.frames) {
             Player t1p1 = f.getPlayersA().getFirst();
             Player t1p2 = f.getPlayersA().getLast();
             Player t2p1 = f.getPlayersB().getFirst();
@@ -121,7 +120,7 @@ public class Match_Doubles extends Match<Doubles>{
                 BaseStats_Service.applyEvent(key1, StatField.MATCH_DRAW, t1p2);
                 BaseStats_Service.applyEvent(key2, StatField.MATCH_DRAW, t2p1);
                 BaseStats_Service.applyEvent(key2, StatField.MATCH_DRAW, t2p2);
-            } else if (super.party1.equals(this.getWinner())) {
+            } else if (super.party1.equals(this.winner)) {
                 BaseStats_Service.applyEvent(key1, StatField.MATCH_WIN, t1p1);
                 BaseStats_Service.applyEvent(key1, StatField.MATCH_WIN, t1p2);
                 BaseStats_Service.applyEvent(key2, StatField.MATCH_LOSS, t2p1);
@@ -144,7 +143,7 @@ public class Match_Doubles extends Match<Doubles>{
         if (this.isDraw()) {
             BaseStats_Service.applyEvent(matchKeyA, StatField.MATCH_DRAW, d1);
             BaseStats_Service.applyEvent(matchKeyB, StatField.MATCH_DRAW, d2);
-        } else if (this.getWinner().equals(this.getParty1())) {
+        } else if (super.party1.equals(this.winner)){
             BaseStats_Service.applyEvent(matchKeyA, StatField.MATCH_WIN, d1);
             BaseStats_Service.applyEvent(matchKeyB, StatField.MATCH_LOSS, d2);
         } else {
@@ -152,5 +151,11 @@ public class Match_Doubles extends Match<Doubles>{
             BaseStats_Service.applyEvent(matchKeyB, StatField.MATCH_WIN, d2);
         }
         log.info("Recorded team stats for Match_Doubles: {}", super.errorCapture());
+    }
+
+    public void recordMatch() {
+        recordDoublesPlayer_Match();
+        recordDoublesTeam_Match();
+        updateCloud_Match();
     }
 }

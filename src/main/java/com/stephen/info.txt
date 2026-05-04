@@ -1,0 +1,305 @@
+dependencies {
+        implementation(platform("com.google.firebase:firebase-bom:34.10.0"))
+        implementation("com.google.firebase:firebase-firestore")
+    }
+    ```
+
+---
+
+## 2. iOS Setup (Swift)
+For iOS, you typically use **Swift Package Manager (SPM)** or CocoaPods.
+
+*   **Step 1: Register App in Console**
+    *   Go to the [Firebase Console](https://console.firebase.google.com/),
+        add an iOS app, and enter your **Bundle ID**.
+    *   Download the `GoogleService-Info.plist` file and drag it into your Xcode project
+        (ensure "Copy items if needed" is checked).
+*   **Step 2: Add Dependencies (SPM)**
+    *   In Xcode: **File > Add Packages**.
+    *   Search for: `[https://github.com/firebase/firebase-ios-sdk](https://github.com/firebase/firebase-ios-sdk)`.
+    *   Select `FirebaseFirestore`.
+*   **Step 3: Initialization**
+        In your `AppDelegate.swift` or `App.swift`:
+    ```swift
+    import FirebaseCore
+    import FirebaseFirestore
+
+    @main
+    struct YourApp: App {
+      init() {
+        FirebaseApp.configure()
+      }
+      var body: some Scene {
+        WindowGroup { ContentView() }
+      }
+    }
+    ```
+
+---
+
+## 3. Retrieving Data (Mobile Example)
+Unlike the backend SDK, mobile SDKs are optimized for **real-time updates**
+and **offline persistence**.
+
+| Platform | Retrieval Snippet |
+| :--- | :--- |
+| **Android (Java)** | `db.collection("users").document("ID").get().addOnSuccessListener(doc -> { ... });` |
+| **iOS (Swift)** | `db.collection("users").document("ID").getDocument { (doc, err) in ... }` |
+
+
+
+### Pro-Tip: Security Rules
+Because mobile apps are "untrusted" clients (the code is on the user's phone),
+you **must** set up **Firestore Security Rules** in the Firebase Console.
+This replaces the server-side authorization used in backend Java. Without rules,
+your database is either completely locked or dangerously open to the public.
+
+---
+
+**References**
+Firebase. (2026). Add Firebase to your Apple project. *Firebase Documentation*.
+[https://firebase.google.com/docs/ios/setup](https://firebase.google.com/docs/ios/setup)
+MWhen building for mobile platforms (Android and iOS),
+the setup differs from the backend Java approach because you are building **client-side** applications. In this architecture, your app connects directly to Firestore using a project-specific configuration file rather than a service account key.
+
+---
+
+## 1. Android Setup (Java/Kotlin)
+Android Studio has a built-in **Firebase Assistant** that automates most of this.
+
+*   **Step 1: Connect via Assistant**
+    *   In Android Studio, go to **Tools > Firebase**.
+    *   Select **Firestore** and click **Get started with Cloud Firestore**.
+    *   Click **Connect to Firebase** to sync your project with the console.
+*   **Step 2: Add Configuration**
+    *   Firebase will automatically add a `google-services.json` file to your
+        `app/` folder. This contains your API keys.
+*   **Step 3: Dependency (Gradle)**
+    In your `app/build.gradle`, add the Firestore library:
+    ```gradle
+    dependencies {
+        implementation(platform("com.google.firebase:firebase-bom:34.10.0"))
+        implementation("com.google.firebase:firebase-firestore")
+    }
+    ```
+
+---
+
+## 2. iOS Setup (Swift)
+For iOS, you typically use **Swift Package Manager (SPM)** or CocoaPods.
+
+*   **Step 1: Register App in Console**
+    *   Go to the [Firebase Console](https://console.firebase.google.com/), add an iOS app,
+        and enter your **Bundle ID**.
+    *   Download the `GoogleService-Info.plist` file and drag it into your Xcode project
+        (ensure "Copy items if needed" is checked).
+*   **Step 2: Add Dependencies (SPM)**
+    *   In Xcode: **File > Add Packages**.
+    *   Search for: `[https://github.com/firebase/firebase-ios-sdk](https://github.com/firebase/firebase-ios-sdk)`.
+    *   Select `FirebaseFirestore`.
+*   **Step 3: Initialization**
+    In your `AppDelegate.swift` or `App.swift`:
+    ```swift
+    import FirebaseCore
+    import FirebaseFirestore
+
+    @main
+    struct YourApp: App {
+      init() {
+        FirebaseApp.configure()
+      }
+      var body: some Scene {
+        WindowGroup { ContentView() }
+      }
+    }
+    ```
+
+---
+
+## 3. Retrieving Data (Mobile Example)
+Unlike the backend SDK, mobile SDKs are optimized for **real-time updates** and
+**offline persistence**.
+
+| Platform | Retrieval Snippet |
+| :--- | :--- |
+| **Android (Java)** | `db.collection("users").document("ID").get().addOnSuccessListener(doc -> { ... });` |
+| **iOS (Swift)** | `db.collection("users").document("ID").getDocument { (doc, err) in ... }` |
+
+
+
+### Pro-Tip: Security Rules
+Because mobile apps are "untrusted" clients (the code is on the user's phone),
+you **must** set up **Firestore Security Rules** in the Firebase Console.
+This replaces the server-side authorization used in backend Java. Without rules,
+your database is either completely locked or dangerously open to the public.
+
+---
+
+**References**
+Firebase. (2026). Add Firebase to your Apple project. *Firebase Documentation*.
+[https://firebase.google.com/docs/ios/setup](https://firebase.google.com/docs/ios/setup)
+Mahi, R. (2026). Using Firebase with Kotlin Multiplatform in 2026: The Complete Guide.
+*Medium*. [https://medium.com/@riadWhen](https://medium.com/@riadWhen)
+building for mobile platforms (Android and iOS), the setup differs from the backend
+Java approach because you are building **client-side** applications. In this architecture,
+your app connects directly to Firestore using a project-specific configuration file rather
+than a service account key.
+
+---
+
+## 1. Android Setup (Java/Kotlin)
+Android Studio has a built-in **Firebase Assistant** that automates most of this.
+
+*   **Step 1: Connect via Assistant**
+    *   In Android Studio, go to **Tools > Firebase**.
+    *   Select **Firestore** and click **Get started with Cloud Firestore**.
+    *   Click **Connect to Firebase** to sync your project with the console.
+*   **Step 2: Add Configuration**
+    *   Firebase will automatically add a `google-services.json` file to your `app/` folder.
+        This contains your API keys.
+*   **Step 3: Dependency (Gradle)**
+    In your `app/build.gradle`, add the Firestore library:
+    ```gradle
+    dependencies {
+        implementation(platform("com.google.firebase:firebase-bom:34.10.0"))
+        implementation("com.google.firebase:firebase-firestore")
+    }
+    ```
+
+---
+
+## 2. iOS Setup (Swift)
+For iOS, you typically use **Swift Package Manager (SPM)** or CocoaPods.
+
+*   **Step 1: Register App in Console**
+    *   Go to the [Firebase Console](https://console.firebase.google.com/), add an iOS app,
+        and enter your **Bundle ID**.
+    *   Download the `GoogleService-Info.plist` file and drag it into your Xcode project
+        (ensure "Copy items if needed" is checked).
+*   **Step 2: Add Dependencies (SPM)**
+    *   In Xcode: **File > Add Packages**.
+    *   Search for: `[https://github.com/firebase/firebase-ios-sdk](https://github.com/firebase/firebase-ios-sdk)`.
+    *   Select `FirebaseFirestore`.
+*   **Step 3: Initialization**
+    In your `AppDelegate.swift` or `App.swift`:
+    ```swift
+    import FirebaseCore
+    import FirebaseFirestore
+
+    @main
+    struct YourApp: App {
+      init() {
+        FirebaseApp.configure()
+      }
+      var body: some Scene {
+        WindowGroup { ContentView() }
+      }
+    }
+    ```
+
+---
+
+## 3. Retrieving Data (Mobile Example)
+Unlike the backend SDK, mobile SDKs are optimized for **real-time updates** and
+**offline persistence**.
+
+| Platform | Retrieval Snippet |
+| :--- | :--- |
+| **Android (Java)** | `db.collection("users").document("ID").get().addOnSuccessListener(doc -> { ... });` |
+| **iOS (Swift)** | `db.collection("users").document("ID").getDocument { (doc, err) in ... }` |
+
+
+
+### Pro-Tip: Security Rules
+Because mobile apps are "untrusted" clients (the code is on the user's phone),
+you **must** set up **Firestore Security Rules** in the Firebase Console.
+This replaces the server-side authorization used in backend Java. Without rules,
+your database is either completely locked or dangerously open to the public.
+
+---
+
+**References**
+Firebase. (2026). Add Firebase to your Apple project. *Firebase Documentation*.
+[https://firebase.google.com/docs/ios/setup](https://firebase.google.com/docs/ios/setup)
+Mahi, R. (2026). Using Firebase with Kotlin Multiplatform in 2026: The Complete Guide.
+*Medium*. [https://medium.com/@riadmahi/using-firebase-with-kotlin-multiplatform-in-2026-the-complete-guide-43a300421When]
+(https://medium.com/@riadmahi/using-firebase-with-kotlin-multiplatform-in-2026-the-complete-guide-43a300421When)
+building for mobile platforms (Android and iOS), the setup differs from the backend Java approach because you are
+building **client-side** applications. In this architecture, your app connects directly to Firestore using a
+project-specific configuration file rather than a service account key.
+
+---
+
+## 1. Android Setup (Java/Kotlin)
+Android Studio has a built-in **Firebase Assistant** that automates most of this.
+
+*   **Step 1: Connect via Assistant**
+    *   In Android Studio, go to **Tools > Firebase**.
+    *   Select **Firestore** and click **Get started with Cloud Firestore**.
+    *   Click **Connect to Firebase** to sync your project with the console.
+*   **Step 2: Add Configuration**
+    *   Firebase will automatically add a `google-services.json` file to your `app/` folder.
+        This contains your API keys.
+*   **Step 3: Dependency (Gradle)**
+    In your `app/build.gradle`, add the Firestore library:
+    ```gradle
+    dependencies {
+        implementation(platform("com.google.firebase:firebase-bom:34.10.0"))
+        implementation("com.google.firebase:firebase-firestore")
+    }
+    ```
+
+---
+
+## 2. iOS Setup (Swift)
+For iOS, you typically use **Swift Package Manager (SPM)** or CocoaPods.
+
+*   **Step 1: Register App in Console**
+    *   Go to the [Firebase Console](https://console.firebase.google.com/), add an iOS app,
+    and enter your **Bundle ID**.
+    *   Download the `GoogleService-Info.plist` file and drag it into your Xcode project (ensure "Copy items if needed" is checked).
+*   **Step 2: Add Dependencies (SPM)**
+    *   In Xcode: **File > Add Packages**.
+    *   Search for: `[https://github.com/firebase/firebase-ios-sdk](https://github.com/firebase/firebase-ios-sdk)`.
+    *   Select `FirebaseFirestore`.
+*   **Step 3: Initialization**
+    In your `AppDelegate.swift` or `App.swift`:
+    ```swift
+    import FirebaseCore
+    import FirebaseFirestore
+
+    @main
+    struct YourApp: App {
+      init() {
+        FirebaseApp.configure()
+      }
+      var body: some Scene {
+        WindowGroup { ContentView() }
+      }
+    }
+    ```
+
+---
+
+## 3. Retrieving Data (Mobile Example)
+Unlike the backend SDK, mobile SDKs are optimized for **real-time updates** and **offline persistence**.
+
+| Platform | Retrieval Snippet |
+| :--- | :--- |
+| **Android (Java)** | `db.collection("users").document("ID").get().addOnSuccessListener(doc -> { ... });` |
+| **iOS (Swift)** | `db.collection("users").document("ID").getDocument { (doc, err) in ... }` |
+
+
+
+### Pro-Tip: Security Rules
+Because mobile apps are "untrusted" clients (the code is on the user's phone), you **must** set up **Firestore Security Rules** in the Firebase Console. This replaces the server-side authorization used in backend Java. Without rules, your database is either completely locked or dangerously open to the public.
+
+---
+
+**References**
+Firebase. (2026). Add Firebase to your Apple project. *Firebase Documentation*. [https://firebase.google.com/docs/ios/setup](https://firebase.google.com/docs/ios/setup)
+Mahi, R. (2026). Using Firebase with Kotlin Multiplatform in 2026: The Complete Guide. *Medium*. [https://medium.com/@riadmahi/using-firebase-with-kotlin-multiplatform-in-2026-the-complete-guide-43a30042155c](https://medium.com/@riadmahi/using-firebase-with-kotlin-multiplatform-in-2026-the-complete-guide-43a30042155c)
+
+This [Firebase setup guide](https://www.youtube.com/watch?v=jX87hCI2d5c) provides a step-by-step visual walkthrough for registering your apps and managing configuration files in the console.
+
+Are you planning to share logic between the two platforms using something like **Kotlin Multiplatform (KMP)**, or are you keeping the codebases entirely separate?

@@ -3,9 +3,10 @@ package com.stephen.Frame;
 
 import java.util.ArrayList;
 
+import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import com.stephen.Functions.UserInput;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -31,6 +32,13 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
         isBye = false;
         isPlayed = false;
         log.info("Frame created with ID: {}", this.getID());
+    }
+
+
+    // --- FIREBASE ---
+    public void updateCloud_Frame(){
+        Frame_Repository<S> frameRepo = new Frame_Repository<>();
+        frameRepo.saveFrame(this);
     }
 
 
@@ -134,6 +142,7 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
                 isPlayed = true;
             }
         }
+        updateCloud_Frame();
         log.info("Bye handled for Frame ID: {}. isBye: {}, isPlayed: {}", this.getID(), isBye, isPlayed);
     }
 

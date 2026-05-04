@@ -1,7 +1,7 @@
 package com.stephen.MatchFactory;
 
 import com.stephen.Match.Match;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 
 public interface Match_Factory<S extends StatHolder<S>> {
 

@@ -1,4 +1,4 @@
-package com.stephen.Stats;
+package com.stephen.BaseStats;
 
 import java.util.Map;
 
@@ -16,4 +16,13 @@ public interface StatHolder<S> {
     BaseStats getOrCreateStats(BaseStats_Key K);
 
     S createByeParty();
+
+    void updateCloud_StatHolder();
+
+    void updateCloud_Stats();
+
+    default void updateCloud_All(){
+        updateCloud_StatHolder();
+        updateCloud_Stats();
+    }
 }

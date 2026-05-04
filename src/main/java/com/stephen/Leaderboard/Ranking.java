@@ -1,6 +1,6 @@
 package com.stephen.Leaderboard;
 
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 
 import java.util.ArrayList;
 

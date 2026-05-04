@@ -2,9 +2,11 @@ package com.stephen.Tournament;
 
 import java.util.ArrayList;
 
+import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Match.Match;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
+import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -26,6 +28,13 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
         this.matchList = new ArrayList<>();
         isComplete = false;
         log.info("Tournament created with ID: {}", super.getID());
+    }
+
+
+    // --- FIRESTORE ---
+    public void updateCloud_Tournament(){
+        Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
+        tournamentRepository.saveTournament(this);
     }
 
 

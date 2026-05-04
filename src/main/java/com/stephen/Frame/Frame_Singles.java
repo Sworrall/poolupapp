@@ -1,10 +1,11 @@
 package com.stephen.Frame;
 
+import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -18,18 +19,21 @@ public class Frame_Singles <S extends StatHolder<S>> extends Frame<Player>{
     public Frame_Singles(Player p1, Player p2){
         super(p1, p2);
         this.frameKey = new BaseStats_Key(super.getID(), null);
+        updateCloud_Frame();
         log.info("Created new Frame_Singles with ID: {} and players: {} vs {}", super.getID(), p1.getName(), p2.getName());
     }
 
     public Frame_Singles(Player p1){
         super(p1, new Player());
         this.frameKey = new BaseStats_Key(super.getID(), null);
+        updateCloud_Frame();
         log.info("Created new Frame_Singles with ID: {} and player: {} vs BYE", super.getID(), p1.getName());
     }
 
     public Frame_Singles(){
         super(new Player(), new Player());
         this.frameKey = new BaseStats_Key(super.getID(), null);
+        updateCloud_Frame();
         log.info("Created new Frame_Singles with ID: {} and players: BYE vs BYE", super.getID());
     }
 
@@ -63,6 +67,7 @@ public class Frame_Singles <S extends StatHolder<S>> extends Frame<Player>{
     @Override
     public void recordFrame() {
         recordSingles_Frame();
+        updateCloud_Frame();
         log.info("recordFrame called for Frame ID: {} with players: {} vs {}", super.getID(), super.getParty1().getName(), super.getParty2().getName());
     }
 

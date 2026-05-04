@@ -2,11 +2,15 @@ package com.stephen.Team;
 
 import java.util.*;
 
+import com.stephen.Doubles.Doubles;
+import com.stephen.FireBase.BaseStats_Repository;
+import com.stephen.FireBase.Doubles_Repository;
+import com.stephen.FireBase.Team_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -40,6 +44,23 @@ public class Team extends ID implements StatHolder<Team> {
         this.captain = null;
         this.isBye = true;
         log.info("Created bye team");
+    }
+
+
+    // --- FIREBASE ---
+    public void updateCloud_StatHolder(){
+        Team_Repository teamRepository = new Team_Repository();
+        teamRepository.saveTeam(this);
+    }
+
+    public void updateCloud_Stats() {
+        BaseStats_Repository<Team> baseStatRepo = new BaseStats_Repository<>();
+        baseStatRepo.saveStats(this);
+    }
+
+    public void updateCloud_All() {
+        this.updateCloud_StatHolder();
+        this.updateCloud_Stats();
     }
 
 

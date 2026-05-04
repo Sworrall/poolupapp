@@ -2,10 +2,10 @@ package com.stephen.Frame;
 
 import com.stephen.Functions.UserInput;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -84,6 +84,7 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
             BaseStats_Service.applyEvent(frameKey, StatField.FRAME_TOTAL, p1);
             BaseStats_Service.applyFrame_WIN_LOSS(frameKey, frameKey, this);
         }
+        updateCloud_Frame();
         log.info("recordFrame completed, stats updated for {} players.", partyLives.size());
     }
 }

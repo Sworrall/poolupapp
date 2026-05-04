@@ -3,7 +3,7 @@ package com.stephen.FireBase;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.stephen.Frame.Frame;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

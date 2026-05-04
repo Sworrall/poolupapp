@@ -3,7 +3,7 @@ package com.stephen.FrameFactory;
 import java.util.ArrayList;
 
 import com.stephen.Frame.Frame_Killer;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

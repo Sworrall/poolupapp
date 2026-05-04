@@ -1,9 +1,10 @@
-package com.stephen.Tournament;
+package com.stephen.FireBase;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.stephen.Match.Match;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
+import com.stephen.Tournament.Tournament;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class Tournament_Repository<S extends StatHolder<S>> {
     private final Firestore db;
 
     // --- CONSTRUCTOR ---
-    public Tournament_Repository(Tournament<S>  tournament) {
+    public Tournament_Repository(Tournament<S> tournament) {
         this.db = FirestoreClient.getFirestore();
         log.info("Tournament_Repository initialised");
     }

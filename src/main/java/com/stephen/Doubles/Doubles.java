@@ -1,10 +1,13 @@
 package com.stephen.Doubles;
 
+import com.stephen.FireBase.BaseStats_Repository;
+import com.stephen.FireBase.Doubles_Repository;
+import com.stephen.FireBase.Player_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.StatHolder;
 import com.stephen.Team.Team_ContactDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         this.stats = new HashMap<>();
         BaseStats_Key K = new BaseStats_Key(GLOBAL, super.getID());
         stats.computeIfAbsent(K, _ -> new BaseStats());
-        log.info("Doubles team created: " + teamName);
+        log.info("Doubles team created: {}", teamName);
     }
 
     public Doubles() {
@@ -43,6 +46,22 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         this.captain = null;
         this.isBye = true;
         log.info("Bye Doubles team created");
+    }
+
+    // --- FIREBASE ---
+    public void updateCloud_StatHolder(){
+        Doubles_Repository doubles_Repository = new Doubles_Repository();
+        doubles_Repository.saveDoublesTeam(this);
+    }
+
+    public void updateCloud_Stats() {
+        BaseStats_Repository<Doubles> baseStatRepo = new BaseStats_Repository<>();
+        baseStatRepo.saveStats(this);
+    }
+
+    public void updateCloud_All() {
+        this.updateCloud_StatHolder();
+        this.updateCloud_Stats();
     }
 
 

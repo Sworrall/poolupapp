@@ -1,9 +1,11 @@
 package com.stephen.Match;
 
+import com.stephen.FireBase.Frame_Repository;
+import com.stephen.FireBase.Match_Repository;
 import com.stephen.Frame.Frame;
 import com.stephen.FrameFactory.FrameFactory;
 import com.stephen.Functions.ID;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -35,6 +37,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = false;
         this.isPlayed = false;
         this.isDraw = false;
+        updateCloud_Match();
         log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
@@ -48,6 +51,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = true;
         this.isPlayed = false;
         this.isDraw = false;
+        updateCloud_Match();
         log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
@@ -61,7 +65,18 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = true;
         this.isPlayed = false;
         this.isDraw = false;
+        updateCloud_Match();
         log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
+    }
+
+
+    // --- FIREBASE ---
+    public void updateCloud_Match(){
+        Match_Repository<S> matchRepo = new Match_Repository<>();
+        matchRepo.saveMatch(this);
+        for(Frame<S> frame : frames){
+            frame.recordFrame();
+        }
     }
 
 
@@ -69,6 +84,8 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     public abstract void playMatch();
 
     public abstract S createByeParty();
+
+    public abstract void recordMatch();
 
 
     // --- FACTORY ---

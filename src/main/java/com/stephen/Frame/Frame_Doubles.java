@@ -1,11 +1,12 @@
 package com.stephen.Frame;
 
 import com.stephen.Doubles.Doubles;
+import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
     public void recordFrame() {
         recordDoublesTeam_Frame();
         recordDoublesPlayer_Frame();
+        updateCloud_Frame();
         log.info("Recorded Frame_Doubles with ID: {}", super.getID());
     }
 
@@ -149,6 +151,7 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
                 BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_BREAK_DISH, this.teamBPlayer2);
             }
         }
+
         log.info("Recorded player stats for Frame_Doubles with ID: {}", super.getID());
     }
 
@@ -160,4 +163,5 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         BaseStats_Service.applyFrame_WIN_LOSS(frameKeyA, frameKeyB, this);
         log.info("Recorded team stats for Frame_Doubles with ID: {}", super.getID());
     }
+
 }

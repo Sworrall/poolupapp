@@ -1,9 +1,11 @@
-package com.stephen.Stats;
+package com.stephen.FireBase;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.stephen.Doubles.Doubles;
 import com.stephen.Player.Player;
+import com.stephen.BaseStats.StatField;
+import com.stephen.BaseStats.StatHolder;
 import com.stephen.Team.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

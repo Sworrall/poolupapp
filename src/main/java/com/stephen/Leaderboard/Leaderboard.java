@@ -2,7 +2,7 @@ package com.stephen.Leaderboard;
 
 import java.util.ArrayList;
 
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 

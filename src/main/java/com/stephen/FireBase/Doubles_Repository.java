@@ -1,11 +1,15 @@
 package com.stephen.FireBase;
 
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import com.stephen.Functions.DataCallback;
 import com.stephen.Doubles.Doubles;
+import com.stephen.Player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +52,23 @@ public class Doubles_Repository {
             log.error("Failed to save Doubles Team: {}", doubles.getName(), e);
         }
     }
-}
+
+    // Add this to your Doubles_Repository class
+    public void getDoublesTeam(String id, DataCallback<Doubles> callback) {
+        db.collection("Doubles").document(id).get().addListener(() -> {
+            try {
+                // Note the parentheses here!
+                DocumentSnapshot doc = db.collection("Doubles").document(id).get().get();
+
+                if (doc.exists()) {
+                    Doubles team = new Doubles(doc.getString("teamName"));
+                } else {
+                    callback.onError(new Exception("Team not found"));
+                }
+            } catch (Exception e) {
+                callback.onError(e); // Sends the error back to your UI logic
+            }
+        }, Runnable::run);
+    }}
 
 

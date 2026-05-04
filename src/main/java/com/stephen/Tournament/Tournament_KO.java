@@ -3,12 +3,13 @@ package com.stephen.Tournament;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Functions.Functions;
 import com.stephen.Leaderboard.Leaderboard;
 import com.stephen.Match.Match;
 import com.stephen.MatchFactory.Match_Factory;
 import com.stephen.Leaderboard.Ranking_Elimination;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -37,6 +38,13 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
         }else{
             log.info("Tournament created with {} parties, and {} rounds.", super.getAllParties().size(), getRounds());
         }
+    }
+
+
+    // --- FIREBASE ---
+    public void updateCloud_Tournament(){
+        Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
+        tournamentRepository.saveTournament(this);
     }
 
 

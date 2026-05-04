@@ -2,10 +2,12 @@ package com.stephen.Player;
 
 import java.util.*;
 
+import com.stephen.FireBase.BaseStats_Repository;
+import com.stephen.FireBase.Player_Repository;
 import com.stephen.Functions.ID;
-import com.stephen.Stats.BaseStats;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -46,6 +48,22 @@ public class Player extends ID implements StatHolder<Player> {
         log.info("Created bye player");
     }
 
+
+    // --- FIREBASE ---
+    public void updateCloud_StatHolder(){
+        Player_Repository playerRepo = new Player_Repository();
+        playerRepo.savePlayer(this);
+    }
+
+    public void updateCloud_Stats() {
+        BaseStats_Repository<Player> baseStatRepo = new BaseStats_Repository<>();
+        baseStatRepo.saveStats(this);
+    }
+
+    public void updateCloud_All() {
+        this.updateCloud_StatHolder();
+        this.updateCloud_Stats();
+    }
 
     // --- FACTORY ---
     public static Player createBye(){
@@ -138,7 +156,7 @@ public class Player extends ID implements StatHolder<Player> {
     }
 
     public void updateNickName(String nickName) {
-        this.nickName = (nickName == null || nickName.isBlank()) ? null : nickName;
+        this.nickName = (this.nickName == null || this.nickName.isBlank()) ? null : nickName;
         log.info("Updated nickname for player: {} - New Nickname: {}", getFullName(), this.nickName);
     }
 

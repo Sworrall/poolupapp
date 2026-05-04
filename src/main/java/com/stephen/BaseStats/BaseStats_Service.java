@@ -1,4 +1,4 @@
-package com.stephen.Stats;
+package com.stephen.BaseStats;
 
 import com.stephen.Frame.Frame;
 import com.stephen.Match.Match;

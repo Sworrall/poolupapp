@@ -1,7 +1,8 @@
- package com.stephen.Team;
+ package com.stephen.FireBase;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import com.stephen.Team.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

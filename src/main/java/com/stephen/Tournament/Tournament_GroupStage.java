@@ -2,12 +2,14 @@ package com.stephen.Tournament;
 
 import java.util.*;
 
+import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Leaderboard.Leaderboard;
 import com.stephen.Match.Match;
 import com.stephen.MatchFactory.Match_Factory;
 import com.stephen.Leaderboard.Ranking_Elimination;
 import com.stephen.Leaderboard.Ranking_Points;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.StatHolder;
+import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -40,6 +42,14 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         log.info("GroupStage Tournament initialized with {} parties, {} groups, and {} frames per match.", partyList.size(), groupCount, frameCount);
     }
 
+
+    // --- FIREBASE ---
+    public void updateCloud_Tournament(){
+        Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
+        tournamentRepository.saveTournament(this);
+    }
+
+    // --- LOGIC ---
     public void simTournament() {
         generatePartyList();
         generatePartyGrouping();

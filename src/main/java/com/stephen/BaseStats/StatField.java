@@ -1,4 +1,4 @@
-package com.stephen.Stats;
+package com.stephen.BaseStats;
 
 public enum StatField {
 

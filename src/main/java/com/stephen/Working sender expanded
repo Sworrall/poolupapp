@@ -23,87 +23,85 @@ public class Main{
         log.info("PoolManager application starting...");
         FirebaseConfig.initialise();
 
-
         // Create and save Players
+        Player_Repository playerRepo = new Player_Repository();
         Player player1 = new Player("Joe", "Bloggs");
-        player1.updateCloud_All();
+        playerRepo.savePlayer(player1);
         Player player2 = new Player("John", "Smith");
-        player2.updateCloud_All();
+        playerRepo.savePlayer(player2);
         Player player3 = new Player("Steve", "Jones");
-        player3.updateCloud_All();
+        playerRepo.savePlayer(player3);
         Player player4 = new Player("Mike", "Brown");
-        player4.updateCloud_All();
-
+        playerRepo.savePlayer(player4);
 
         // Create and save a Team
+        Team_Repository teamRepo = new Team_Repository();
         Team team1 = new Team("The A Team");
         team1.addPlayer(player1);
         team1.addPlayer(player2);
-        team1.updateCloud_All();
+        teamRepo.saveTeam(team1);
+
 
         Team team2 = new Team("The B Team");
         team2.addPlayer(player3);
         team2.addPlayer(player4);
-        team2.updateCloud_All();
-
+        teamRepo.saveTeam(team2);
 
         // create and save Doubles Team
+        Doubles_Repository doublesRepo = new Doubles_Repository();
         Doubles doublesTeam1 = new Doubles("Double the Trouble");
         doublesTeam1.addPlayer(player1);
         doublesTeam1.addPlayer(player2);
-        doublesTeam1.updateCloud_All();
-
+        doublesRepo.saveDoublesTeam(doublesTeam1);
         Doubles doublesTeam2 = new Doubles("Double Bubble");
         doublesTeam2.addPlayer(player3);
         doublesTeam2.addPlayer(player4);
-        doublesTeam2.updateCloud_All();
-
+        doublesRepo.saveDoublesTeam(doublesTeam2);
 
         // create Frame<Player>. save, then play and overwrite
+        Frame_Repository<Player> singleFrameRepo = new Frame_Repository<>();
         Frame<Player> frame = new Frame_Singles<>(player1, player2);
-        frame.updateCloud_Frame();
+        singleFrameRepo.saveFrame(frame);
         log.info("FRAME ADDED");
         frame.playFrame();
-        frame.recordFrame();
+        singleFrameRepo.saveFrame(frame);
         log.info("FRAME PLAYED AND UPDATED");
 
         // create Match<Doubles> save, play and save again
+        Match_Repository<Doubles> matchRepo = new Match_Repository<>();
         FrameFactory<Doubles> doublesFactory = new FrameFactory_Doubles();
         Match<Doubles> doublesMatch = new Match_Doubles(doublesTeam1, doublesTeam2, 11, doublesFactory);
-        doublesMatch.recordMatch();
+        matchRepo.saveMatch(doublesMatch);
         log.info("DOUBLES MATCH CREATED");
         doublesMatch.playMatch();
+        Frame_Repository<Doubles> doublesFrameRepo = new Frame_Repository<>();
         for(Frame<Doubles> f : doublesMatch.getFrames()) {
-            f.recordFrame();
-            f.updateCloud_Frame();
+            doublesFrameRepo.saveFrame(f);
         }
-        doublesMatch.recordMatch();
+        matchRepo.saveMatch(doublesMatch);
         log.info("DOUBLES MATCH PLAYED AND UPDATED");
 
 
         // stats have been created for player 1. upload them all to Firebase
         BaseStats_Repository<Player> baseStatRepo = new BaseStats_Repository<>();
-        player1.updateCloud_Stats();
-        player2.updateCloud_Stats();
-        player3.updateCloud_Stats();
-        player4.updateCloud_Stats();
-
-        team1.updateCloud_Stats();
-        team2.updateCloud_Stats();
-
-        doublesTeam1.updateCloud_Stats();
-        doublesTeam2.updateCloud_Stats();
+        baseStatRepo.saveStats(player1);
+        baseStatRepo.saveStats(player2);
+        baseStatRepo.saveStats(player3);
+        baseStatRepo.saveStats(player4);
+        baseStatRepo.saveStats(team1);
+        baseStatRepo.saveStats(team2);
+        baseStatRepo.saveStats(doublesTeam1);
+        baseStatRepo.saveStats(doublesTeam2);
         log.info("BASE STATS uploaded");
 
         // upload a tournament
         ArrayList<Team> tournamentTeams = new ArrayList<>();
         tournamentTeams.add(team1);
         tournamentTeams.add(team2);
-
         Match_Factory<Team> mf = new MatchFactory_Team();
-
         Tournament_RoundRobin<Team> RR = new Tournament_RoundRobin<>(tournamentTeams, 11, mf);
-        RR.updateCloud_Tournament();
+        Tournament_Repository<Team> tournamentRepository = new Tournament_Repository<>(RR);
+        tournamentRepository.saveTournament(RR);
 
 
         Player player5 = new Player("John", "Smith");

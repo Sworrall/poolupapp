@@ -3,10 +3,10 @@ package com.stephen.Frame;
 import java.util.ArrayList;
 
 import com.stephen.Player.Player;
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
-import com.stephen.Stats.StatField;
-import com.stephen.Stats.StatHolder;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
+import com.stephen.BaseStats.StatField;
+import com.stephen.BaseStats.StatHolder;
 import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -26,6 +26,7 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
         this.playerB = playerB;
         this.frameKeyA = new BaseStats_Key(super.getID(), teamA.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), teamB.getID());
+        updateCloud_Frame();
         log.info("Frame_Team created with Team A: {} and Team B: {}", teamA.getName(), teamB.getName());
     }
 
@@ -35,6 +36,7 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
         this.playerB = new Player();
         this.frameKeyA = new BaseStats_Key(super.getID(), team.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
+        updateCloud_Frame();
         log.info("Frame_Team created with Team: {} and Player: {}", team.getName(), player.getName());
     }
 
@@ -58,6 +60,7 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
     public void recordFrame() {
         recordTeam_Frame();
         recordPlayerInTeam_Frame();
+        updateCloud_Frame();
         log.info("Frame recorded for Frame ID: {}", super.getID());
     }
 

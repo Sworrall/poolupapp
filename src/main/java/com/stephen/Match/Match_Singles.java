@@ -1,11 +1,11 @@
 package com.stephen.Match;
 
-import com.stephen.Stats.BaseStats_Key;
-import com.stephen.Stats.BaseStats_Service;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.BaseStats_Service;
 import com.stephen.Frame.Frame;
 import com.stephen.FrameFactory.FrameFactory;
 import com.stephen.Player.Player;
-import com.stephen.Stats.StatField;
+import com.stephen.BaseStats.StatField;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -113,5 +113,10 @@ public class Match_Singles extends Match<Player>{
             }
         }
         log.info("Recorded player match stats for Match_Singles: {} vs {}", p1.getName(), p2.getName());
+    }
+
+    public void recordMatch() {
+        recordPlayer_Match(this);
+        updateCloud_Match();
     }
 }
