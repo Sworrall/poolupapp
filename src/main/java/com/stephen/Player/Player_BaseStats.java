@@ -2,17 +2,16 @@ package com.stephen.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import com.stephen.BaseStats.BaseStats;
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+
 public class Player_BaseStats <S extends StatHolder<S>> {
     private final int playerID;
-    private Map<BaseStats_Key, BaseStats> stats;
-    private final int GLOBAL = 0;
+    private final Map<BaseStats_Key, BaseStats> stats;
     private static final Logger log = LoggerFactory.getLogger(Player_BaseStats.class);
 
 
@@ -20,6 +19,7 @@ public class Player_BaseStats <S extends StatHolder<S>> {
     public Player_BaseStats(int playerID) {
         this.playerID = playerID;
         this.stats = new HashMap<>();
+        int GLOBAL = 0;
         getOrCreatePlayerStats(new BaseStats_Key(GLOBAL, null));
         log.info("Created Player_BaseStats for playerID: {}", playerID);
     }

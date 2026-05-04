@@ -2,7 +2,6 @@ package com.stephen.Tournament;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Match.Match;
 import com.stephen.MatchFactory.Match_Factory;
@@ -38,6 +37,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         tournamentRepository.saveTournament(this);
     }
 
+
     // --- FUNCTIONS ---
     public void generateTeamList() {
         if(super.partyList.size() % 2 == 1) partyList.add(partyList.getFirst().createByeParty());
@@ -49,7 +49,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         int size = super.partyList.size();
         for (int i = 0; i < size; i++) {
             for (int j = i+1; j < size; j++) {
-                matchList.add(matchFactory.createMatch(super.partyList.get(i), super.partyList.get(j), frameCount));
+                matchList.getFirst().add(matchFactory.createMatch(super.partyList.get(i), super.partyList.get(j), frameCount));
             }
         }
         if(this.isRandom) Collections.shuffle(matchList);
@@ -58,11 +58,14 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
 
     public ArrayList<S> playAll(ArrayList<Match<S>> matchList) {
         ArrayList<S> winners = new ArrayList<>();
-        for (Match<S> m : super.matchList) {
-            if(!m.isPlayed()){
-                m.playMatch();
-                winners.add(m.getWinner());
+        for (ArrayList<Match<S>> fixturesList : super.matchList) {
+            for (Match<S> m : fixturesList) {
+                if(!m.isPlayed()){
+                    m.playMatch();
+                    winners.add(m.getWinner());
+                }
             }
+
         }
         log.info("All matches played, {} winners.", winners.size());
         return winners;

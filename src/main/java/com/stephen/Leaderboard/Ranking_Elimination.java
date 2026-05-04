@@ -14,39 +14,30 @@ public class Ranking_Elimination<S extends StatHolder<S>> implements Ranking<S> 
 
 
     // todo fix this (MATCH_LOSS)
-
     @Override
-    public ArrayList<S> rank(ArrayList<S> parties, int eventID) {
+    public ArrayList<S> rank(ArrayList<S> parties, int eventID, StatField field) {
         ArrayList<S> sorted = new ArrayList<>(parties);
-        sorted.sort(Comparator
-            .comparingInt((S s) -> getStat(s, eventID, StatField.MATCH_LOSS))
-        );
+        sorted.sort(Comparator.comparingInt((S s) -> getStat(s, eventID, field)));
         log.info("Ranking_Elimination: Ranked {} parties for event {}", sorted.size(), eventID);
         return sorted;
     }
 
-    public ArrayList<S> getWinnerBracket(ArrayList<S> parties, int eventID) {
-        ArrayList<S> ranked = rank(parties, eventID);
+    public ArrayList<S> getWinnerBracket(ArrayList<S> parties, int eventID, StatField field) {
+        ArrayList<S> ranked = rank(parties, eventID, field);
         log.info("Ranking_Elimination: Winner bracket has {} parties for event {}", ranked.size(), eventID);
-        return new ArrayList<>(ranked.stream()
-            .filter(s -> getStat(s, eventID, StatField.MATCH_LOSS) == 0)
-            .toList());
+        return new ArrayList<>(ranked.stream().filter(s -> getStat(s, eventID, field) == 0).toList());
     }
 
-    public ArrayList<S> getLoserBracket(ArrayList<S> parties, int eventID) {
-        ArrayList<S> ranked = rank(parties, eventID);
+    public ArrayList<S> getLoserBracket(ArrayList<S> parties, int eventID, StatField field) {
+        ArrayList<S> ranked = rank(parties, eventID, field);
         log.info("Ranking_Elimination: Loser bracket has {} parties for event {}", ranked.size(), eventID);
-        return new ArrayList<>(ranked.stream()
-            .filter(s -> getStat(s, eventID, StatField.MATCH_LOSS) == 1)
-            .toList());
+        return new ArrayList<>(ranked.stream().filter(s -> getStat(s, eventID, field) == 1).toList());
     }
 
-    public ArrayList<S> getEliminated(ArrayList<S> parties, int eventID) {
-        ArrayList<S> ranked = rank(parties, eventID);
+    public ArrayList<S> getEliminated(ArrayList<S> parties, int eventID, StatField field) {
+        ArrayList<S> ranked = rank(parties, eventID, field);
         log.info("Ranking_Elimination: Eliminated has {} parties for event {}", ranked.size(), eventID);
-        return new ArrayList<>(ranked.stream()
-            .filter(s -> getStat(s, eventID, StatField.MATCH_LOSS) >= 2)
-            .toList());
+        return new ArrayList<>(ranked.stream().filter(s -> getStat(s, eventID, field) >= 2).toList());
     }
 
     private int getStat(S s, int eventID, StatField field) {

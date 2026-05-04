@@ -2,6 +2,7 @@ package com.stephen.Tournament;
 
 import java.util.*;
 
+import com.stephen.BaseStats.StatField;
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Leaderboard.Leaderboard;
 import com.stephen.Match.Match;
@@ -9,19 +10,17 @@ import com.stephen.MatchFactory.Match_Factory;
 import com.stephen.Leaderboard.Ranking_Elimination;
 import com.stephen.Leaderboard.Ranking_Points;
 import com.stephen.BaseStats.StatHolder;
-import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S> {
     private final int groupCount;
     private final int frameCount;
-    private final ArrayList<ArrayList<Match<S>>> groupMatchFixtures;
     private ArrayList<ArrayList<S>> partyGrouped;
     private final Match_Factory<S> matchFactory;
     private final Leaderboard<S> leaderboard;
     private final Ranking_Elimination<S> eliminationStrategy;
-
     private static final Logger log = LoggerFactory.getLogger(Tournament_GroupStage.class);
 
 
@@ -31,7 +30,6 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         this.groupCount = groupCount;
         this.frameCount = totalFrameCount;
         this.partyGrouped = new ArrayList<>();
-        this.groupMatchFixtures = new ArrayList<>();
         this.matchFactory = matchFactory;
         this.eliminationStrategy = eliminationStrategy;
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
@@ -48,6 +46,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
         tournamentRepository.saveTournament(this);
     }
+
 
     // --- LOGIC ---
     public void simTournament() {
@@ -90,14 +89,13 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
                     matchFixtures.add(matchFactory.createMatch(p1, p2, this.frameCount));
                 }
             }
-            super.matchList.addAll(matchFixtures);
-            groupMatchFixtures.add(matchFixtures);
+            super.matchList.add(matchFixtures);
         }
         log.info("GroupStage match fixtures generated. Total matches: {}", matchList.size());
     }
 
     public void playAllGroupStage() {
-        for (ArrayList<Match<S>> matches : groupMatchFixtures) {
+        for (ArrayList<Match<S>> matches : super.matchList) {
             for (Match<S> m : matches) {
                 m.playMatch();
             }
@@ -107,7 +105,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
 
     public boolean playAllCheck() {
         ArrayList<Match<S>> unplayed = new ArrayList<>();
-        for (ArrayList<Match<S>> matches : groupMatchFixtures) {
+        for (ArrayList<Match<S>> matches : super.matchList) {
             for (Match<S> m : matches) {
                 if (!m.isPlayed()) {
                     unplayed.add(m);
@@ -115,13 +113,13 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             }
         }
         if (!unplayed.isEmpty()) {
-            System.out.println("Unplayed matches: " + unplayed.size());
+            log.info("Unplayed matches: {}", unplayed.size());
             for (int i = 0; i < matchList.size(); i++) {
                 for (Match<S> m : unplayed) {
                     System.out.println(m.errorCapture());
                 }
             }
-            log.info("GroupStage playAllCheck failed. Unplayed matches found: " + unplayed.size());
+            log.info("GroupStage playAllCheck failed. Unplayed matches found: {}", unplayed.size());
             return false;
         }
         log.info("GroupStage playAllCheck passed. All matches have been played.");
@@ -130,7 +128,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
 
     public ArrayList<S> getPremote(int premoteAmount){
         if(playAllCheck()){
-            ArrayList<S> Premoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID());
+            ArrayList<S> Premoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_TOTAL);
             log.info("GroupStage getPremote successful. Premoted parties: {}", premoteAmount);
             return new ArrayList<>(Premoted.subList(0, premoteAmount));
         }
@@ -140,7 +138,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     
     public ArrayList<S> getDemote(int DemoteAmount){
         if(playAllCheck()){
-            ArrayList<S> Demoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID());
+            ArrayList<S> Demoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_TOTAL);
             log.info("GroupStage getDemote successful. Demoted parties: {}", DemoteAmount);
             return new ArrayList<>(Demoted.subList(Demoted.size() - DemoteAmount, Demoted.size()));
         }

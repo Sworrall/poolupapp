@@ -1,24 +1,25 @@
-package com.stephen.Team;
+package com.stephen.Doubles;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.stephen.BaseStats.BaseStats;
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class Team_BaseStats < S extends StatHolder<S>> {
+public class Doubles_BaseStats < S extends StatHolder<S>> {
+    private int GLOBAL = 0;
     private final int teamID;
-    private final Map<BaseStats_Key, BaseStats> stats;
-    private static final Logger log = LoggerFactory.getLogger(Team_BaseStats.class);
+    private Map<BaseStats_Key, BaseStats> stats;
+    private static final Logger log = LoggerFactory.getLogger(Doubles_BaseStats.class);
 
 
     // CONSTRUCTOR
-    public Team_BaseStats(int id){
+    public Doubles_BaseStats(int id){
         this.teamID = id;
         this.stats = new HashMap<>();
-        int GLOBAL = 0;
         getOrCreateTeamStats(new BaseStats_Key(GLOBAL, teamID));
         log.info("Created Team_BaseStats for teamID: {}", teamID);
     }
@@ -26,12 +27,12 @@ public class Team_BaseStats < S extends StatHolder<S>> {
 
     // --- GETTERS ---
     public Integer getTeamID() {
-        log.info("Getting teamID: {}", teamID);
+        log.info("Getting Doubles teamID: {}", teamID);
         return teamID;
     }
 
     public BaseStats getOrCreateTeamStats(BaseStats_Key K) {
-        log.info("Getting or creating team stats for key: {}", K);
+        log.info("Getting or creating Doubles team stats for key: {}", K);
         return stats.computeIfAbsent(K, _ -> new BaseStats());
     }
 

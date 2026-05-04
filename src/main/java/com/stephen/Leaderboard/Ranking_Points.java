@@ -14,7 +14,7 @@ public class Ranking_Points<S extends StatHolder<S>> implements Ranking<S> {
     private static final Logger log = LoggerFactory.getLogger(Ranking_Points.class);
 
     @Override
-    public ArrayList<S> rank(ArrayList<S> parties, int eventID) {
+    public ArrayList<S> rank(ArrayList<S> parties, int eventID, StatField field) {
         ArrayList<S> sorted = new ArrayList<>(parties);
         sorted.sort(Comparator
             .comparingInt((S s) -> getStat(s, eventID, StatField.MATCH_WIN))

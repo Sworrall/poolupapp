@@ -2,7 +2,7 @@ package com.stephen.Tournament;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+import com.stephen.BaseStats.StatField;
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Functions.Functions;
 import com.stephen.Leaderboard.Leaderboard;
@@ -15,19 +15,17 @@ import org.slf4j.Logger;
 
 public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     private final int frameCount;
-    private final ArrayList<ArrayList<Match<S>>> fixtures;
     private final Match_Factory<S> matchFactory;
     private final Leaderboard<S> leaderboard;
     private final Ranking_Elimination<S> eliminationStrategy;
     private static final Logger log = LoggerFactory.getLogger(Tournament_KO.class);
 
-    // todo - 1st place 2nd place 3rd place 4th place
 
+    // todo - 1st place 2nd place 3rd place 4th place
     // --- CONSTRUCTOR ---
     public Tournament_KO(ArrayList<S> partyList, int frameCount, Match_Factory<S> matchFactory){
         super(partyList);
         this.frameCount = frameCount;
-        this.fixtures = new ArrayList<>();
         this.matchFactory = matchFactory;
         this.eliminationStrategy = new Ranking_Elimination<>();
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
@@ -74,11 +72,15 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
 
     public ArrayList<Match<S>> generateKORoundFixtures(ArrayList<S> partyList) {
         ArrayList<Match<S>> matchList = new ArrayList<>();
+        int i = 0;
         for (int j = 0; j < partyList.size(); j += 2) {
-            matchList.add(matchFactory.createMatch(partyList.get(j), partyList.get(j + 1), this.frameCount));
-            super.matchList.add(matchList.getLast());
+            while(super.matchList.get(i).isEmpty()) {
+                i++;
+            }
+            Match<S> match = matchFactory.createMatch(partyList.get(j), partyList.get(j + 1), this.frameCount);
+            matchList.add(match);
         }
-        this.fixtures.add(matchList);
+        super.matchList.add(matchList);
         log.info("K.O. round fixtures generated with {} matches.", matchList.size());
         return matchList;
     }
@@ -101,8 +103,8 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             throughParties = playRound(generatedMatches);
         }
         leaderboard.rank();
-        ArrayList<S> winnerBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getWinnerBracket(partyList, super.getID());
-        ArrayList<S> loserBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getLoserBracket(partyList, super.getID());
+        ArrayList<S> winnerBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getWinnerBracket(partyList, super.getID(), StatField.MATCH_WIN);
+        ArrayList<S> loserBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getLoserBracket(partyList, super.getID(), StatField.MATCH_LOSS);
         if (throughParties.size() == 1) {
             setPlace1(throughParties.getFirst());
             System.out.println("Winner: " + throughParties.getFirst().getName());

@@ -1,6 +1,5 @@
 package com.stephen.Match;
 
-import com.stephen.FireBase.Frame_Repository;
 import com.stephen.FireBase.Match_Repository;
 import com.stephen.Frame.Frame;
 import com.stephen.FrameFactory.FrameFactory;
@@ -8,8 +7,8 @@ import com.stephen.Functions.ID;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
 import java.util.ArrayList;
+
 
 public abstract class Match <S extends StatHolder<S>> extends ID {
     protected final S party1;
@@ -23,7 +22,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     protected boolean isDraw;
     private static final Logger log = LoggerFactory.getLogger(Match.class);
     FrameFactory<S> frameFactory = null;
-
 
 
     // --- CONSTRUCTOR ---
@@ -118,15 +116,12 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     }
 
     public String getMatchType(){
-        if(this instanceof Match_Singles){
-            return "Player";
-        }else if(this instanceof Match_Doubles){
-            return "Doubles";
-        }else if(this instanceof Match_Team){
-            return "Team";
-        }else{
-            return "Unknown";
-        }
+        return switch (this) {
+            case Match_Singles matchSingles -> "Player";
+            case Match_Doubles matchDoubles -> "Doubles";
+            case Match_Team matchTeam -> "Team";
+            default -> "Unknown";
+        };
     }
 
     public boolean isPlayed() {

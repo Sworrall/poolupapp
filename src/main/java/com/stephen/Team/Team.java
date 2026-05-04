@@ -1,10 +1,7 @@
 package com.stephen.Team;
 
 import java.util.*;
-
-import com.stephen.Doubles.Doubles;
 import com.stephen.FireBase.BaseStats_Repository;
-import com.stephen.FireBase.Doubles_Repository;
 import com.stephen.FireBase.Team_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
@@ -13,6 +10,7 @@ import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public class Team extends ID implements StatHolder<Team> {
     private final int GLOBAL = 0;
@@ -163,13 +161,15 @@ public class Team extends ID implements StatHolder<Team> {
         } else if (players.contains(p)) {
             log.info("Player already in team");
         } else {
-            players.add(p);  // ← add first
+            players.add(p);
             if (captain == null) {
-                updateCaptain(p);  // ← then set captain
+                updateCaptain(p);
             }
             p.getOrCreateStats(new BaseStats_Key(GLOBAL, super.getID()));
         }
-        log.info("Added player: {} to team: {}", p.getName(), teamName);
+        if(p != null) {
+            log.info("Added player: {} to team: {}", p.getName(), teamName);
+        }
     }
 
     public void removePlayer(int id) {
@@ -198,10 +198,10 @@ public class Team extends ID implements StatHolder<Team> {
             log.error("Bye player cannot be captain");
         }else if (!players.contains(newCaptain)) {
             log.error("Captain must be in the team");
+        }else{
+            captain = newCaptain;
+            captain.makeCaptain();
+            log.info("Updated captain for team: {} to: {}", teamName, newCaptain.getName());
         }
-        captain = newCaptain;
-        assert captain != null;
-        captain.makeCaptain();
-        log.info("Updated captain for team: {} to: {}", teamName, newCaptain.getName());
     }
 }

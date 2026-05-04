@@ -1,8 +1,6 @@
 package com.stephen.Frame;
 
-
 import java.util.ArrayList;
-
 import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
@@ -10,6 +8,7 @@ import com.stephen.BaseStats.StatHolder;
 import com.stephen.Functions.UserInput;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public abstract class Frame<S extends StatHolder<S>> extends ID {
     private final S party1;
@@ -84,17 +83,13 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     }
 
     public String getFrameType() {
-        if (this instanceof Frame_Killer) {
-            return "Killer";
-        } else if (this instanceof Frame_Doubles) {
-            return "Doubles";
-        } else if (this instanceof Frame_Team) {
-            return "Team";
-        } else if (this instanceof Frame_Singles) {
-            return "Singles";
-        } else {
-            return "Unknown";
-        }
+        return switch (this) {
+            case Frame_Killer Frame_Killer -> "Killer";
+            case Frame_Doubles Frame_Doubles -> "Doubles";
+            case Frame_Team Frame_Team -> "Team";
+            case Frame_Singles Frame_Singles -> "Singles";
+            default -> "Unknown";
+        };
     }
 
     public boolean isBye(){

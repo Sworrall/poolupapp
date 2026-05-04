@@ -30,9 +30,11 @@ public class Tournament_Repository<S extends StatHolder<S>> {
 
             Map<String, Object> data = new HashMap<>();
             List<String> matchIDs = new ArrayList<>();
-            ArrayList<Match<S>> matches= tournament.getMatches();
-            for(Match<S> m : matches){
-                matchIDs.add(String.valueOf(m.getID()));
+            ArrayList<ArrayList<Match<S>>> matches = tournament.getMatches();
+            for(ArrayList<Match<S>> matchList : matches){
+                for(Match<S> m : matchList){
+                    matchIDs.add(String.valueOf(m.getID()));
+                }
             }
             data.put("matchIDs", matchIDs);
             data.put("type", tournament.getTournamentType());

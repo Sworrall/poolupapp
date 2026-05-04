@@ -2,13 +2,11 @@ package com.stephen.Doubles;
 
 import com.stephen.FireBase.BaseStats_Repository;
 import com.stephen.FireBase.Doubles_Repository;
-import com.stephen.FireBase.Player_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
 import com.stephen.BaseStats.BaseStats;
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatHolder;
-import com.stephen.Team.Team_ContactDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
@@ -17,11 +15,10 @@ public class Doubles extends ID implements StatHolder<Doubles> {
     private final int GLOBAL = 0;
     private String teamName;
     private Player captain;
-    private Team_ContactDetails contactDetails;
+    private Doubles_ContactDetails contactDetails;
     private final ArrayList<Player> players;
     private final Map<BaseStats_Key, BaseStats> stats;
     private final boolean isBye;
-
     private static final Logger log = LoggerFactory.getLogger(Doubles.class);
 
 
@@ -30,7 +27,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         super();
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
         this.players = new ArrayList<>();
-        this.contactDetails = new Team_ContactDetails("Somewhere");
+        this.contactDetails = new Doubles_ContactDetails("Somewhere");
         this.isBye = false;
         this.stats = new HashMap<>();
         BaseStats_Key K = new BaseStats_Key(GLOBAL, super.getID());
@@ -47,6 +44,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         this.isBye = true;
         log.info("Bye Doubles team created");
     }
+
 
     // --- FIREBASE ---
     public void updateCloud_StatHolder(){
@@ -175,7 +173,8 @@ public class Doubles extends ID implements StatHolder<Doubles> {
             }
             p.getOrCreateStats( new BaseStats_Key(GLOBAL, super.getID()));
         }
-        log.info("Added player " + p.getName() + " to team " + teamName);
+        assert p != null;
+        log.info("Added player {} to team {}", p.getName(), teamName);
     }
 
     public void removePlayer(int id) {
@@ -184,8 +183,8 @@ public class Doubles extends ID implements StatHolder<Doubles> {
                 .filter(p -> p.getID() == id)
                 .findFirst()
                 .orElseThrow(() -> {
-                    log.error("removePlayer() Player with ID " + id + " not found in team " + teamName);
-                    throw new IllegalArgumentException("Player not Found");
+                    log.error("removePlayer() Player with ID {} not found in team {}", id, teamName);
+                    return new IllegalArgumentException("Player not Found");
                 });
         players.remove(toRemove);
         if (toRemove.equals(captain)) {
@@ -195,21 +194,19 @@ public class Doubles extends ID implements StatHolder<Doubles> {
                 updateCaptain(players.getFirst());
             }
         }
-        log.info("Removed player " + toRemove.getName() + " from team " + teamName);
+        log.info("Removed player {} from team {}", toRemove.getName(), teamName);
     }
 
     public void updateCaptain(Player newCaptain) {
-        log.info("Updating captain for team " + teamName + " to " + newCaptain.getName());
-        if (newCaptain == null) {
-            log.info("updateCaptain() Captain cannot be null");
-        }else if (newCaptain.isBye()) {
+        log.info("Updating captain for team {} to {}", teamName, newCaptain.getName());
+        if (newCaptain.isBye()) {
             log.info("updateCaptain() Bye player cannot be captain");
         }else if (!players.contains(newCaptain)) {
             log.info("updateCaptain() Captain must be in the team");
         }else{
             captain = newCaptain;
             captain.makeCaptain();
+            log.info("Updated captain for team {} to {}", teamName, newCaptain.getName());
         }
-        log.info("Updated captain for team " + teamName + " to " + newCaptain.getName());
     }
 }

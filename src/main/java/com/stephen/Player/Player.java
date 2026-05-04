@@ -1,7 +1,6 @@
 package com.stephen.Player;
 
 import java.util.*;
-
 import com.stephen.FireBase.BaseStats_Repository;
 import com.stephen.FireBase.Player_Repository;
 import com.stephen.Functions.ID;
@@ -10,6 +9,7 @@ import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public class Player extends ID implements StatHolder<Player> {
     private static final int GLOBAL = 0;

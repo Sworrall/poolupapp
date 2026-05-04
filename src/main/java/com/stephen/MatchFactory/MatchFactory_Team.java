@@ -19,9 +19,7 @@ public class MatchFactory_Team implements Match_Factory<Team> {
     }
 
     @Override
-    public Match<Team> createMatch(Team p1, Team p2, int frameCount) {
-        return new Match_Team(p1, p2, frameCount, frameFactory);
-    }
+    public Match<Team> createMatch(Team p1, Team p2, int frameCount) {return new Match_Team(p1, p2, frameCount, frameFactory);}
 
     @Override
     public Match<Team> createMatch(Team p1, int frameCount) {

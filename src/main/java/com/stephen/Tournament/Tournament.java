@@ -1,18 +1,17 @@
 package com.stephen.Tournament;
 
 import java.util.ArrayList;
-
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Match.Match;
 import com.stephen.BaseStats.StatHolder;
-import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+
 public abstract class Tournament<S extends StatHolder<S>> extends ID {
     protected ArrayList<S> partyList;
-    protected ArrayList<Match<S>> matchList;
+    protected ArrayList<ArrayList<Match<S>>> matchList;
     protected S place1;
     protected S place2;
     protected S place3;
@@ -44,23 +43,19 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
         return this.partyList;
     }
 
-    public ArrayList<Match<S>> getMatches(){
+    public ArrayList<ArrayList<Match<S>>> getMatches(){
         log.info("Getting all matches in the tournament...");
         return this.matchList;
     }
 
     public String getTournamentType() {
-        if (this instanceof Tournament_GroupStage<S>) {
-            return "Group_Stage";
-        } else if (this instanceof Tournament_Killer<S>) {
-            return "Killer";
-        } else if (this instanceof Tournament_KO<S>) {
-            return "KO";
-        } else if (this instanceof Tournament_RoundRobin<S>) {
-            return "RoundRobin";
-        } else {
-            return "Unknown";
-        }
+        return switch (this) {
+            case Tournament_GroupStage<S> sTournamentGroupStage -> "Group_Stage";
+            case Tournament_Killer<S> sTournamentKiller -> "Killer";
+            case Tournament_KO<S> sTournamentKo -> "KO";
+            case Tournament_RoundRobin<S> sTournamentRoundRobin -> "RoundRobin";
+            default -> "Unknown";
+        };
     }
 
     public S getPlace1(){

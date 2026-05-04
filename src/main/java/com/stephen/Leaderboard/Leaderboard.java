@@ -2,6 +2,7 @@ package com.stephen.Leaderboard;
 
 import java.util.ArrayList;
 
+import com.stephen.BaseStats.StatField;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class Leaderboard<S extends StatHolder<S>> {
 
     // --- CORE API ---
     public void rank() {
-        this.ranked = strategy.rank(this.ranked, eventID);
+        this.ranked = strategy.rank(this.ranked, eventID, StatField.MATCH_WIN);
         log.info("Ranked leaderboard for event {}", eventID);
     }
 
