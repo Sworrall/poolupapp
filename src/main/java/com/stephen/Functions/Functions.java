@@ -5,9 +5,12 @@ import java.math.RoundingMode;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+
 public class Functions {
     private static final Logger log = LoggerFactory.getLogger(Functions.class);
 
+
+    // --- MISC ---
     public static double roundToNDecimalPlaces(double value, int decimalPlaces) {
         BigDecimal bd = new BigDecimal(Double.toString(value)).setScale(decimalPlaces, RoundingMode.HALF_UP);
         log.info("Rounded value: {}", bd.doubleValue());

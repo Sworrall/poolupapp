@@ -2,17 +2,18 @@ package com.stephen.Leaderboard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.StatField;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class Ranking_Points<S extends StatHolder<S>> implements Ranking<S> {
 
+public class Ranking_Points<S extends StatHolder<S>> implements Ranking<S> {
     private static final Logger log = LoggerFactory.getLogger(Ranking_Points.class);
 
+
+    // --- CONSTRUCTOR ---
     @Override
     public ArrayList<S> rank(ArrayList<S> parties, int eventID, StatField field) {
         ArrayList<S> sorted = new ArrayList<>(parties);
@@ -27,6 +28,8 @@ public class Ranking_Points<S extends StatHolder<S>> implements Ranking<S> {
         return sorted;
     }
 
+
+    // --- LOGIC ---
     private int getStat(S s, int eventID, StatField field) {
         BaseStats_Key key = new BaseStats_Key(eventID, s.getID());
         log.info("Ranking_Points: Retrieving stat for party ID {}: eventID {}, field {}", s.getID(), eventID, field);

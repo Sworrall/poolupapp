@@ -1,14 +1,14 @@
  package com.stephen.FireBase;
 
+ import java.util.HashMap;
+ import java.util.Map;
+ import java.util.stream.Collectors;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.stephen.Team.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
  public class Team_Repository {
     private static final Logger log = LoggerFactory.getLogger(Team_Repository.class);

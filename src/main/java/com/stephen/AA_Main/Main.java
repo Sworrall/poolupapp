@@ -13,8 +13,8 @@ import com.stephen.Team.*;
 import com.stephen.Tournament.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
+
 
 public class Main{
 
@@ -65,15 +65,18 @@ public class Main{
         Frame<Player> frame = new Frame_Singles<>(player1, player2);
         frame.updateCloud_Frame();
         log.info("FRAME ADDED");
+
         frame.playFrame();
         frame.recordFrame();
         log.info("FRAME PLAYED AND UPDATED");
+
 
         // create Match<Doubles> save, play and save again
         FrameFactory<Doubles> doublesFactory = new FrameFactory_Doubles();
         Match<Doubles> doublesMatch = new Match_Doubles(doublesTeam1, doublesTeam2, 11, doublesFactory);
         doublesMatch.recordMatch();
         log.info("DOUBLES MATCH CREATED");
+
         doublesMatch.playMatch();
         for(Frame<Doubles> f : doublesMatch.getFrames()) {
             f.recordFrame();
@@ -89,10 +92,8 @@ public class Main{
         player2.updateCloud_Stats();
         player3.updateCloud_Stats();
         player4.updateCloud_Stats();
-
         team1.updateCloud_Stats();
         team2.updateCloud_Stats();
-
         doublesTeam1.updateCloud_Stats();
         doublesTeam2.updateCloud_Stats();
         log.info("BASE STATS uploaded");
@@ -101,14 +102,28 @@ public class Main{
         ArrayList<Team> tournamentTeams = new ArrayList<>();
         tournamentTeams.add(team1);
         tournamentTeams.add(team2);
-
         Match_Factory<Team> mf = new MatchFactory_Team();
-
         Tournament_RoundRobin<Team> RR = new Tournament_RoundRobin<>(tournamentTeams, 11, mf);
         RR.updateCloud_Tournament();
 
 
-        Player player5 = new Player("John", "Smith");
+        // grab a player from the cloud and store. compare values to existing player
+
+
+        // grab a player from the cloud and store. compare stats to existing player
+
+
+        // do this for doubles and team - and stats
+
+
+        // do this for frame - singles / doubles / team / killer - and stats
+
+
+        // again for match - singles / doubles / team - and stats
+
+
+        // then finally tournament - and stats
+
 
         log.info("Done!");
     }

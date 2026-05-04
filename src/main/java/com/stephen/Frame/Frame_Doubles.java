@@ -1,7 +1,6 @@
 package com.stephen.Frame;
 
 import com.stephen.Doubles.Doubles;
-import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Player.Player;
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.BaseStats_Service;
@@ -11,16 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 
-public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
 
+public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
     private final Player teamAPlayer1;
     private final Player teamAPlayer2;
     private final Player teamBPlayer1;
     private final Player teamBPlayer2;
-
     private final BaseStats_Key frameKeyA;
     private final BaseStats_Key frameKeyB;
-
     private static final Logger log = LoggerFactory.getLogger(Frame_Doubles.class);
 
 

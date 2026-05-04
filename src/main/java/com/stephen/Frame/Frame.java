@@ -18,7 +18,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     private boolean breakDish;
     private boolean isBye;
     private boolean isPlayed;
-
     private static final Logger log = LoggerFactory.getLogger(Frame.class);
 
 

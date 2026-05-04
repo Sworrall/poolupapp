@@ -9,6 +9,7 @@ import com.stephen.BaseStats.StatField;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+
 public class Match_Singles extends Match<Player>{
     public BaseStats_Key matchKey;
     private final FrameFactory<Player> frameFactory;

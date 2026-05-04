@@ -1,11 +1,11 @@
 package com.stephen.Leaderboard;
 
 import java.util.ArrayList;
-
 import com.stephen.BaseStats.StatField;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public class Leaderboard<S extends StatHolder<S>> {
     private ArrayList<S> ranked;

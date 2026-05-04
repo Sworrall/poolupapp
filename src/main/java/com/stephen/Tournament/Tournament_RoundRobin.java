@@ -2,7 +2,6 @@ package com.stephen.Tournament;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import com.stephen.BaseStats.StatField;
 import com.stephen.FireBase.Tournament_Repository;
 import com.stephen.Leaderboard.Leaderboard;
@@ -12,6 +11,7 @@ import com.stephen.Leaderboard.Ranking_Points;
 import com.stephen.BaseStats.StatHolder;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 
 public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<S>{
     private final int frameCount;
