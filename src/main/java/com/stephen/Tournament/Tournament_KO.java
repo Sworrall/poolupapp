@@ -63,7 +63,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     // --- LOGIC ---
     public void generatePartyList() {
         ArrayList<S> parties = super.getAllParties();
-        while (Functions.calcPowerOf2(super.getAllParties().size())) {
+        while (!Functions.calcPowerOf2(super.getAllParties().size())) {
             parties.add(parties.getFirst().createByeParty());
         }
         Collections.shuffle(super.getAllParties());

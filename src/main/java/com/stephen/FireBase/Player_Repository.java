@@ -2,8 +2,12 @@ package com.stephen.FireBase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
+import com.stephen.BaseStats.BaseStats;
+import com.stephen.BaseStats.BaseStats_Key;
+import com.stephen.BaseStats.StatField;
 import com.stephen.Functions.DataCallback;
 import com.stephen.Player.Player;
 import org.slf4j.Logger;
@@ -76,5 +80,77 @@ public class Player_Repository {
                 callback.onError(e);
             }
         }, Runnable::run);
+    }
+
+    public void verifyPlayer(Player existing, DataCallback<Player> callback) {
+        log.info("Verifying player: {} (ID: {})", existing.getFullName(), existing.getID());
+        getPlayer(String.valueOf(existing.getID()), new DataCallback<>() {
+
+            @Override
+            public void onSuccess(Player retrieved) {
+
+                // --- BASIC FIELDS ---
+                boolean firstNameMatch  = Objects.equals(existing.getFirstName(), retrieved.getFirstName());
+                boolean lastNameMatch   = Objects.equals(existing.getLastName(),  retrieved.getLastName());
+                boolean nickNameMatch   = Objects.equals(existing.getNickName(),  retrieved.getNickName());
+                boolean captainMatch    = existing.isCaptain() == retrieved.isCaptain();
+
+                log.info("=== PLAYER VERIFICATION: {} ===", existing.getFullName());
+                log.info("  firstName  : {} | {} | {}", existing.getFirstName(), retrieved.getFirstName(), firstNameMatch  ? "OK" : "MISMATCH");
+                log.info("  lastName   : {} | {} | {}", existing.getLastName(),  retrieved.getLastName(),  lastNameMatch   ? "OK" : "MISMATCH");
+                log.info("  nickName   : {} | {} | {}", existing.getNickName(),  retrieved.getNickName(),  nickNameMatch   ? "OK" : "MISMATCH");
+                log.info("  isCaptain  : {} | {} | {}", existing.isCaptain(),    retrieved.isCaptain(),    captainMatch    ? "OK" : "MISMATCH");
+
+                // --- STATS ---
+                Map<BaseStats_Key, BaseStats> existingStats  = existing.getStatsMap();
+                Map<BaseStats_Key, BaseStats> retrievedStats = retrieved.getStatsMap();
+
+                log.info("  stat entries (existing) : {}", existingStats.size());
+                log.info("  stat entries (retrieved): {}", retrievedStats.size());
+
+                boolean allStatsMatch = true;
+                for (Map.Entry<BaseStats_Key, BaseStats> entry : existingStats.entrySet()) {
+                    BaseStats_Key key = entry.getKey();
+                    BaseStats existingStat = entry.getValue();
+                    BaseStats retrievedStat = retrievedStats.get(key);
+
+                    if (retrievedStat == null) {
+                        log.warn("  MISSING key in retrieved: eventID={}, teamID={}", key.eventID(), key.teamID());
+                        allStatsMatch = false;
+                        continue;
+                    }
+
+                    for (StatField field : StatField.values()) {
+                        int e = existingStat.get(field);
+                        int r = retrievedStat.get(field);
+                        if (e != r) {
+                            log.warn("  MISMATCH key=({},{}) field={} | existing={} retrieved={}",
+                                    key.eventID(), key.teamID(), field, e, r);
+                            allStatsMatch = false;
+                        }
+                    }
+                }
+
+                // catch any keys in retrieved that weren't in existing
+                for (BaseStats_Key key : retrievedStats.keySet()) {
+                    if (!existingStats.containsKey(key)) {
+                        log.warn("  EXTRA key in retrieved (not in existing): eventID={}, teamID={}", key.eventID(), key.teamID());
+                        allStatsMatch = false;
+                    }
+                }
+
+                if (allStatsMatch) {
+                    log.info("  ALL STATS MATCH");
+                }
+                log.info("=== END VERIFICATION: {} ===", existing.getFullName());
+                callback.onSuccess(retrieved);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                log.error("Verification failed - could not retrieve player ID: {}", existing.getID(), e);
+                callback.onError(e);
+            }
+        });
     }
 }

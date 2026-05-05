@@ -156,7 +156,7 @@ public class Player extends ID implements StatHolder<Player> {
     }
 
     public void updateNickName(String nickName) {
-        this.nickName = (this.nickName == null || this.nickName.isBlank()) ? null : nickName;
+        this.nickName = nickName;
         log.info("Updated nickname for player: {} - New Nickname: {}", getFullName(), this.nickName);
     }
 
