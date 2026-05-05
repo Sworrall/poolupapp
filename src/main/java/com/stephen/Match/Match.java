@@ -21,7 +21,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     protected boolean isBye;
     protected boolean isDraw;
     private static final Logger log = LoggerFactory.getLogger(Match.class);
-    FrameFactory<S> frameFactory = null;
+    FrameFactory<S> frameFactory;
 
 
     // --- CONSTRUCTOR ---
@@ -36,7 +36,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isPlayed = false;
         this.isDraw = false;
         updateCloud_Match();
-        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
     public Match(S p1, int frameCount, FrameFactory<S> frameFactory) {
@@ -50,7 +49,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isPlayed = false;
         this.isDraw = false;
         updateCloud_Match();
-        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
     public Match(FrameFactory<S> frameFactory) {
@@ -64,7 +62,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isPlayed = false;
         this.isDraw = false;
         updateCloud_Match();
-        log.info("Match created: {} with {} frames", errorCapture(), this.frameCount);
     }
 
 
@@ -75,6 +72,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         for(Frame<S> frame : frames){
             frame.recordFrame();
         }
+        log.info("Updated Cloud Match");
     }
 
 
@@ -89,58 +87,40 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- FACTORY ---
     public boolean isByeMatch(){
         handleByeMatch();
-        log.info("isMatchBye check");
         return this.isBye;
     }
 
 
     // --- GETTERS ---
     public ArrayList<Frame<S>>getFrames(){
-        log.info("Getting {} frames: {}. Total frames: {}", this.getMatchType(), this.errorCapture(), frames.size());
         return this.frames;
     }
 
     public S getParty1() {
-        log.info("Getting party1: {}", party1.getName());
         return this.party1;
     }
 
     public S getParty2() {
-        log.info("Getting party2: {}", party2.getName());
         return this.party2;
     }
 
     public int getFrameCount() {
-        log.info("Getting frame count: {}", frameCount);
         return this.frameCount;
     }
 
-    public String getMatchType(){
-        return switch (this) {
-            case Match_Singles matchSingles -> "Player";
-            case Match_Doubles matchDoubles -> "Doubles";
-            case Match_Team matchTeam -> "Team";
-            default -> "Unknown";
-        };
-    }
-
     public boolean isPlayed() {
-        log.info("Checking if match is played: {} - {}", errorCapture(), isPlayed);
         return isPlayed;
     }
 
     public boolean isDraw(){
-        log.info("Checking if match is draw: {} - {}", errorCapture(), isDraw);
         return this.isDraw;
     }
 
     public boolean isBye(){
-        log.info("Checking if match is a bye: {} ", isBye);
         return isBye;
     }
 
     public S getWinner(){
-        log.info("Getting winner: {}", errorCapture());
         if(this.isPlayed){
             return this.winner;
         }else{
@@ -150,7 +130,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     }
 
     public S getLoser(){
-        log.info("Getting loser: {}", errorCapture());
         if(this.isPlayed){
             return this.loser;
         }else{
@@ -183,5 +162,14 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- MISC ---
     public String errorCapture(){
         return party1.getName() + " VS " + party2.getName();
+    }
+
+    public String getType(){
+        return switch (this){
+            case Match_Singles matchSingles -> "Player";
+            case Match_Doubles matchDoubles -> "Doubles";
+            case Match_Team matchTeam -> "Team";
+            default -> "Unknown";
+        };
     }
 }

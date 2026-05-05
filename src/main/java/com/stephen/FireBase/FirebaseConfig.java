@@ -14,6 +14,7 @@ public class FirebaseConfig {
     private static final Logger log = LoggerFactory.getLogger(FirebaseConfig.class);
 
     public static void initialise() {
+        log.info("Firebase config initialised");
         try {
             InputStream serviceAccount = FirebaseConfig.class
                     .getClassLoader()

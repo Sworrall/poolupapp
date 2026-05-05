@@ -5,13 +5,12 @@ import com.stephen.Player.Player;
 import com.stephen.BaseStats.BaseStats_Key;
 import com.stephen.BaseStats.BaseStats_Service;
 import com.stephen.BaseStats.StatField;
-import com.stephen.BaseStats.StatHolder;
 import com.stephen.Team.Team;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 
-public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
+public class Frame_Team extends Frame<Team> {
     private Player playerA;
     private Player playerB;
     private final BaseStats_Key frameKeyA;
@@ -27,7 +26,6 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
         this.frameKeyA = new BaseStats_Key(super.getID(), teamA.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), teamB.getID());
         updateCloud_Frame();
-        log.info("Frame_Team created with Team A: {} and Team B: {}", teamA.getName(), teamB.getName());
     }
 
     public Frame_Team(Team team, Player player){
@@ -37,14 +35,12 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
         this.frameKeyA = new BaseStats_Key(super.getID(), team.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
         updateCloud_Frame();
-        log.info("Frame_Team created with Team: {} and Player: {}", team.getName(), player.getName());
     }
 
     public Frame_Team(){
         super(new Team(), new Team());
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        log.info("Frame_Team created with default constructor");
     }
 
 
@@ -70,7 +66,6 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
     public ArrayList<Player> getPlayersA(){
         ArrayList<Player> playerList = new ArrayList<>();
         playerList.add(playerA);
-        log.info("Retrieved players for Team A: {}", playerA.getName());
         return playerList;
     }
 
@@ -78,7 +73,6 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
     public ArrayList<Player> getPlayersB(){
         ArrayList<Player> playerList = new ArrayList<>();
         playerList.add(playerB);
-        log.info("Retrieved players for Team B: {}", playerB.getName());
         return playerList;
     }
 
@@ -86,7 +80,6 @@ public class Frame_Team <S extends StatHolder<S>> extends Frame<Team> {
         ArrayList<Player> players = new ArrayList<>();
         players.add(playerA);
         players.add(playerB);
-        log.info("Retrieved all players for Frame ID: {}", super.getID());
         return players;
     }
 

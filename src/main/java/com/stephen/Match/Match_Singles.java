@@ -24,7 +24,6 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = false;
         super.isDraw = false;
-        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Singles(Player p, int frameCount, FrameFactory<Player> frameFactory){
@@ -34,7 +33,6 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = true;
         super.isDraw = false;
-        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Singles(FrameFactory<Player> frameFactory){
@@ -44,7 +42,6 @@ public class Match_Singles extends Match<Player>{
         this.isPlayed = true;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Singles: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
@@ -83,14 +80,12 @@ public class Match_Singles extends Match<Player>{
 
     @Override
     public Player createByeParty() {
-        log.info("Creating bye party for Match_Singles");
         return new Player();
     }
 
 
     // --- GETTERS ---
     public int getTotalFrames(){
-        log.info("Getting total frames for Match_Singles: {}", getFrameCount());
         return super.getFrameCount();
     }
 

@@ -26,7 +26,7 @@ public class Tournament_Repository<S extends StatHolder<S>> {
 
     public void saveTournament(Tournament<S> tournament) {
         try {
-            log.info("Attempting to Tournament ID: {}", tournament.getID());
+            log.info("Attempting to save Tournament ID: {}. Type:{}", tournament.getID(), tournament.getTournamentType());
 
             Map<String, Object> data = new HashMap<>();
             List<String> matchIDs = new ArrayList<>();

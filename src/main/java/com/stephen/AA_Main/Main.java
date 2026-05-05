@@ -1,16 +1,18 @@
 package com.stephen.AA_Main;
 
-import com.stephen.Doubles.*;
+import com.stephen.Doubles.Doubles;
 import com.stephen.FireBase.*;
-import com.stephen.Frame.*;
+import com.stephen.Frame.Frame;
 import com.stephen.Frame.FrameFactory.FrameFactory;
 import com.stephen.Frame.FrameFactory.FrameFactory_Doubles;
-import com.stephen.Match.*;
+import com.stephen.Frame.Frame_Singles;
+import com.stephen.Match.Match;
 import com.stephen.Match.MatchFactory.MatchFactory_Team;
 import com.stephen.Match.MatchFactory.Match_Factory;
+import com.stephen.Match.Match_Doubles;
 import com.stephen.Player.*;
-import com.stephen.Team.*;
-import com.stephen.Tournament.*;
+import com.stephen.Team.Team;
+import com.stephen.Tournament.Tournament_RoundRobin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class Main{
 
 
         // create Frame<Player>. save, then play and overwrite
-        Frame<Player> frame = new Frame_Singles<>(player1, player2);
+        Frame<Player> frame = new Frame_Singles(player1, player2);
         frame.updateCloud_Frame();
         log.info("FRAME ADDED");
 
@@ -108,7 +110,9 @@ public class Main{
 
 
         // grab a player from the cloud and store. compare values to existing player
-
+        Player_Repository playerRepo = new Player_Repository();
+        Player firebasePlayer1 = playerRepo.getPlayer(String.valueOf(player1.getID()));
+        playerRepo.verifyPlayer(player1, firebasePlayer1);
 
         // grab a player from the cloud and store. compare stats to existing player
 

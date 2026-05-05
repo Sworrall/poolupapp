@@ -30,7 +30,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = doubles2.getPlayers().getLast();        
         this.frameKeyA = new BaseStats_Key(super.getID(), doubles1.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), doubles2.getID());
-        log.info("Created Frame_Doubles with ID: " + super.getID());
     }
 
     public Frame_Doubles(Doubles doubles){
@@ -41,7 +40,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = new Player();  
         this.frameKeyA = new BaseStats_Key(super.getID(), doubles.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        log.info("Created Frame_Doubles with ID: {}", super.getID());
     }
 
     public Frame_Doubles(){
@@ -52,7 +50,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         this.teamBPlayer2 = new Player();  
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        log.info("Created Frame_Doubles with ID: {}", super.getID());
     }
 
 
@@ -75,22 +72,18 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
 
     // --- GETTERS ---
     public Player getTeamAPlayerA(){
-        log.info("Getting Team A Player A for Frame_Doubles with ID: {}", super.getID());
         return this.teamAPlayer1;
     }
     
     public Player getTeamAPlayerB(){
-        log.info("Getting Team A Player B for Frame_Doubles with ID: {}", super.getID());
         return this.teamAPlayer2;
     }
 
     public Player getTeamBPlayerA(){
-        log.info("Getting Team B Player A for Frame_Doubles with ID: {}", super.getID());
         return this.teamBPlayer1;
     }
 
     public Player getTeamBPlayerB(){
-        log.info("Getting Team B Player B for Frame_Doubles with ID: {}", super.getID());
         return this.teamBPlayer2;
     }
 
@@ -99,7 +92,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         ArrayList<Player> players = new ArrayList<>();
         players.add(getTeamAPlayerA());
         players.add(getTeamAPlayerB());
-        log.info("getPlayersA called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 
@@ -108,7 +100,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         ArrayList<Player> players = new ArrayList<>();
         players.add(getTeamBPlayerA());
         players.add(getTeamBPlayerB());
-        log.info("getPlayersB called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 
@@ -118,7 +109,6 @@ public class Frame_Doubles <S extends StatHolder<S>> extends Frame<Doubles> {
         players.add(getTeamAPlayerB());
         players.add(getTeamBPlayerA());
         players.add(getTeamBPlayerB());
-        log.info("getAllPlayers called for Frame_Doubles with ID: {}", super.getID());
         return players;
     }
 

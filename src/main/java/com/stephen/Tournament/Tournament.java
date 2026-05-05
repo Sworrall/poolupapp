@@ -26,7 +26,6 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
         this.partyList = participants;
         this.matchList = new ArrayList<>();
         isComplete = false;
-        log.info("Tournament created with ID: {}", super.getID());
     }
 
 
@@ -34,17 +33,16 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
     public void updateCloud_Tournament(){
         Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
         tournamentRepository.saveTournament(this);
+        log.info("Cloud Tournament updated.");
     }
 
 
     // --- GETTERS
     public ArrayList<S>getAllParties(){
-        log.info("Getting all parties in the tournament...");
         return this.partyList;
     }
 
     public ArrayList<ArrayList<Match<S>>> getMatches(){
-        log.info("Getting all matches in the tournament...");
         return this.matchList;
     }
 
@@ -59,49 +57,40 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
     }
 
     public S getPlace1(){
-        log.info("Getting place 1 in the tournament...");
         return this.place1;
     }
 
     public S getPlace2(){
-        log.info("Getting place 2 in the tournament...");
         return this.place2;
     }
 
     public S getPlace3(){
-        log.info("Getting place 3 in the tournament...");
         return this.place3;
     }
 
     public S getPlace4(){
-        log.info("Getting place 4 in the tournament...");
         return this.place4;
     }
 
 
     // --- SETTERS ---
     public void setPlace1(S place1){
-        log.info("Setting place 1 in the tournament...");
         this.place1 = place1;
     }
 
     public void setPlace2(S place2){
-        log.info("Setting place 2 in the tournament...");
         this.place2 = place2;
     }
 
     public void setPlace3(S place3){
-        log.info("Setting place 3 in the tournament...");
         this.place3 = place3;
     }
 
     public void setPlace4(S place4){
-        log.info("Setting place 4 in the tournament...");
         this.place4 = place4;
     }
 
     public boolean isComplete() {
-        log.info("Checking if tournament is complete...");
         return isComplete;
     }
 

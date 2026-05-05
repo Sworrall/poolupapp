@@ -25,7 +25,6 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
         partyLives = new HashMap<>();
         for (S s : allParty) { partyLives.put(s, lives); }
         this.frameKey = new BaseStats_Key(this.getID(), null);
-        log.info("Frame_Killer created with {} players and {} lives each.", allParty.size(), lives);
     }
 
 
@@ -36,13 +35,12 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
         for (S s : this.partyLives.keySet()) {
             playerList.add((Player) s);
         }
-        log.info("getPlayersA called, returning {} players.", playerList.size());
         return playerList;
     }
 
     @Override
     public ArrayList<Player> getPlayersB() {
-        log.info("getPlayersB called, returning empty list.");
+        log.warn("getPlayersB called, returning empty list.");
         return new ArrayList<>();
     }
 

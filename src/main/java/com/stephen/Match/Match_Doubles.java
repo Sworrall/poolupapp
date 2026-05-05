@@ -25,7 +25,6 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
-        log.info("Created Match_Doubles: {} with {} frames.", super.errorCapture(), frameCount);
     }
 
     public Match_Doubles(Doubles team, int frameCount, FrameFactory<Doubles> frameFactory) {
@@ -35,7 +34,6 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Doubles with bye: {} with {} frames.", this.errorCapture(), super.getFrameCount());
     }
 
     public Match_Doubles(FrameFactory<Doubles> frameFactory) {
@@ -45,7 +43,6 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Doubles with bye: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
@@ -80,25 +77,22 @@ public class Match_Doubles extends Match<Doubles>{
         }
         recordDoublesTeam_Match();
         recordDoublesPlayer_Match();
-        log.info("Played Match_Doubles: {}. Result: {}", super.errorCapture(),
-                isDraw ? "Draw" : (getWinner().getName() + " wins"));
+        log.info("Played Match_Doubles: {}. Result: {}",
+                super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
     @Override
     public Doubles createByeParty() {
-        log.info("Creating bye party for Match_Doubles: {}", super.errorCapture());
         return Doubles.createBye();
     }
 
 
     // --- GETTERS ---
     public Player getDoublesPlayer1() {
-        log.info("Getting doubles player 1 for Match_Doubles: {}", super.errorCapture());
         return super.party1.getPlayers().getFirst();
     }
 
     public Player getDoublesPlayer2() {
-        log.info("Getting doubles player 2 for Match_Doubles: {}", super.errorCapture());
         return super.party1.getPlayers().getLast();
     }
 

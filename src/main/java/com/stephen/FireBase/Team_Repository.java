@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
     //--- CONSTRUCTOR ---
     public Team_Repository() {
         this.db = FirestoreClient.getFirestore();
-        log.info("Team_Repository initialised");
+        log.info("Team_Repository initialized");
     }
 
     // --- SAVE ---
     public void saveTeam(Team team) {
         try {
-            log.info("Attempting to save team: {}", team.getTeamName());
+            log.info("Attempting to save Team: {}", team.getName());
 
             Map<String, Object> data = new HashMap<>();
             data.put("teamName", team.getTeamName());
@@ -34,14 +34,12 @@ import org.slf4j.LoggerFactory;
             data.put("playerID", team.getPlayers().stream()
                     .map(p -> String.valueOf(p.getID()))
                     .collect(Collectors.toList()));
-
             log.info("Data map built: {}", data);
 
             db.collection("Team")
                     .document(String.valueOf(team.getID()))
                     .set(data)
                     .get();
-
             log.info("Firestore write confirmed for team: {}", team.getTeamName());
 
         } catch (Exception e) {

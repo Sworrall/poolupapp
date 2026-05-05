@@ -23,13 +23,14 @@ public class Match_Repository<S extends StatHolder<S>> {
     public Match_Repository() {
         this.db = FirestoreClient.getFirestore();
         log.info("Match_Repository initialised");
+
     }
 
 
     // --- SAVE ---
     public void saveMatch(Match<S> match) {
         try {
-            log.info("Attempting to save Match<{}>: {}", match.getMatchType(), match.getID());
+            log.info("Attempting to save Match ID: {}. Type:{}", match.getID(), match.getType());
 
             Map<String, Object> data = new HashMap<>();
             data.put("frameCount", match.getFrameCount());
@@ -39,7 +40,7 @@ public class Match_Repository<S extends StatHolder<S>> {
                 frameIDList.add(String.valueOf(frame.getID()));
             }
             data.put("frameIDs", frameIDList);
-            data.put("type", match.getMatchType());
+            data.put("type", match.getType());
             data.put("party1ID", String.valueOf(match.getParty1().getID()));
             data.put("party2ID", String.valueOf(match.getParty2().getID()));
             data.put("winnerID", match.isPlayed() ? String.valueOf(match.getWinner().getID()) : null);
@@ -54,10 +55,10 @@ public class Match_Repository<S extends StatHolder<S>> {
                     .set(data)
                     .get();
 
-            log.info("Firestore write confirmed for Match<{}>: {}", match.getMatchType(), match.getID());
+            log.info("Firestore write confirmed for Match<{}>: {}", match.getType(), match.getID());
 
         } catch (Exception e) {
-            log.error("Failed to save Match<{}>: {}", match.getMatchType(), match.getID(), e);
+            log.error("Failed to save Match<{}>: {}", match.getType(), match.getID(), e);
         }
     }
 }

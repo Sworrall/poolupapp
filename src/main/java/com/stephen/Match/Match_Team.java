@@ -28,7 +28,6 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
-        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Team(Team team, int frameCount, FrameFactory<Team> frameFactory) {
@@ -39,7 +38,6 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
     public Match_Team(FrameFactory<Team> frameFactory) {
@@ -50,14 +48,12 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        log.info("Created Match_Team: {} with {} frames.", super.errorCapture(), super.getFrameCount());
     }
 
 
     // --- INTERFACE ---
     @Override
     public Team createByeParty() {
-        log.info("Creating bye party for Match_Team.");
         return new Team();
     }
 

@@ -33,10 +33,9 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         this.eliminationStrategy = eliminationStrategy;
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), eliminationStrategy);
         if (partyList.size() < 4) {
-            log.info("GroupStage Tournament initialization failed. Not enough participants: {}", partyList.size());
+            log.error("GroupStage Tournament initialization failed. Not enough participants: {}", partyList.size());
             throw new IllegalStateException("Not enough participants");
         }
-        log.info("GroupStage Tournament initialized with {} parties, {} groups, and {} frames per match.", partyList.size(), groupCount, frameCount);
     }
 
 
@@ -44,6 +43,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     public void updateCloud_Tournament(){
         Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
         tournamentRepository.saveTournament(this);
+        log.info("Cloud Tournament updated");
     }
 
 
@@ -54,7 +54,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         generateGroupStageFixtures();
         playAllGroupStage();
         super.isComplete = true;
-        log.info("GroupStage Tournament completed. All matches played.");
+        log.info("Tournament completed. All matches played.");
     }
 
     public void generatePartyList() {
@@ -75,7 +75,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             grouped.add(group);
         }
         this.partyGrouped = grouped;
-        log.info("GroupStage Party grouping generated with {} groups.", partyGrouped.size());
+        log.info("GroupStage Party grouping generated with {} groups of {}-{}.", partyGrouped.size(), partyGrouped.getFirst().size(), partyGrouped.getLast().size());
     }
 
     public void generateGroupStageFixtures() {
@@ -112,23 +112,20 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             }
         }
         if (!unplayed.isEmpty()) {
-            log.info("Unplayed matches: {}", unplayed.size());
             for (int i = 0; i < matchList.size(); i++) {
                 for (Match<S> m : unplayed) {
                     System.out.println(m.errorCapture());
                 }
             }
-            log.info("GroupStage playAllCheck failed. Unplayed matches found: {}", unplayed.size());
+            log.warn("GroupStage playAllCheck failed. Unplayed matches found: {}", unplayed.size());
             return false;
         }
-        log.info("GroupStage playAllCheck passed. All matches have been played.");
         return true;
     }
 
     public ArrayList<S> getPremote(int premoteAmount){
         if(playAllCheck()){
             ArrayList<S> Premoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_TOTAL);
-            log.info("GroupStage getPremote successful. Premoted parties: {}", premoteAmount);
             return new ArrayList<>(Premoted.subList(0, premoteAmount));
         }
         log.info("GroupStage getPremote failed. Not all matches have been played.");
@@ -138,7 +135,6 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     public ArrayList<S> getDemote(int DemoteAmount){
         if(playAllCheck()){
             ArrayList<S> Demoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_TOTAL);
-            log.info("GroupStage getDemote successful. Demoted parties: {}", DemoteAmount);
             return new ArrayList<>(Demoted.subList(Demoted.size() - DemoteAmount, Demoted.size()));
         }
         log.info("GroupStage getDemote failed. Not all matches have been played.");

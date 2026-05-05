@@ -27,7 +27,6 @@ public class Frame_Repository <S extends StatHolder<S>>{
     public void saveFrame(Frame<S> frame) {
         try {
             log.info("Attempting to save Frame<{}>: {}", frame.getFrameType(), frame.getID());
-
             Map<String, Object> data = new HashMap<>();
             data.put("type", frame.getFrameType());
             data.put("party1Id", String.valueOf(frame.getParty1().getID()));
@@ -38,19 +37,16 @@ public class Frame_Repository <S extends StatHolder<S>>{
             data.put("isPlayed", frame.isPlayed());
             if(!frame.isPlayed()){
                 data.put("isBreakDish", false);
-            }else if(frame.isPlayed()){
+            }else{
                 data.put("isBreakDish", frame.isBreakDish());
             }
-
             log.info("Data map built: {}", data);
 
             db.collection("Frame")
                     .document(String.valueOf(frame.getID()))
                     .set(data)
                     .get();
-
             log.info("Firestore write confirmed for Frame<{}>: {}", frame.getFrameType(), frame.getID());
-
         } catch (Exception e) {
             log.error("Failed to save Frame<{}>: {}", frame.getFrameType(), frame.getID(), e);
         }

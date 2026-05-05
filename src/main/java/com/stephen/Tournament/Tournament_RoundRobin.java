@@ -30,7 +30,6 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), rankingStrategy);
         generateTeamList();
         generateFixturesRR();
-        log.info("Round Robin Tournament created with {} parties and {} matches.", partyList.size(), super.matchList.size());
     }
 
 
@@ -38,13 +37,13 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
     public void updateCloud_Tournament(){
         Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
         tournamentRepository.saveTournament(this);
+        log.info("Cloud Tournament updated");
     }
 
     // --- FUNCTIONS ---
     public void generateTeamList() {
         if(super.partyList.size() % 2 == 1) partyList.add(partyList.getFirst().createByeParty());
         Collections.shuffle(partyList);
-        log.info("Team list generated for Round Robin Tournament.");   
     }
 
     public void generateFixturesRR(){
@@ -57,7 +56,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
             super.matchList.add(fixturesList);
         }
         Collections.shuffle(matchList);
-        log.info("Fixtures generated for Round Robin Tournament. Total matches: {}", super.matchList.size());
+        log.info("Generated {} RoundRobin fixtures", matchList.size());
     }
 
     public ArrayList<S> playAll() {
@@ -70,7 +69,6 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
                 }
             }
         }
-        log.info("All matches played in Round Robin Tournament.");
         return winners;
     }
 
@@ -83,7 +81,6 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
                 }
             }
         }
-        log.info("All matches have been played in Round Robin Tournament.");
         return true;
     }
 

@@ -32,7 +32,6 @@ public class Team extends ID implements StatHolder<Team> {
         this.contactDetails = new Team_ContactDetails();
         this.isBye = false;
         this.getOrCreateTeamStats(new BaseStats_Key(GLOBAL, super.getID()));
-        log.info("Created team: {}", teamName);
     }
     
     public Team() {
@@ -41,7 +40,6 @@ public class Team extends ID implements StatHolder<Team> {
         this.stats = new HashMap<>();
         this.captain = null;
         this.isBye = true;
-        log.info("Created bye team");
     }
 
 
@@ -49,32 +47,33 @@ public class Team extends ID implements StatHolder<Team> {
     public void updateCloud_StatHolder(){
         Team_Repository teamRepository = new Team_Repository();
         teamRepository.saveTeam(this);
+        log.info("Cloud Team Attributes updated");
     }
 
     public void updateCloud_Stats() {
         BaseStats_Repository<Team> baseStatRepo = new BaseStats_Repository<>();
         baseStatRepo.saveStats(this);
+        log.info("Cloud Team Stats updated");
+
     }
 
     public void updateCloud_All() {
         this.updateCloud_StatHolder();
         this.updateCloud_Stats();
+        log.info("Cloud Team updated");
     }
 
 
     // --- FACTORY ---
     public static Team createBye(){
-        log.info("Creating bye team");
         return new Team();
     }
 
     public Team createByeParty() {
-        log.info("Creating bye party");
         return new Team();
     }
 
     public boolean isBye() {
-        log.info("Checking if team is bye: {}", teamName);
         return isBye;
     }
 
@@ -82,13 +81,11 @@ public class Team extends ID implements StatHolder<Team> {
     // --- INTERFACE ---
     @Override
     public String getName() {
-        log.info("Getting team name: {}", teamName);
         return this.teamName;
     }
 
     @Override
     public BaseStats getOrCreateStats(BaseStats_Key K) {
-        log.info("Getting or creating stats for team: {} with key: {}", teamName, K);
         return getOrCreateTeamStats(K);
     }
 
@@ -99,36 +96,31 @@ public class Team extends ID implements StatHolder<Team> {
 
     // --- STATS ---
     public BaseStats getOrCreateTeamStats(BaseStats_Key K) {
-        log.info("Getting or creating team stats for: {} with key: {}", teamName, K);
         return this.stats.computeIfAbsent(K, _ -> new BaseStats());
     }
 
 
     // --- GETTERS ---
     public String getTeamName() {
-        log.info("Getting team name: {}", teamName);
         return teamName;
     }
 
     public ArrayList<Player> getPlayers() {
-        log.info("Getting players for team: {}", teamName);
         return players;
     }
 
     public Player getPlayer(int id) {
-        log.info("Getting player with ID: {} for team: {}", id, teamName);
         return players.stream()
                 .filter(p -> p.getID() == id)
                 .findFirst()
                 .orElseThrow(() -> {
-                    log.info("player not found");
+                    log.error("player not found");
                     return new IllegalArgumentException("Player not found");
                 });
 
     }
 
     public Player getCaptain() {
-        log.info("Getting captain for team: {}", teamName);
         return captain;
     }
 
@@ -136,38 +128,33 @@ public class Team extends ID implements StatHolder<Team> {
     // --- SETTERS ---
     public void setTeamName(String teamName) {
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
-        log.info("Setting team name: {}", teamName);
     }
 
     public void setHomePhoneNumber(int homeNumber){
         this.contactDetails.setHomePhoneNumber(homeNumber);
-        log.info("Setting home phone number for team: {} to: {}", teamName, homeNumber);
     }
 
 
     // --- UPDATE ---
     public void updateHomeLocation(int homeNumber, String address){
-        this.contactDetails.updateHomeLocation(homeNumber, address);
-        log.info("Updating home location for team: {} to: {}", teamName, address);
+        this.contactDetails.updateContactDetails(homeNumber, address);
     }
 
 
     // --- PLAYER MANAGEMENT ---
     public void addPlayer(Player p) {
         if (p == null) {
-            log.info("Player cannot be null");
+            log.warn("Player cannot be null");
         } else if (p.isBye()) {
-            log.info("Cannot add Bye player to team");
+            log.warn("Cannot add Bye player to team");
         } else if (players.contains(p)) {
-            log.info("Player already in team");
+            log.warn("Player already in team");
         } else {
             players.add(p);
             if (captain == null) {
                 updateCaptain(p);
             }
             p.getOrCreateStats(new BaseStats_Key(GLOBAL, super.getID()));
-        }
-        if(p != null) {
             log.info("Added player: {} to team: {}", p.getName(), teamName);
         }
     }
@@ -188,16 +175,16 @@ public class Team extends ID implements StatHolder<Team> {
                 updateCaptain(players.getFirst()); // assign new captain safely
             }
         }
-        log.info("Removed player with ID: {} from team: {}", id, teamName);
+        log.info("Removed player: {} from team: {}", toRemove.getFullName(), teamName);
     }
 
     public void updateCaptain(Player newCaptain) {
         if (newCaptain == null) {
-            log.error("Captain cannot be null");
+            log.warn("Captain cannot be null");
         }else if (newCaptain.isBye()) {
-            log.error("Bye player cannot be captain");
+            log.warn("Bye player cannot be captain");
         }else if (!players.contains(newCaptain)) {
-            log.error("Captain must be in the team");
+            log.warn("Captain must be in the team");
         }else{
             captain = newCaptain;
             captain.makeCaptain();

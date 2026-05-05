@@ -29,7 +29,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
         breakDish = false;
         isBye = false;
         isPlayed = false;
-        log.info("Frame created with ID: {}", this.getID());
     }
 
 
@@ -37,6 +36,7 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     public void updateCloud_Frame(){
         Frame_Repository<S> frameRepo = new Frame_Repository<>();
         frameRepo.saveFrame(this);
+        log.info("Updated cloud frame");
     }
 
 
@@ -52,17 +52,14 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
 
     // --- GETTERS ---
     public S getParty1(){
-        log.info("Getting party1 for Frame ID: {}", this.getID());
         return party1;
     }
 
     public S getParty2(){
-        log.info("Getting party2 for Frame ID: {}", this.getID());
         return party2;
     }
 
     public S getWinner(){
-        log.info("Getting winner for Frame ID: {}", this.getID());
         if(!isPlayed){
             log.warn("Attempted to get winner for Frame ID: {} but match isn't played", this.getID());
             throw new IllegalArgumentException("No winner as match isn't played");
@@ -72,7 +69,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     }
 
     public S getLoser(){
-        log.info("Getting loser for Frame ID: {}", this.getID());
         if(!isPlayed){
             log.warn("Attempted to get loser for Frame ID: {} but match isn't played", this.getID());
             throw new IllegalArgumentException("No loser as match isn't played");
@@ -92,36 +88,30 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     }
 
     public boolean isBye(){
-        log.info("Getting isBye for Frame ID: {}", this.getID());
         return isBye;
     }
 
     public boolean isPlayed(){
-        log.info("Getting isPlayed for Frame ID: {}", this.getID());
         return isPlayed;
     }
 
     public boolean isBreakDish(){
-        log.info("Getting isBreakDish for Frame ID: {}", this.getID());
         return breakDish;
     }
 
 
     // --- SETTERS ---
     public void setWinner(S s){
-        log.info("Setting winner for Frame ID: {}", this.getID());
         winner = s;
     }
 
     public void setLoser(S s){
-        log.info("Setting loser for Frame ID: {}", this.getID());
         loser = s;
     }
 
 
     // --- LOGIC ---
     public void handleBye(S home ,S away){
-        log.info("Handling bye for Frame ID: {}", this.getID());
         if(party1.isBye() && party2.isBye()){
             isBye = true;
             isPlayed = true;
@@ -141,7 +131,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
     }
 
     public void playFrame(){
-        log.info("Playing frame for Frame ID: {}", this.getID());
         if(UserInput.getFrameResult()){
             winner = this.party1;
             loser = this.party2;

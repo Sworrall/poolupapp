@@ -67,12 +67,10 @@ public class Player extends ID implements StatHolder<Player> {
 
     // --- FACTORY ---
     public static Player createBye(){
-        log.info("Creating bye player");
         return new Player();
     }
 
     public Player createByeParty(){
-        log.info("Creating bye party");
         return new Player();
     }
 
@@ -84,13 +82,11 @@ public class Player extends ID implements StatHolder<Player> {
     // --- INTERFACE ---
     @Override
     public String getName() {
-        log.info("Getting name for player: {}", getFullName());
         return getFullName();
     }
 
     @Override
     public boolean isBye(){
-        log.info("Checking if player is bye: {} - {}", getFullName(), isBye);
         return isBye;
     }
 
@@ -103,22 +99,18 @@ public class Player extends ID implements StatHolder<Player> {
 
     // --- GETTERS ---
     public String getFirstName() {
-        log.info("Getting first name for player: {}", getFullName());
         return firstName;
     }
 
     public String getLastName() {
-        log.info("Getting last name for player: {}", getFullName());
         return lastName;
     }
 
     public String getNickName() {
-        log.info("Getting nickname for player: {}", getFullName());
         return (nickName == null || nickName.isBlank()) ? "" : nickName;
     }
 
     public boolean isCaptain() {
-        log.info("Checking if player is captain: {} - {}", getFullName(), isCaptain);
         return isCaptain;
     }
 
@@ -127,12 +119,10 @@ public class Player extends ID implements StatHolder<Player> {
         String name = (nickName != null && !nickName.isBlank())
                 ? firstName + " \"" + nickName + "\" " + lastName
                 : firstName + " " + lastName;
-        log.info("Getting full name for playerID: {}, player: {}", this.getID(), name);
         return (isCaptain ? "(C) " : "") + name;
     }
 
     public Player_ContactDetails getContactDetails(){
-        log.info("Getting contact details for player: {}", getFullName());
         return this.contactDetails;
     }
 
@@ -142,26 +132,22 @@ public class Player extends ID implements StatHolder<Player> {
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
         updateNickName(nickName);
-        log.info("Set name for player: {}", getFullName());
     }
 
     public void makeCaptain() {
         this.isCaptain = true;
-        log.info("Made player captain: {}", getFullName());
     }
 
     public void removeCaptain() {
         this.isCaptain = false;
-        log.info("Removed captain status from player: {}", getFullName());
+        this.updateCloud_StatHolder();
     }
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
-        log.info("Updated nickname for player: {} - New Nickname: {}", getFullName(), this.nickName);
     }
 
     public void setMobileNumber(int number) {
         contactDetails.setPhoneNumber(number);
-        log.info("Set mobile number for player: {} - New Mobile Number: {}", getFullName(), number);
     }
 }

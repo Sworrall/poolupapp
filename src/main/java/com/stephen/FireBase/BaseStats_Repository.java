@@ -40,6 +40,7 @@ public class BaseStats_Repository<S extends StatHolder<S>> {
                 data.put("MATCH_TOTAL", stats.get(StatField.MATCH_TOTAL));
                 String docID = player.getID() + "_" + key.eventID() + "_" +
                         (key.teamID() != null ? key.teamID() : "null");
+                log.info("Data map built: {}", data);
 
                 db.collection("stats")
                         .document(docID)
@@ -71,6 +72,8 @@ public class BaseStats_Repository<S extends StatHolder<S>> {
                 data.put("MATCH_TOTAL", stats.get(StatField.MATCH_TOTAL));
                 String docID = doubles.getID() + "_" + key.eventID() + "_" +
                         (key.teamID() != null ? key.teamID() : "null");
+                log.info("Data map built: {}", data);
+
 
                 db.collection("stats")
                         .document(docID)
@@ -102,6 +105,8 @@ public class BaseStats_Repository<S extends StatHolder<S>> {
                 data.put("MATCH_TOTAL", stats.get(StatField.MATCH_TOTAL));
                 String docID = team.getID() + "_" + key.eventID() + "_" +
                         (key.teamID() != null ? key.teamID() : "null");
+                log.info("Data map built: {}", data);
+
 
                 db.collection("stats")
                         .document(docID)

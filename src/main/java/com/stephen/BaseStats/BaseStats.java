@@ -18,7 +18,18 @@ public class BaseStats {
         for (StatField field : StatField.values()) {
             stats.put(field, GLOBAL);
         }
-        log.info("Initialized BaseStats with default values.");
+    }
+
+
+    // --- GETTERS ---
+    public int get(StatField field) {
+        return stats.getOrDefault(field, GLOBAL);
+    }
+
+
+    // --- SETTERS ---
+    public void set(StatField field, int value) {
+        stats.put(field, value);
     }
 
 
@@ -31,15 +42,5 @@ public class BaseStats {
     public void add(StatField field, int value) {
         stats.put(field, stats.get(field) + value);
         log.info("Added {} to stat: {}", value, field);
-    }
-
-    public void set(StatField field, int value) {
-        stats.put(field, value);
-        log.info("Set stat: {} to value: {}", field, value);
-    }
-
-    public int get(StatField field) {
-        log.info("Getting stat: {}", field);
-        return stats.getOrDefault(field, GLOBAL);
     }
 }
