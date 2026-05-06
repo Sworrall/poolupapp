@@ -155,6 +155,7 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
                 isPlayed = true;
             }
         }
+        updateCloud_Match();
         log.info("Handled bye match: {} - isBye: {}, isPlayed: {}", errorCapture(), isBye, isPlayed);
     }
 

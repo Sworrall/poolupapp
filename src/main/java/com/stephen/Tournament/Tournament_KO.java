@@ -35,6 +35,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             log.error("Not enough Parties to create this tournament. Minimum 4 parties required, but only {} provided.", super.getAllParties().size());
             throw new IllegalStateException("Not enough Parties to create this tournament");
         }
+        updateCloud_Tournament();
     }
 
 
@@ -82,6 +83,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             matchList.add(match);
         }
         super.matchList.add(matchList);
+        updateCloud_Tournament();
         log.info("Generated KO Round Fixtures");
         return matchList;
     }
@@ -92,6 +94,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             m.playMatch();
             partiesThrough.add(m.getWinner());
         }
+        updateCloud_Tournament();
         log.info("Round complete. {} through {} matches played", partiesThrough.size(), matchList.size());
         return partiesThrough;
     }
@@ -109,6 +112,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
         if (throughParties.size() == 1) {
             setPlace1(throughParties.getFirst());
         }
+        updateCloud_Tournament();
         log.info("Tournament simulation complete. Winner: {}", throughParties.getFirst().getName());
     }
 }

@@ -36,6 +36,10 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
             log.error("GroupStage Tournament initialization failed. Not enough participants: {}", partyList.size());
             throw new IllegalStateException("Not enough participants");
         }
+        generatePartyList();
+        generatePartyGrouping();
+        generateGroupStageFixtures();
+        updateCloud_Tournament();
     }
 
 
@@ -54,6 +58,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
         generateGroupStageFixtures();
         playAllGroupStage();
         super.isComplete = true;
+        updateCloud_Tournament();
         log.info("Tournament completed. All matches played.");
     }
 
@@ -99,6 +104,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
                 m.playMatch();
             }
         }
+        updateCloud_Tournament();
         log.info("All GroupStage matches played.");
     }
 

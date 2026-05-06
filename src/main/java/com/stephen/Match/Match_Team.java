@@ -28,6 +28,7 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Team(Team team, int frameCount, FrameFactory<Team> frameFactory) {
@@ -38,6 +39,7 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Team(FrameFactory<Team> frameFactory) {
@@ -48,6 +50,7 @@ public class Match_Team extends Match<Team>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
 
@@ -83,6 +86,7 @@ public class Match_Team extends Match<Team>{
         }
         recordPlayerInTeam_Match();
         recordTeam_Match();
+        updateCloud_Match();
         log.info("Played Match_Team: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 

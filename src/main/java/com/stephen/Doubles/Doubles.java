@@ -32,6 +32,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         this.stats = new HashMap<>();
         BaseStats_Key K = new BaseStats_Key(GLOBAL, super.getID());
         stats.computeIfAbsent(K, _ -> new BaseStats());
+        updateCloud_All();
     }
 
     public Doubles() {
@@ -41,26 +42,27 @@ public class Doubles extends ID implements StatHolder<Doubles> {
         this.stats = new HashMap<>();
         this.captain = null;
         this.isBye = true;
+        updateCloud_All();
     }
 
 
     // --- FIREBASE ---
-    public void updateCloud_StatHolder(){
+    public void updateCloud_Attributes(){
         Doubles_Repository doubles_Repository = new Doubles_Repository();
         doubles_Repository.saveDoublesTeam(this);
-        log.info("Updated cloud attributes for team {}", teamName);
+        log.info("Updated cloud attributes for doubles team {}", teamName);
     }
 
     public void updateCloud_Stats() {
         BaseStats_Repository<Doubles> baseStatRepo = new BaseStats_Repository<>();
         baseStatRepo.saveStats(this);
-        log.info("Updated cloud stats for team {}", teamName);
+        log.info("Updated cloud stats for doubles team {}", teamName);
     }
 
     public void updateCloud_All() {
-        this.updateCloud_StatHolder();
+        this.updateCloud_Attributes();
         this.updateCloud_Stats();
-        log.info("Updated Cloud for team {}", teamName);
+        log.info("Updated Cloud for doubles team {}", teamName);
     }
 
 
@@ -125,10 +127,12 @@ public class Doubles extends ID implements StatHolder<Doubles> {
     // --- SETTERS ---
     public void setDoublesName(String teamName) {
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
+        this.updateCloud_Attributes();
     }
 
     public void setHomePhoneNumber(int homeNumber){
         this.contactDetails.setHomePhoneNumber(homeNumber);
+        this.updateCloud_Attributes();
     }
 
 
@@ -162,6 +166,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
                 updateCaptain(p);
             }
             p.getOrCreateStats( new BaseStats_Key(GLOBAL, super.getID()));
+            this.updateCloud_All();
             log.info("Added player {} to team {}", p.getName(), teamName);
         }
 
@@ -183,6 +188,7 @@ public class Doubles extends ID implements StatHolder<Doubles> {
                 updateCaptain(players.getFirst());
             }
         }
+        this.updateCloud_Attributes();
         log.info("Removed player {} from team {}", toRemove.getName(), teamName);
     }
 
@@ -196,5 +202,6 @@ public class Doubles extends ID implements StatHolder<Doubles> {
             captain.makeCaptain();
             log.info("Updated captain for team {} to {}", teamName, newCaptain.getName());
         }
+        this.updateCloud_Attributes();
     }
 }

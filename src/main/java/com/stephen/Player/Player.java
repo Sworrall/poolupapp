@@ -33,6 +33,7 @@ public class Player extends ID implements StatHolder<Player> {
         this.isCaptain = false;
         this.stats = new HashMap<>();
         this.stats.put(new BaseStats_Key(GLOBAL, null), new BaseStats());
+        updateCloud_All();
         log.info("Created player: {}", getFullName());
     }
 
@@ -45,24 +46,28 @@ public class Player extends ID implements StatHolder<Player> {
         this.isBye = true;
         this.isCaptain = false;
         this.stats = new HashMap<>();
+        updateCloud_All();
         log.info("Created bye player");
     }
 
 
     // --- FIREBASE ---
-    public void updateCloud_StatHolder(){
+    public void updateCloud_Attributes() {
         Player_Repository playerRepo = new Player_Repository();
         playerRepo.savePlayer(this);
+        log.info("Updated cloud attributes for player {}", getFullName());
     }
 
     public void updateCloud_Stats() {
         BaseStats_Repository<Player> baseStatRepo = new BaseStats_Repository<>();
         baseStatRepo.saveStats(this);
+        log.info("Updated cloud stats for player {}", getFullName());
     }
 
     public void updateCloud_All() {
-        this.updateCloud_StatHolder();
-        this.updateCloud_Stats();
+        updateCloud_Attributes();
+        updateCloud_Stats();
+        log.info("Updated cloud player {}", getFullName());
     }
 
     // --- FACTORY ---
@@ -131,23 +136,26 @@ public class Player extends ID implements StatHolder<Player> {
     public void setName(String firstName, String lastName, String nickName) {
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
-        updateNickName(nickName);
+        this.updateCloud_Attributes();
+        this.updateNickName(nickName);
     }
 
     public void makeCaptain() {
         this.isCaptain = true;
+        this.updateCloud_Attributes();
     }
 
     public void removeCaptain() {
         this.isCaptain = false;
-        this.updateCloud_StatHolder();
-    }
+        this.updateCloud_Attributes();    }
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
+        this.updateCloud_Attributes();
     }
 
     public void setMobileNumber(int number) {
         contactDetails.setPhoneNumber(number);
+        this.updateCloud_Attributes();
     }
 }

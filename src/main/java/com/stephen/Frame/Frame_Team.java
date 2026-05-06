@@ -41,6 +41,7 @@ public class Frame_Team extends Frame<Team> {
         super(new Team(), new Team());
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
+        updateCloud_Frame();
     }
 
 
@@ -49,6 +50,7 @@ public class Frame_Team extends Frame<Team> {
     public void PlayOutFrame() {
         this.handleBye(super.getParty1(), super.getParty2());
         this.playFrame();
+        recordFrame();
         log.info("Frame played out for Frame ID: {}", super.getID());
     }
 

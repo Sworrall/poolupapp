@@ -32,6 +32,7 @@ public class Team extends ID implements StatHolder<Team> {
         this.contactDetails = new Team_ContactDetails();
         this.isBye = false;
         this.getOrCreateTeamStats(new BaseStats_Key(GLOBAL, super.getID()));
+        updateCloud_All();
     }
     
     public Team() {
@@ -40,27 +41,28 @@ public class Team extends ID implements StatHolder<Team> {
         this.stats = new HashMap<>();
         this.captain = null;
         this.isBye = true;
+        updateCloud_All();
     }
 
 
     // --- FIREBASE ---
-    public void updateCloud_StatHolder(){
+    public void updateCloud_Attributes(){
         Team_Repository teamRepository = new Team_Repository();
         teamRepository.saveTeam(this);
-        log.info("Cloud Team Attributes updated");
+        log.info("Updated cloud attributes for team {}", teamName);
     }
 
     public void updateCloud_Stats() {
         BaseStats_Repository<Team> baseStatRepo = new BaseStats_Repository<>();
         baseStatRepo.saveStats(this);
-        log.info("Cloud Team Stats updated");
+        log.info("Updated cloud stats for team {}", teamName);
 
     }
 
     public void updateCloud_All() {
-        this.updateCloud_StatHolder();
+        this.updateCloud_Attributes();
         this.updateCloud_Stats();
-        log.info("Cloud Team updated");
+        log.info("Updated cloud team {}", teamName);
     }
 
 
@@ -128,16 +130,19 @@ public class Team extends ID implements StatHolder<Team> {
     // --- SETTERS ---
     public void setTeamName(String teamName) {
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
+        this.updateCloud_Attributes();
     }
 
     public void setHomePhoneNumber(int homeNumber){
         this.contactDetails.setHomePhoneNumber(homeNumber);
+        this.updateCloud_Attributes();
     }
 
 
     // --- UPDATE ---
     public void updateHomeLocation(int homeNumber, String address){
         this.contactDetails.updateContactDetails(homeNumber, address);
+        this.updateCloud_Attributes();
     }
 
 
@@ -157,6 +162,7 @@ public class Team extends ID implements StatHolder<Team> {
             p.getOrCreateStats(new BaseStats_Key(GLOBAL, super.getID()));
             log.info("Added player: {} to team: {}", p.getName(), teamName);
         }
+        this.updateCloud_All();
     }
 
     public void removePlayer(int id) {
@@ -175,6 +181,7 @@ public class Team extends ID implements StatHolder<Team> {
                 updateCaptain(players.getFirst()); // assign new captain safely
             }
         }
+        this.updateCloud_Attributes();
         log.info("Removed player: {} from team: {}", toRemove.getFullName(), teamName);
     }
 
@@ -190,5 +197,6 @@ public class Team extends ID implements StatHolder<Team> {
             captain.makeCaptain();
             log.info("Updated captain for team: {} to: {}", teamName, newCaptain.getName());
         }
+        this.updateCloud_All();
     }
 }

@@ -20,12 +20,16 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = isRandom;
+        this.generateTeamList();
+        updateCloud_Tournament();
     }
 
     public Tournament_Killer(ArrayList<S> allParties, Match_Factory<S> matchFactory) {
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = true;
+        this.generateTeamList();
+        updateCloud_Tournament();
     }
 
 
@@ -44,17 +48,6 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         log.info("Generated Party List: {}", partyList.size());
     }
 
-    public void generateFixturesRR(int frameCount){
-        int size = super.partyList.size();
-        for (int i = 0; i < size; i++) {
-            for (int j = i+1; j < size; j++) {
-                matchList.getFirst().add(matchFactory.createMatch(super.partyList.get(i), super.partyList.get(j), frameCount));
-            }
-        }
-        if(this.isRandom) Collections.shuffle(matchList);
-        log.info("Generated {} Fixtures RR", matchList.size());
-    }
-
     public ArrayList<S> playAll(ArrayList<Match<S>> matchList) {
         ArrayList<S> winners = new ArrayList<>();
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
@@ -65,6 +58,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
                 }
             }
         }
+        updateCloud_Tournament();
         log.info("Round completed. {} winners.", winners.size());
         return winners;
     }

@@ -17,12 +17,12 @@ public interface StatHolder<S> {
 
     S createByeParty();
 
-    void updateCloud_StatHolder();
+    void updateCloud_Attributes();
 
     void updateCloud_Stats();
 
     default void updateCloud_All(){
-        updateCloud_StatHolder();
+        updateCloud_Attributes();
         updateCloud_Stats();
     }
 }

@@ -33,7 +33,7 @@ public class Frame_Singles extends Frame<Player>{
     }
 
 
-    // --- GETTERS ---
+    // --- FRAME OVERRIDE ---
     @Override
     public ArrayList<Player> getPlayersA() {
         ArrayList<Player> playerList = new ArrayList<>();
@@ -48,12 +48,11 @@ public class Frame_Singles extends Frame<Player>{
         return playerList;
     }
 
-
-    // --- INTERFACE ---
     @Override
     public void PlayOutFrame() {
         this.handleBye(super.getParty1(), super.getParty2());
         this.playFrame();
+        this.recordFrame();
         log.info("PlayOutFrame called for Frame ID: {} with players: {} vs {}", super.getID(), super.getParty1().getName(), super.getParty2().getName());
     }
 

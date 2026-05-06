@@ -12,18 +12,18 @@ public class FrameFactory_Doubles implements FrameFactory<Doubles> {
     @Override
     public Frame<Doubles> createFrame(Doubles d1, Doubles d2) {
         log.info("Creating doubles frame: {} vs {}", d1.getName(), d2.getName());
-        return new Frame_Doubles<>(d1, d2);
+        return new Frame_Doubles(d1, d2);
     }
 
     @Override
     public Frame<Doubles> createFrame(Doubles d1) {
         log.info("Creating doubles frame with bye: {}", d1.getName());
-        return new Frame_Doubles<>(d1);
+        return new Frame_Doubles(d1);
     }
 
     @Override
     public Frame<Doubles> createFrame() {
         log.info("Creating empty doubles frame");
-        return new Frame_Doubles<>();
+        return new Frame_Doubles();
     }
 }

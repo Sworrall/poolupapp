@@ -24,6 +24,7 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = false;
         super.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Singles(Player p, int frameCount, FrameFactory<Player> frameFactory){
@@ -33,6 +34,7 @@ public class Match_Singles extends Match<Player>{
         super.isPlayed = false;
         super.isBye = true;
         super.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Singles(FrameFactory<Player> frameFactory){
@@ -42,6 +44,7 @@ public class Match_Singles extends Match<Player>{
         this.isPlayed = true;
         this.isBye = true;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
 
@@ -75,6 +78,7 @@ public class Match_Singles extends Match<Player>{
             }
         }
         recordPlayer_Match(this);
+        updateCloud_Match();
         log.info("Played Match_Singles: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 

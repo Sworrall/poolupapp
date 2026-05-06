@@ -30,6 +30,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), rankingStrategy);
         generateTeamList();
         generateFixturesRR();
+        updateCloud_Tournament();
     }
 
 
@@ -59,7 +60,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         log.info("Generated {} RoundRobin fixtures", matchList.size());
     }
 
-    public ArrayList<S> playAll() {
+    public ArrayList<S> playAll_SIM() {
         ArrayList<S> winners = new ArrayList<>();
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
             for (Match<S> m : fixturesList) {

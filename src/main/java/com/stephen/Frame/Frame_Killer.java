@@ -28,7 +28,26 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
     }
 
 
-    // --- GETTERS ---
+    // --- FRAME OVERRIDE ---
+    @Override
+    public void PlayOutFrame() {
+        this.handleBye(this.getParty1(), this.getParty2());
+        this.PlayFrame();
+        this.recordFrame();
+        log.info("PlayOutFrame completed.");
+    }
+
+    @Override
+    public void recordFrame() {
+        for (int i = 0; i < this.partyLives.size(); i++) {
+            S p1 = partyLives.keySet().iterator().next();
+            BaseStats_Service.applyEvent(frameKey, StatField.FRAME_TOTAL, p1);
+            BaseStats_Service.applyFrame_WIN_LOSS(frameKey, frameKey, this);
+        }
+        updateCloud_Frame();
+        log.info("recordFrame completed, stats updated for {} players.", partyLives.size());
+    }
+
     @Override
     public ArrayList<Player> getPlayersA() {
         ArrayList<Player> playerList = new ArrayList<>();
@@ -65,23 +84,7 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
                 }
             }
         }
-        log.info("PlayFrame completed, winner: {}", partyLives.keySet().iterator().next());
-    }
-
-    @Override
-    public void PlayOutFrame() {
-        PlayFrame();
-        log.info("PlayOutFrame completed.");
-    }
-
-    @Override
-    public void recordFrame() {
-        for (int i = 0; i < this.partyLives.size(); i++) {
-            S p1 = partyLives.keySet().iterator().next();
-            BaseStats_Service.applyEvent(frameKey, StatField.FRAME_TOTAL, p1);
-            BaseStats_Service.applyFrame_WIN_LOSS(frameKey, frameKey, this);
-        }
         updateCloud_Frame();
-        log.info("recordFrame completed, stats updated for {} players.", partyLives.size());
+        log.info("PlayFrame completed, winner: {}", partyLives.keySet().iterator().next());
     }
 }

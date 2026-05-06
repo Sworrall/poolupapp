@@ -25,6 +25,7 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Doubles(Doubles team, int frameCount, FrameFactory<Doubles> frameFactory) {
@@ -34,6 +35,7 @@ public class Match_Doubles extends Match<Doubles>{
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
+        updateCloud_Match();
     }
 
     public Match_Doubles(FrameFactory<Doubles> frameFactory) {
@@ -77,6 +79,7 @@ public class Match_Doubles extends Match<Doubles>{
         }
         recordDoublesTeam_Match();
         recordDoublesPlayer_Match();
+        updateCloud_Match();
         log.info("Played Match_Doubles: {}. Result: {}",
                 super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
