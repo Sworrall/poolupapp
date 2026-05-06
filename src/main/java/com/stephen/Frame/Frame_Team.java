@@ -47,14 +47,6 @@ public class Frame_Team extends Frame<Team> {
 
     // --- INTERFACE ---
     @Override
-    public void PlayOutFrame() {
-        this.handleBye(super.getParty1(), super.getParty2());
-        this.playFrame();
-        recordFrame();
-        log.info("Frame played out for Frame ID: {}", super.getID());
-    }
-
-    @Override
     public void recordFrame() {
         recordTeam_Frame();
         recordPlayerInTeam_Frame();

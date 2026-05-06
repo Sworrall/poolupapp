@@ -41,8 +41,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
 
 
     // --- ABSTRACT METHODS ---
-    public abstract void PlayOutFrame();
-
     public abstract void recordFrame();
 
     public abstract ArrayList<Player> getPlayersA();
@@ -111,6 +109,13 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
 
 
     // --- LOGIC ---
+    public void PlayOutFrame(){
+        this.handleBye(this.party1, this.party2);
+        this.playFrame();
+        this.recordFrame();
+        log.info("Frame Played: {}", this.getID());
+    }
+
     public void handleBye(S home ,S away){
         if(party1.isBye() && party2.isBye()){
             isBye = true;

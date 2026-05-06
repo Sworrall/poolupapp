@@ -30,14 +30,6 @@ public class Frame_Killer <S extends StatHolder<S>> extends Frame<Player> {
 
     // --- FRAME OVERRIDE ---
     @Override
-    public void PlayOutFrame() {
-        this.handleBye(this.getParty1(), this.getParty2());
-        this.PlayFrame();
-        this.recordFrame();
-        log.info("PlayOutFrame completed.");
-    }
-
-    @Override
     public void recordFrame() {
         for (int i = 0; i < this.partyLives.size(); i++) {
             S p1 = partyLives.keySet().iterator().next();

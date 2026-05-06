@@ -57,14 +57,6 @@ public class Frame_Doubles extends Frame<Doubles> {
 
     // --- FRAME OVERRIDE ---
     @Override
-    public void PlayOutFrame() {
-        this.handleBye(super.getParty1(), super.getParty2());
-        this.playFrame();
-        this.recordFrame();
-        log.info("Played out Frame_Doubles with ID: {}", super.getID());
-    }
-
-    @Override
     public void recordFrame() {
         this.recordDoublesTeam_Frame();
         this.recordDoublesPlayer_Frame();

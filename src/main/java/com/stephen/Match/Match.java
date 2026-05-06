@@ -83,6 +83,12 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
 
     public abstract void recordMatch();
 
+    public void playOutMatch(){
+        handleByeMatch();
+        playMatch();
+        recordMatch();
+    }
+
 
     // --- FACTORY ---
     public boolean isByeMatch(){
