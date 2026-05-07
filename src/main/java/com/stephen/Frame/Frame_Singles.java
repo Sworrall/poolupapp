@@ -21,15 +21,14 @@ public class Frame_Singles extends Frame<Player>{
     }
 
     public Frame_Singles(Player p1){
-        super(p1, new Player());
+        super(p1, Player.createBye());
         this.frameKey = new BaseStats_Key(super.getID(), null);
         updateCloud_Frame();
     }
 
     public Frame_Singles(){
-        super(new Player(), new Player());
+        super(Player.createBye(), Player.createBye());
         this.frameKey = new BaseStats_Key(super.getID(), null);
-        updateCloud_Frame();
     }
 
 
@@ -51,7 +50,6 @@ public class Frame_Singles extends Frame<Player>{
     @Override
     public void recordFrame() {
         recordSingles_Frame();
-        updateCloud_Frame();
         log.info("recordFrame called for Frame ID: {} with players: {} vs {}", super.getID(), super.getParty1().getName(), super.getParty2().getName());
     }
 
@@ -63,6 +61,5 @@ public class Frame_Singles extends Frame<Player>{
         BaseStats_Service.applyEvent(frameKey, StatField.FRAME_TOTAL, playerA);
         BaseStats_Service.applyEvent(frameKey, StatField.FRAME_TOTAL, playerB);
         BaseStats_Service.applyFrame_WIN_LOSS(frameKey, frameKey, this);
-        log.info("recordSingles_Frame called for Frame ID: {} with players: {} vs {}", super.getID(), playerA.getName(), playerB.getName());
     }
 }

@@ -54,20 +54,26 @@ public class Match_Team extends Match<Team>{
     }
 
 
-    // --- INTERFACE ---
+    // --- MATCH OVERRIDE ---
     @Override
     public Team createByeParty() {
         return new Team();
     }
 
     @Override
+    public void playOutMatch(){
+        playMatch();
+        recordMatch();
+        log.info("Match: {} Played", this.getID());
+    }
+
+    @Override
     public void playMatch(){
-        handleByeMatch();
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
                 Frame<Team> f = super.frameFactory.createFrame(party1, party2);
                 super.frames.add(f);
-                f.playFrame();
+                f.playOutFrame();
             }
             isPlayed = true;
             long party1Wins = frames.stream().filter(f -> f.getWinner().equals(party1)).count();

@@ -109,10 +109,13 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
 
 
     // --- LOGIC ---
-    public void PlayOutFrame(){
+    public void playOutFrame(){
         this.handleBye(this.party1, this.party2);
-        this.playFrame();
-        this.recordFrame();
+        if(!isBye){
+            this.playFrame();
+            this.recordFrame();
+        }
+        this.updateCloud_Frame();
         log.info("Frame Played: {}", this.getID());
     }
 
@@ -131,7 +134,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
                 isPlayed = true;
             }
         }
-        updateCloud_Frame();
         log.info("Bye handled for Frame ID: {}. isBye: {}, isPlayed: {}", this.getID(), isBye, isPlayed);
     }
 
@@ -147,7 +149,6 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
             breakDish = true;
         }
         isPlayed = true;
-        recordFrame();
         log.info("Frame played for Frame ID: {}. Winner: {}, Loser: {}, BreakDish: {}", this.getID(), winner.getName(), loser.getName(), breakDish);
     }
 }

@@ -46,7 +46,6 @@ public class Player extends ID implements StatHolder<Player> {
         this.isBye = true;
         this.isCaptain = false;
         this.stats = new HashMap<>();
-        updateCloud_All();
         log.info("Created bye player");
     }
 
@@ -136,8 +135,8 @@ public class Player extends ID implements StatHolder<Player> {
     public void setName(String firstName, String lastName, String nickName) {
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
+        this.nickName = nickName;
         this.updateCloud_Attributes();
-        this.updateNickName(nickName);
     }
 
     public void makeCaptain() {
@@ -147,10 +146,6 @@ public class Player extends ID implements StatHolder<Player> {
 
     public void removeCaptain() {
         this.isCaptain = false;
-        this.updateCloud_Attributes();    }
-
-    public void updateNickName(String nickName) {
-        this.nickName = nickName;
         this.updateCloud_Attributes();
     }
 

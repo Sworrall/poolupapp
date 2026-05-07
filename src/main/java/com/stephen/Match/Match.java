@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import java.util.ArrayList;
 
+// todo convert Tournament_ from playMatch to playOutMatch
 
 public abstract class Match <S extends StatHolder<S>> extends ID {
     protected final S party1;

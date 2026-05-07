@@ -28,19 +28,41 @@ public class Player_Repository {
     // --- SAVE ---
     public void savePlayer(Player player) {
         try {
-            log.info("Attempting to save player: {}", player.getFullName());
+            // 1. Save basic fields (as before)
             Map<String, Object> data = new HashMap<>();
             data.put("firstName", player.getFirstName());
             data.put("lastName", player.getLastName());
             data.put("nickName", player.getNickName());
             data.put("isBye", player.isBye());
             data.put("isCaptain", player.isCaptain());
-            log.info("Data map built: {}", data);
 
             db.collection("Player")
                     .document(String.valueOf(player.getID()))
                     .set(data)
                     .get();
+
+            // 2. Save each stat entry to the "stats" collection
+            for (Map.Entry<BaseStats_Key, BaseStats> entry : player.getStatsMap().entrySet()) {
+                BaseStats_Key key   = entry.getKey();
+                BaseStats     stats = entry.getValue();
+
+                Map<String, Object> statData = new HashMap<>();
+                statData.put("holderID", String.valueOf(player.getID()));
+                statData.put("eventID",  String.valueOf(key.eventID()));
+                statData.put("teamID",   key.teamID() == null ? "null" : String.valueOf(key.teamID()));
+
+                for (StatField field : StatField.values()) {
+                    statData.put(field.name(), (long) stats.get(field));
+                }
+
+                // Use a deterministic document ID so re-saving doesn't duplicate
+                String docID = player.getID() + "_" + key.eventID() + "_" + key.teamID();
+                db.collection("stats")
+                        .document(docID)
+                        .set(statData)
+                        .get();
+            }
+
             log.info("Firestore write confirmed for player: {}", player.getFullName());
         } catch (Exception e) {
             log.error("Failed to save player: {}", player.getFullName(), e);

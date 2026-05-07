@@ -53,7 +53,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
             for (Match<S> m : fixturesList) {
                 if(!m.isPlayed()){
-                    m.playMatch();
+                    m.playOutMatch();
                     winners.add(m.getWinner());
                 }
             }

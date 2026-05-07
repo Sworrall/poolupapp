@@ -50,13 +50,17 @@ public class Match_Singles extends Match<Player>{
 
     // --- INTERFACE ---
     @Override
+    public Player createByeParty() {
+        return new Player();
+    }
+
+    @Override
     public void playMatch(){
-        handleByeMatch();
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
                 Frame<Player> f = super.frameFactory.createFrame(party1, party2);
                 super.frames.add(f);
-                f.playFrame();
+                f.playOutFrame();
             }
             isPlayed = true;
             long party1Wins = frames.stream()
@@ -77,14 +81,8 @@ public class Match_Singles extends Match<Player>{
                 loser = null;
             }
         }
-        recordPlayer_Match(this);
         updateCloud_Match();
         log.info("Played Match_Singles: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
-    }
-
-    @Override
-    public Player createByeParty() {
-        return new Player();
     }
 
 

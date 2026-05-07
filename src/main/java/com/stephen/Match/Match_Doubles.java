@@ -48,15 +48,26 @@ public class Match_Doubles extends Match<Doubles>{
     }
 
 
-    // --- INTERFACE ---
+    // --- MATCH OVERRIDE ---
+    @Override
+    public Doubles createByeParty() {
+        return Doubles.createBye();
+    }
+
+    @Override
+    public void playOutMatch(){
+        playMatch();
+        recordMatch();
+        log.info("Match {} Played", this.getID());
+    }
+
     @Override
     public void playMatch(){
-        handleByeMatch();
         if(!isBye){
             for (int i = 0; i < this.getFrameCount(); i++) {
                 Frame<Doubles> f = frameFactory.createFrame(party1, party2);
                 frames.add(f);
-                f.playFrame();
+                f.playOutFrame();
             }
             isPlayed = true;
             long party1Wins = frames.stream()
@@ -82,11 +93,6 @@ public class Match_Doubles extends Match<Doubles>{
         updateCloud_Match();
         log.info("Played Match_Doubles: {}. Result: {}",
                 super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
-    }
-
-    @Override
-    public Doubles createByeParty() {
-        return Doubles.createBye();
     }
 
 

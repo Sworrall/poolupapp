@@ -28,77 +28,46 @@ public class Main{
         FirebaseConfig.initialise();
 
 
-        // Create and save Players
+        // Create players
         Player player1 = new Player("Joe", "Bloggs");
-        player1.updateCloud_All();
         Player player2 = new Player("John", "Smith");
-        player2.updateCloud_All();
         Player player3 = new Player("Steve", "Jones");
-        player3.updateCloud_All();
         Player player4 = new Player("Mike", "Brown");
-        player4.updateCloud_All();
 
 
-        // Create and save a Team
+        // Create Teams
         Team team1 = new Team("The A Team");
         team1.addPlayer(player1);
         team1.addPlayer(player2);
-        team1.updateCloud_All();
-
         Team team2 = new Team("The B Team");
         team2.addPlayer(player3);
         team2.addPlayer(player4);
-        team2.updateCloud_All();
 
 
         // create and save Doubles Team
         Doubles doublesTeam1 = new Doubles("Double the Trouble");
         doublesTeam1.addPlayer(player1);
         doublesTeam1.addPlayer(player2);
-        doublesTeam1.updateCloud_All();
 
         Doubles doublesTeam2 = new Doubles("Double Bubble");
         doublesTeam2.addPlayer(player3);
         doublesTeam2.addPlayer(player4);
-        doublesTeam2.updateCloud_All();
 
 
         // create Frame<Player>. save, then play and overwrite
         Frame<Player> frame = new Frame_Singles(player1, player2);
-        frame.updateCloud_Frame();
         log.info("FRAME ADDED");
-
-        frame.playFrame();
-        frame.recordFrame();
+        frame.playOutFrame();
         log.info("FRAME PLAYED AND UPDATED");
 
 
         // create Match<Doubles> save, play and save again
         FrameFactory<Doubles> doublesFactory = new FrameFactory_Doubles();
         Match<Doubles> doublesMatch = new Match_Doubles(doublesTeam1, doublesTeam2, 11, doublesFactory);
-        doublesMatch.recordMatch();
         log.info("DOUBLES MATCH CREATED");
-
-        doublesMatch.playMatch();
-        for(Frame<Doubles> f : doublesMatch.getFrames()) {
-            f.recordFrame();
-            f.updateCloud_Frame();
-        }
-        doublesMatch.recordMatch();
+        doublesMatch.playOutMatch();
         log.info("DOUBLES MATCH PLAYED AND UPDATED");
 
-
-        // stats have been created for player 1. upload them all to Firebase
-        BaseStats_Repository<Player> baseStatRepo = new BaseStats_Repository<>();
-        player1.updateCloud_Stats();
-        player2.updateCloud_Stats();
-        player3.updateCloud_Stats();
-        player4.updateCloud_Stats();
-        team1.updateCloud_Stats();
-        team2.updateCloud_Stats();
-        doublesTeam1.updateCloud_Stats();
-        doublesTeam2.updateCloud_Stats();
-        log.info("BASE STATS uploaded");
 
         // upload a tournament
         ArrayList<Team> tournamentTeams = new ArrayList<>();
@@ -106,7 +75,6 @@ public class Main{
         tournamentTeams.add(team2);
         Match_Factory<Team> mf = new MatchFactory_Team();
         Tournament_RoundRobin<Team> RR = new Tournament_RoundRobin<>(tournamentTeams, 11, mf);
-        RR.updateCloud_Tournament();
 
 
         // grab a player from the cloud and store. compare values to existing player

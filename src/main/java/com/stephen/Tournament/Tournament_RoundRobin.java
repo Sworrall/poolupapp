@@ -65,7 +65,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
             for (Match<S> m : fixturesList) {
                 if(!m.isPlayed()){
-                    m.playMatch();
+                    m.playOutMatch();
                     winners.add(m.getWinner());
                 }
             }

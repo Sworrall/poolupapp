@@ -54,4 +54,9 @@ public class UserInput {
         double r = random();
         return r < 0.033 || r > 0.096;
     }
+
+    public static boolean foulResult_KILLER(){
+        double r = random();
+        return r > 0.9 || r < 0.1;
+    }
 }

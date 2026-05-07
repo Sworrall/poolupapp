@@ -29,19 +29,18 @@ public class Frame_Team extends Frame<Team> {
     }
 
     public Frame_Team(Team team, Player player){
-        super(team, new Team());
+        super(team, Team.createBye());
         this.playerA = player;
-        this.playerB = new Player();
+        this.playerB = Player.createBye();
         this.frameKeyA = new BaseStats_Key(super.getID(), team.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
         updateCloud_Frame();
     }
 
     public Frame_Team(){
-        super(new Team(), new Team());
+        super(Team.createBye(), Team.createBye());
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        updateCloud_Frame();
     }
 
 
@@ -50,7 +49,6 @@ public class Frame_Team extends Frame<Team> {
     public void recordFrame() {
         recordTeam_Frame();
         recordPlayerInTeam_Frame();
-        updateCloud_Frame();
         log.info("Frame recorded for Frame ID: {}", super.getID());
     }
 
@@ -84,15 +82,10 @@ public class Frame_Team extends Frame<Team> {
         BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, teamA);
         BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, teamB);
         BaseStats_Service.applyFrame_WIN_LOSS(frameKeyA, frameKeyB, this);
-        log.info("Recorded team stats for Frame ID: {} - Team A: {}, Team B: {}", super.getID(), teamA.getName(), teamB.getName());
     }
 
     public void recordPlayerInTeam_Frame() {
-        Player playerA = this.playerA;
-        Player playerB = this.playerB;
         BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, playerA);
         BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, playerB);
-        BaseStats_Service.applyFrame_WIN_LOSS(frameKeyA, frameKeyB, this);
-        log.info("Recorded player stats for Frame ID: {} - Player A: {}, Player B: {}", super.getID(), playerA.getName(), playerB.getName());
     }
 }

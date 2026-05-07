@@ -101,7 +101,7 @@ public class Tournament_GroupStage<S extends StatHolder<S>> extends Tournament<S
     public void playAllGroupStage() {
         for (ArrayList<Match<S>> matches : super.matchList) {
             for (Match<S> m : matches) {
-                m.playMatch();
+                m.playOutMatch();
             }
         }
         updateCloud_Tournament();

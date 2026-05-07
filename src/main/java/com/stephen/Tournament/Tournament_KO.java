@@ -91,7 +91,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     public ArrayList<S> playRound(ArrayList<Match<S>> matchList) {
         ArrayList<S> partiesThrough = new ArrayList<>();
         for (Match<S> m : matchList) {
-            m.playMatch();
+            m.playOutMatch();
             partiesThrough.add(m.getWinner());
         }
         updateCloud_Tournament();

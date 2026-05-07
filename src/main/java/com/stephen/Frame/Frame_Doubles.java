@@ -33,25 +33,24 @@ public class Frame_Doubles extends Frame<Doubles> {
     }
 
     public Frame_Doubles(Doubles doubles){
-        super(doubles, new Doubles());
+        super(doubles, Doubles.createBye());
         this.teamAPlayer1 = doubles.getPlayers().getFirst();
         this.teamAPlayer2 = doubles.getPlayers().getLast();
-        this.teamBPlayer1 = new Player();
-        this.teamBPlayer2 = new Player();  
+        this.teamBPlayer1 = Player.createBye();
+        this.teamBPlayer2 = Player.createBye();
         this.frameKeyA = new BaseStats_Key(super.getID(), doubles.getID());
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
         updateCloud_Frame();
     }
 
     public Frame_Doubles(){
-        super(new Doubles(), new Doubles());
-        this.teamAPlayer1 = new Player();
-        this.teamAPlayer2 = new Player();
-        this.teamBPlayer1 = new Player();
-        this.teamBPlayer2 = new Player();  
+        super(Doubles.createBye(), Doubles.createBye());
+        this.teamAPlayer1 = Player.createBye();
+        this.teamAPlayer2 = Player.createBye();
+        this.teamBPlayer1 = Player.createBye();
+        this.teamBPlayer2 = Player.createBye();
         this.frameKeyA = new BaseStats_Key(super.getID(), 0);
         this.frameKeyB = new BaseStats_Key(super.getID(), 0);
-        updateCloud_Frame();
     }
 
 
@@ -60,7 +59,6 @@ public class Frame_Doubles extends Frame<Doubles> {
     public void recordFrame() {
         this.recordDoublesTeam_Frame();
         this.recordDoublesPlayer_Frame();
-        this.updateCloud_Frame();
         log.info("Recorded Frame_Doubles with ID: {}", super.getID());
     }
 
@@ -136,11 +134,8 @@ public class Frame_Doubles extends Frame<Doubles> {
     }
 
     public void recordDoublesTeam_Frame(){
-        Doubles teamA = this.getParty1();
-        Doubles teamB = this.getParty2();
-        BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, teamA);
-        BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, teamB);
-        BaseStats_Service.applyFrame_WIN_LOSS(frameKeyA, frameKeyB, this);
+        BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, this.getParty1());
+        BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, this.getParty2());
         log.info("Recorded team stats for Frame_Doubles with ID: {}", super.getID());
     }
 }

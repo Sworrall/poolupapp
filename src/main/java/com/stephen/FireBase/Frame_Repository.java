@@ -4,6 +4,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import com.stephen.Frame.Frame;
 import com.stephen.BaseStats.StatHolder;
+import com.stephen.Player.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,20 @@ public class Frame_Repository <S extends StatHolder<S>>{
                     .set(data)
                     .get();
             log.info("Firestore write confirmed for Frame<{}>: {}", frame.getFrameType(), frame.getID());
+
+            // Save all involved players
+            Player_Repository playerRepo = new Player_Repository();
+            BaseStats_Repository<Player> statsRepo = new BaseStats_Repository<>();
+            for (Player p : frame.getPlayersA()) {
+                playerRepo.savePlayer(p);
+                statsRepo.saveStats(p);
+            }
+            for (Player p : frame.getPlayersB()) {
+                playerRepo.savePlayer(p);
+                statsRepo.saveStats(p);
+            }
+            log.info("Player stats saved for Frame<{}>: {}", frame.getFrameType(), frame.getID());
+
         } catch (Exception e) {
             log.error("Failed to save Frame<{}>: {}", frame.getFrameType(), frame.getID(), e);
         }
