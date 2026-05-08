@@ -62,7 +62,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         this.isBye = true;
         this.isPlayed = false;
         this.isDraw = false;
-        updateCloud_Match();
     }
 
 
@@ -70,9 +69,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     public void updateCloud_Match(){
         Match_Repository<S> matchRepo = new Match_Repository<>();
         matchRepo.saveMatch(this);
-        for(Frame<S> frame : frames){
-            frame.recordFrame();
-        }
         log.info("Updated Cloud Match");
     }
 
@@ -80,22 +76,12 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- ABSTRACT METHODS ---
     public abstract void playMatch();
 
+    // --- MATCH OVERRIDE ---
+    public abstract void playOutMatch();
+
     public abstract S createByeParty();
 
     public abstract void recordMatch();
-
-    public void playOutMatch(){
-        handleByeMatch();
-        playMatch();
-        recordMatch();
-    }
-
-
-    // --- FACTORY ---
-    public boolean isByeMatch(){
-        handleByeMatch();
-        return this.isBye;
-    }
 
 
     // --- GETTERS ---
@@ -145,9 +131,18 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
         }
     }
 
+    public String getType(){
+        return switch (this){
+            case Match_Singles matchSingles -> "Player";
+            case Match_Doubles matchDoubles -> "Doubles";
+            case Match_Team matchTeam -> "Team";
+            default -> "Unknown";
+        };
+    }
+
 
     // --- LOGIC ---
-    public void handleByeMatch(){
+    public void handleBye(){
         if(party1.isBye() && party2.isBye()){
             isBye = true;
             isPlayed = true;
@@ -162,7 +157,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
                 isPlayed = true;
             }
         }
-        updateCloud_Match();
         log.info("Handled bye match: {} - isBye: {}, isPlayed: {}", errorCapture(), isBye, isPlayed);
     }
 
@@ -170,14 +164,5 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- MISC ---
     public String errorCapture(){
         return party1.getName() + " VS " + party2.getName();
-    }
-
-    public String getType(){
-        return switch (this){
-            case Match_Singles matchSingles -> "Player";
-            case Match_Doubles matchDoubles -> "Doubles";
-            case Match_Team matchTeam -> "Team";
-            default -> "Unknown";
-        };
     }
 }

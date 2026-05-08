@@ -66,12 +66,10 @@ public class Frame_Killer extends Frame<Player> {
 
     // --- LOGIC ---
     public void playFrame() {
-        handleBye(this.getParty1(), this.getParty2());
-
-        while (partyLives.size() > 1) {  // outer loop - game continues until winner
-            playRack();                    // inner method - one rack at a time
+        handleBye();
+        while (partyLives.size() > 1) {
+            playRack();
         }
-
         log.info("PlayFrame completed, winner: {}", partyLives.keySet().iterator().next().getName());
     }
 

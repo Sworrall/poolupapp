@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 public class Match_Team extends Match<Team>{
     private final BaseStats_Key key1;
     private final BaseStats_Key key2;
-    private final FrameFactory<Team> frameFactory;
     private static final Logger log = LoggerFactory.getLogger(Match_Team.class);
 
 
@@ -24,7 +23,6 @@ public class Match_Team extends Match<Team>{
         super(teamA, teamB, frameCount, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), teamA.getID());
         this.key2 = new BaseStats_Key(super.getID(), teamB.getID());
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = false;
         this.isDraw = false;
@@ -35,7 +33,6 @@ public class Match_Team extends Match<Team>{
         super(team, frameCount, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), team.getID());
         this.key2 = new BaseStats_Key(super.getID(), 0);
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
@@ -46,25 +43,27 @@ public class Match_Team extends Match<Team>{
         super(Team.createBye(), Team.createBye(), 0, frameFactory);
         this.key1 = new BaseStats_Key(super.getID(), 0);
         this.key2 = new BaseStats_Key(super.getID(), 0);
-        this.frameFactory = frameFactory;
         this.isPlayed = false;
         this.isBye = true;
         this.isDraw = false;
-        updateCloud_Match();
     }
 
 
     // --- MATCH OVERRIDE ---
     @Override
-    public Team createByeParty() {
-        return new Team();
+    public void playOutMatch(){
+        handleBye();
+        if(!super.isBye){
+            this.playMatch();
+        }
+        this.recordMatch();
+        this.updateCloud_Match();
+        log.info("Match: {} Played", this.getID());
     }
 
     @Override
-    public void playOutMatch(){
-        playMatch();
-        recordMatch();
-        log.info("Match: {} Played", this.getID());
+    public Team createByeParty() {
+        return new Team();
     }
 
     @Override
@@ -90,9 +89,6 @@ public class Match_Team extends Match<Team>{
                 loser = null;
             }
         }
-        recordPlayerInTeam_Match();
-        recordTeam_Match();
-        updateCloud_Match();
         log.info("Played Match_Team: {} vs {}. Result: {}", party1.getName(), party2.getName(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
 
@@ -160,7 +156,6 @@ public class Match_Team extends Match<Team>{
     public void recordMatch(){
         recordPlayerInTeam_Match();
         recordTeam_Match();
-        updateCloud_Match();
     }
 }
 

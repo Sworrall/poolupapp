@@ -46,9 +46,13 @@ public class Frame_Team extends Frame<Team> {
 
     // --- INTERFACE ---
     @Override
-    public void recordFrame() {
-        recordTeam_Frame();
-        recordPlayerInTeam_Frame();
+    public void playOutFrame() {
+        handleBye();
+        if(!super.isBye()){
+            this.playFrame();
+        }
+        this.recordFrame();
+        this.updateCloud_Frame();
         log.info("Frame recorded for Frame ID: {}", super.getID());
     }
 
@@ -87,5 +91,10 @@ public class Frame_Team extends Frame<Team> {
     public void recordPlayerInTeam_Frame() {
         BaseStats_Service.applyEvent(frameKeyA, StatField.FRAME_TOTAL, playerA);
         BaseStats_Service.applyEvent(frameKeyB, StatField.FRAME_TOTAL, playerB);
+    }
+
+    public void recordFrame(){
+        recordTeam_Frame();
+        recordPlayerInTeam_Frame();
     }
 }

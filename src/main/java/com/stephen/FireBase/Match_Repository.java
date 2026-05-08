@@ -43,8 +43,8 @@ public class Match_Repository<S extends StatHolder<S>> {
             data.put("type", match.getType());
             data.put("party1ID", String.valueOf(match.getParty1().getID()));
             data.put("party2ID", String.valueOf(match.getParty2().getID()));
-            data.put("winnerID", match.isPlayed() ? String.valueOf(match.getWinner().getID()) : null);
-            data.put("loserID", match.isPlayed() ? String.valueOf(match.getLoser().getID()) : null);
+            data.put("winnerID", (match.isPlayed() && !match.isDraw()) ? String.valueOf(match.getWinner().getID()) : null);
+            data.put("loserID",  (match.isPlayed() && !match.isDraw()) ? String.valueOf(match.getLoser().getID()) : null);
             data.put("isBye", match.isBye());
             data.put("isPlayed", match.isPlayed());
             data.put("isDraw", match.isDraw());

@@ -1,6 +1,8 @@
 package com.stephen.Frame;
 
 import java.util.ArrayList;
+
+import com.stephen.BaseStats.BaseStats;
 import com.stephen.FireBase.Frame_Repository;
 import com.stephen.Functions.ID;
 import com.stephen.Player.Player;
@@ -110,16 +112,16 @@ public abstract class Frame<S extends StatHolder<S>> extends ID {
 
     // --- LOGIC ---
     public void playOutFrame(){
-        this.handleBye(this.party1, this.party2);
+        handleBye();
         if(!isBye){
             this.playFrame();
-            this.recordFrame();
         }
+        this.recordFrame();
         this.updateCloud_Frame();
         log.info("Frame Played: {}", this.getID());
     }
 
-    public void handleBye(S home ,S away){
+    public void handleBye(){
         if(party1.isBye() && party2.isBye()){
             isBye = true;
             isPlayed = true;

@@ -56,8 +56,12 @@ public class Match_Doubles extends Match<Doubles>{
 
     @Override
     public void playOutMatch(){
-        playMatch();
+        handleBye();
+        if(!super.isBye){
+            playMatch();
+        }
         recordMatch();
+        updateCloud_Match();
         log.info("Match {} Played", this.getID());
     }
 
@@ -88,9 +92,6 @@ public class Match_Doubles extends Match<Doubles>{
                 loser = null;
             }
         }
-        recordDoublesTeam_Match();
-        recordDoublesPlayer_Match();
-        updateCloud_Match();
         log.info("Played Match_Doubles: {}. Result: {}",
                 super.errorCapture(), isDraw ? "Draw" : (getWinner().getName() + " wins"));
     }
@@ -160,6 +161,5 @@ public class Match_Doubles extends Match<Doubles>{
     public void recordMatch() {
         recordDoublesPlayer_Match();
         recordDoublesTeam_Match();
-        updateCloud_Match();
     }
 }
