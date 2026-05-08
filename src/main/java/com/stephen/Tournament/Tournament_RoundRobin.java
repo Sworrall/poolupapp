@@ -28,7 +28,7 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         this.matchFactory = matchFactory;
         this.rankingStrategy = new Ranking_Points<>();
         this.leaderboard = new Leaderboard<>(partyList, super.getID(), rankingStrategy);
-        generateTeamList();
+        generatePartyList();
         generateFixturesRR();
         updateCloud_Tournament();
     }
@@ -41,9 +41,15 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         log.info("Cloud Tournament updated");
     }
 
+    @Override
+    public void playOutTournament() {
+        playAll_SIM();
+        updateCloud_Tournament();
+    }
+
     // --- FUNCTIONS ---
-    public void generateTeamList() {
-        if(super.partyList.size() % 2 == 1) partyList.add(partyList.getFirst().createByeParty());
+    public void generatePartyList() {
+        if(super.partyList.size() % 2 == 1) partyList.add(super.createByeParty());
         Collections.shuffle(partyList);
     }
 
@@ -60,17 +66,14 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
         log.info("Generated {} RoundRobin fixtures", matchList.size());
     }
 
-    public ArrayList<S> playAll_SIM() {
-        ArrayList<S> winners = new ArrayList<>();
+    public void playAll_SIM() {
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
             for (Match<S> m : fixturesList) {
                 if(!m.isPlayed()){
                     m.playOutMatch();
-                    winners.add(m.getWinner());
                 }
             }
         }
-        return winners;
     }
 
     public boolean playAllCheck() {
@@ -87,8 +90,8 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
 
     public ArrayList<S> getPremote(int premoteAmount){
         if(playAllCheck()){
-            ArrayList<S> Premoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_WIN);
-            return new ArrayList<>(Premoted.subList(0, premoteAmount));
+            ArrayList<S> premoted = (leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_WIN);
+            return new ArrayList<>(premoted.subList(0, premoteAmount));
         }else{
             log.warn("Not all matches have been played. getPremoted failed.");
             throw new IllegalStateException("Not all matches have been played. getPremoted failed.");
@@ -97,8 +100,8 @@ public class Tournament_RoundRobin <S extends StatHolder<S>> extends Tournament<
     
     public ArrayList<S> getDemote(int DemoteAmount){
         if(playAllCheck()){
-            ArrayList<S> Demoted = ((Ranking_Points<S>) leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_WIN);
-            return new ArrayList<>(Demoted.subList(Demoted.size() - DemoteAmount, Demoted.size()));
+            ArrayList<S> demoted = (leaderboard.getStrategy()).rank(getAllParties(), super.getID(), StatField.MATCH_WIN);
+            return new ArrayList<>(demoted.subList(demoted.size() - DemoteAmount, demoted.size()));
         }else{
             log.warn("Not all matches have been played. getDemote failed.");
             throw new IllegalStateException("Not all matches have been played. getDemote failed.");

@@ -29,6 +29,12 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
     }
 
 
+    // --- ABSTRACT ---
+    public abstract void playOutTournament();
+
+    public abstract void generatePartyList();
+
+
     // --- FIRESTORE ---
     public void updateCloud_Tournament(){
         Tournament_Repository<S> tournamentRepository = new Tournament_Repository<>(this);
@@ -95,7 +101,7 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
     }
 
 
-    // --- MISC ---
+    // --- LOGIC ---
     public void setPositions(ArrayList<S> positions){
         log.info("Setting positions for the tournament...");
         if (positions.size() < 4) {
@@ -106,5 +112,9 @@ public abstract class Tournament<S extends StatHolder<S>> extends ID {
         this.place2 = positions.get(1);
         this.place3 = positions.get(2);
         this.place4 = positions.get(3);
+    }
+
+    public S createByeParty() {
+        return this.partyList.getFirst().createByeParty();
     }
 }

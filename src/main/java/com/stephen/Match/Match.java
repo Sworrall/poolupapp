@@ -76,7 +76,6 @@ public abstract class Match <S extends StatHolder<S>> extends ID {
     // --- ABSTRACT METHODS ---
     public abstract void playMatch();
 
-    // --- MATCH OVERRIDE ---
     public abstract void playOutMatch();
 
     public abstract S createByeParty();

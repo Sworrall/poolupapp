@@ -20,7 +20,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = isRandom;
-        this.generateTeamList();
+        this.generatePartyList();
         updateCloud_Tournament();
     }
 
@@ -28,8 +28,26 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         super(allParties);
         this.matchFactory = matchFactory;
         this.isRandom = true;
-        this.generateTeamList();
+        this.generatePartyList();
         updateCloud_Tournament();
+    }
+
+
+    // --- TOURNAMENT OVERRIDE ---
+    @Override
+    public void playOutTournament() {
+        generatePartyList();
+        playAll();
+        updateCloud_Tournament();
+
+        log.info("Killer Tournament {} complete.", super.getID());
+    }
+
+    @Override
+    public void generatePartyList() {
+        if(super.partyList.size() % 2 == 1) partyList.add(super.createByeParty());
+        if(this.isRandom) Collections.shuffle(partyList);
+        log.info("Generated Party List: {}", partyList.size());
     }
 
 
@@ -42,13 +60,7 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
 
 
     // --- FUNCTIONS ---
-    public void generateTeamList() {
-        if(super.partyList.size() % 2 == 1) partyList.add(partyList.getFirst().createByeParty());
-        if(this.isRandom) Collections.shuffle(partyList);
-        log.info("Generated Party List: {}", partyList.size());
-    }
-
-    public ArrayList<S> playAll(ArrayList<Match<S>> matchList) {
+    public void playAll() {
         ArrayList<S> winners = new ArrayList<>();
         for (ArrayList<Match<S>> fixturesList : super.matchList) {
             for (Match<S> m : fixturesList) {
@@ -60,6 +72,5 @@ public class Tournament_Killer  <S extends StatHolder<S>> extends Tournament<S>{
         }
         updateCloud_Tournament();
         log.info("Round completed. {} winners.", winners.size());
-        return winners;
     }
 }

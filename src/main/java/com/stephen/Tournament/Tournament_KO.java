@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 
 
 public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
+    private ArrayList<S> activePartyList;
     private final int frameCount;
     private final Match_Factory<S> matchFactory;
     private final Leaderboard<S> leaderboard;
@@ -26,6 +27,7 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     // --- CONSTRUCTOR ---
     public Tournament_KO(ArrayList<S> partyList, int frameCount, Match_Factory<S> matchFactory){
         super(partyList);
+        activePartyList = partyList;
         this.frameCount = frameCount;
         this.matchFactory = matchFactory;
         this.eliminationStrategy = new Ranking_Elimination<>();
@@ -35,9 +37,31 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
             log.error("Not enough Parties to create this tournament. Minimum 4 parties required, but only {} provided.", super.getAllParties().size());
             throw new IllegalStateException("Not enough Parties to create this tournament");
         }
+        generateKORoundFixtures(super.partyList);
         updateCloud_Tournament();
     }
 
+
+    // TOURNAMENT OVERRIDE ---
+    @Override
+    public void playOutTournament() {
+        playTournament();
+        if(super.isComplete){
+            log.info("Tournament {} Finished", super.getID());
+        }else{
+            log.info("Tournament {} Failed", super.getID());
+        }
+        updateCloud_Tournament();
+    }
+
+    @Override
+    public void generatePartyList() {
+        while (!Functions.calcPowerOf2(super.partyList.size())) {
+            super.partyList.add(createByeParty());
+        }
+        Collections.shuffle(partyList);
+        log.info("GroupStage Party list generated and shuffled. Total parties: {}", partyList.size());
+    }
 
     // --- FIREBASE ---
     public void updateCloud_Tournament(){
@@ -59,60 +83,42 @@ public class Tournament_KO<S extends StatHolder<S>> extends Tournament<S> {
     }
 
 
-    // --- LOGIC ---
-    public void generatePartyList() {
-        ArrayList<S> parties = super.getAllParties();
-        int i = 0;
-        while (!Functions.calcPowerOf2(super.getAllParties().size())) {
-            parties.add(parties.getFirst().createByeParty());
-            i++;
-        }
-        Collections.shuffle(super.getAllParties());
-        super.partyList = parties;
-        log.info("Generated parties: {}. Total parties: {}", i, parties.size());
-    }
-
-    public ArrayList<Match<S>> generateKORoundFixtures(ArrayList<S> partyList) {
+    public void generateKORoundFixtures(ArrayList<S> partyList) {
         ArrayList<Match<S>> matchList = new ArrayList<>();
-        int i = 0;
         for (int j = 0; j < partyList.size(); j += 2) {
-            while(super.matchList.get(i).isEmpty()) {
-                i++;
-            }
             Match<S> match = matchFactory.createMatch(partyList.get(j), partyList.get(j + 1), this.frameCount);
             matchList.add(match);
         }
         super.matchList.add(matchList);
-        updateCloud_Tournament();
         log.info("Generated KO Round Fixtures");
-        return matchList;
     }
 
-    public ArrayList<S> playRound(ArrayList<Match<S>> matchList) {
-        ArrayList<S> partiesThrough = new ArrayList<>();
+
+    // --- LOGIC ---
+    public void playRound(ArrayList<Match<S>> matchList) {
+        activePartyList.clear();
         for (Match<S> m : matchList) {
             m.playOutMatch();
-            partiesThrough.add(m.getWinner());
+            this.activePartyList.add(m.getWinner());
         }
         updateCloud_Tournament();
-        log.info("Round complete. {} through {} matches played", partiesThrough.size(), matchList.size());
-        return partiesThrough;
+        log.info("Round complete. {} through {} matches played", activePartyList.size(), matchList.size());
     }
 
-    public void simPlayTournament() {
-        ArrayList<Match<S>> generatedMatches = generateKORoundFixtures(partyList);
-        ArrayList<S> throughParties = playRound(generatedMatches);
+    public void playTournament() {
+        playRound(super.matchList.getFirst());
         for (int i = 1; i < getRounds(); i++) {
-            generatedMatches = generateKORoundFixtures(throughParties);
-            throughParties = playRound(generatedMatches);
+            generateKORoundFixtures(activePartyList);
+            playRound(super.matchList.get(i));
         }
         leaderboard.rank();
         ArrayList<S> winnerBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getWinnerBracket(partyList, super.getID(), StatField.MATCH_WIN);
         ArrayList<S> loserBracket = ((Ranking_Elimination<S>) leaderboard.getStrategy()).getLoserBracket(partyList, super.getID(), StatField.MATCH_LOSS);
-        if (throughParties.size() == 1) {
-            setPlace1(throughParties.getFirst());
+        if (activePartyList.size() == 1) {
+            setPlace1(activePartyList.getFirst());
         }
+        super.isComplete = true;
         updateCloud_Tournament();
-        log.info("Tournament simulation complete. Winner: {}", throughParties.getFirst().getName());
+        log.info("Tournament simulation complete. Winner: {}", activePartyList.getFirst().getName());
     }
 }
