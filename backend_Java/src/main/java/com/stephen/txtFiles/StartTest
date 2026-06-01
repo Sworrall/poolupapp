@@ -1,0 +1,19 @@
+ngrok: - server
+    BASH
+        ngrok http 8080
+https://hurdle-activism-elective.ngrok-free.dev
+
+Springboot - database
+    InteliJ Terminal
+        run main method
+
+Start DB
+    BASH
+        pg_ctl -D /opt/homebrew/var/postgresql@16 start
+        pg_isready
+    Verify Backend is alive:
+        BASH
+            lsof -i :5432
+
+
+Postman - test db / server

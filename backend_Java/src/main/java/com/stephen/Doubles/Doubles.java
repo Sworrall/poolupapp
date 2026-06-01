@@ -1,0 +1,100 @@
+package com.stephen.Doubles;
+
+import com.stephen.Player.Player;
+import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Objects;
+
+@Entity
+@Table(name = "doubles")
+public class Doubles {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doubles_seq")
+    @SequenceGenerator(name = "doubles_seq", sequenceName = "doubles_seq", allocationSize = 1)
+    private Long ID;
+
+    @Column(name = "team_name")
+    private String teamName;
+
+    @ManyToOne
+    @JoinColumn(name = "player1_id")
+    private Player player1;
+
+    @ManyToOne
+    @JoinColumn(name = "player2_id")
+    private Player player2;
+
+    @ManyToOne
+    @JoinColumn(name = "captain_id")
+    private Player captain;
+
+    @Embedded
+    private Doubles_ContactDetails contactDetails;
+
+    @Column(name = "is_bye", nullable = false)
+    private boolean isBye = false;
+
+    @Column(name = "firebase_uid", unique = true)
+    private String firebaseUID;
+
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    protected Doubles() {}
+
+    // --- FACTORY ---
+    public static Doubles createBye() {
+        Doubles bye = new Doubles();
+        bye.teamName = "BYE";
+        bye.isBye = true;
+        return bye;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+    }
+
+    // --- PLAYER MANAGEMENT ---
+    public void setPlayers(Player p1, Player p2) {
+        Objects.requireNonNull(p1, "Player 1 cannot be null");
+        Objects.requireNonNull(p2, "Player 2 cannot be null");
+        if (p1.isBye() || p2.isBye()) throw new IllegalArgumentException("Cannot add bye player to doubles team");
+        if (p1.getID().equals(p2.getID())) throw new IllegalArgumentException("Players must be different");
+        this.player1 = p1;
+        this.player2 = p2;
+    }
+
+    public void setCaptain(Player captain) {
+        if (captain == null || captain.isBye()) throw new IllegalArgumentException("Invalid captain");
+        if (!captain.getID().equals(player1.getID()) && !captain.getID().equals(player2.getID())) {
+            throw new IllegalArgumentException("Captain must be one of the two players");
+        }
+        this.captain = captain;
+    }
+
+    // --- GETTERS & SETTERS ---
+    public Long getID() { return ID; }
+
+    public String getTeamName() { return teamName; }
+    public void setTeamName(String teamName) {
+        this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
+    }
+
+    public Player getPlayer1() { return player1; }
+    public Player getPlayer2() { return player2; }
+    public Player getCaptain() { return captain; }
+
+    public Doubles_ContactDetails getContactDetails() { return contactDetails; }
+    public void setContactDetails(Doubles_ContactDetails contactDetails) {
+        this.contactDetails = contactDetails;
+    }
+
+    public boolean isBye() { return isBye; }
+
+    public String getFirebaseUID() { return firebaseUID; }
+    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+
+    public Instant getCreatedAt() { return createdAt; }
+}

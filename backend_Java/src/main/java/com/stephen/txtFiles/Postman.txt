@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/players
+Content-Type: application/json
+
+{
+  "firstName": "Stephen",
+  "lastName": "Smith",
+  "nickName": "Stevie",
+  "firebaseUid": "firebase-uid-abc123"
+}
