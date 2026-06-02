@@ -19,21 +19,21 @@ public class Doubles_Service {
     }
 
     public Doubles createDoubles(Doubles_Request req) {
-        if (req.getFirebaseUID() != null && doublesRepo.existsByFirebaseUID(req.getFirebaseUID())) {
+        if (req.getFirebaseUid() != null && doublesRepo.existsByFirebaseUid(req.getFirebaseUid())) {
             throw new IllegalArgumentException(
-                    "A doubles pair already exists for Firebase UID: " + req.getFirebaseUID());
+                    "A doubles pair already exists for Firebase Uid: " + req.getFirebaseUid());
         }
 
-        Player p1 = playerRepo.findByID(req.getPlayer1ID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1ID()));
-        Player p2 = playerRepo.findByID(req.getPlayer2ID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2ID()));
+        Player p1 = playerRepo.findById(req.getPlayer1Id())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1Id()));
+        Player p2 = playerRepo.findById(req.getPlayer2Id())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2Id()));
 
         Doubles doubles = new Doubles();
         doubles.setPlayers(p1, p2);
 
         if (req.getTeamName() != null) doubles.setTeamName(req.getTeamName());
-        if (req.getFirebaseUID() != null) doubles.setFirebaseUID(req.getFirebaseUID());
+        if (req.getFirebaseUid() != null) doubles.setFirebaseUid(req.getFirebaseUid());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
             doubles.setContactDetails(new Doubles_ContactDetails(
                     req.getPhoneNumber(), req.getAddress()));
@@ -42,27 +42,27 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Optional<Doubles> getByID(Long ID) {
-        return doublesRepo.findByID(ID);
+    public Optional<Doubles> getById(Long Id) {
+        return doublesRepo.findById(Id);
     }
 
-    public Optional<Doubles> getByFirebaseUID(String uID) {
-        return doublesRepo.findByFirebaseUID(uID);
+    public Optional<Doubles> getByFirebaseUid(String uId) {
+        return doublesRepo.findByFirebaseUid(uId);
     }
 
     public List<Doubles> getAllDoubles() {
         return doublesRepo.findAll();
     }
 
-    public Doubles updateDoubles(Long ID, Doubles_Request req) {
-        Doubles doubles = doublesRepo.findByID(ID)
-                .orElseThrow(() -> new DoublesNotFoundException(ID));
+    public Doubles updateDoubles(Long Id, Doubles_Request req) {
+        Doubles doubles = doublesRepo.findById(Id)
+                .orElseThrow(() -> new DoublesNotFoundException(Id));
 
-        if (req.getPlayer1ID() != null && req.getPlayer2ID() != null) {
-            Player p1 = playerRepo.findByID(req.getPlayer1ID())
-                    .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1ID()));
-            Player p2 = playerRepo.findByID(req.getPlayer2ID())
-                    .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2ID()));
+        if (req.getPlayer1Id() != null && req.getPlayer2Id() != null) {
+            Player p1 = playerRepo.findById(req.getPlayer1Id())
+                    .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1Id()));
+            Player p2 = playerRepo.findById(req.getPlayer2Id())
+                    .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2Id()));
             doubles.setPlayers(p1, p2);
         }
 
@@ -75,16 +75,16 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Doubles setCaptain(Long doublesID, Long playerID) {
-        Doubles doubles = doublesRepo.findByID(doublesID)
-                .orElseThrow(() -> new DoublesNotFoundException(doublesID));
-        Player player = playerRepo.findByID(playerID)
-                .orElseThrow(() -> new PlayerNotFoundException(playerID));
+    public Doubles setCaptain(Long doublesId, Long playerId) {
+        Doubles doubles = doublesRepo.findById(doublesId)
+                .orElseThrow(() -> new DoublesNotFoundException(doublesId));
+        Player player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         doubles.setCaptain(player);
         return doublesRepo.save(doubles);
     }
 
-    public void deleteDoubles(Long ID) {
-        doublesRepo.deleteByID(ID);
+    public void deleteDoubles(Long Id) {
+        doublesRepo.deleteById(Id);
     }
 }

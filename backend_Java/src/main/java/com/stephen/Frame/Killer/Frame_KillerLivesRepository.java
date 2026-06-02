@@ -11,11 +11,11 @@ public interface Frame_KillerLivesRepository extends JpaRepository<Frame_KillerL
      * All player-lives records for a given killer frame.
      * Used to retrieve current lives state during result recording.
      */
-    List<Frame_KillerLives> findByFrameID(Long frameID);
+    List<Frame_KillerLives> findByFrameId(Long frameId);
 
     /**
      * Lives record for a specific player within a specific frame.
      * Used to update a single player's lives after a frame result.
      */
-    java.util.Optional<Frame_KillerLives> findByFrameIDAndPlayerID(Long frameID, Long playerID);
+    java.util.Optional<Frame_KillerLives> findByFrameIdAndPlayerId(Long frameId, Long playerId);
 }

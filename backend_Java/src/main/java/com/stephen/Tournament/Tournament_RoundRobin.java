@@ -18,8 +18,8 @@ public class Tournament_RoundRobin extends Tournament {
     protected Tournament_RoundRobin() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_RoundRobin(List<Long> partyIDs, PartyType partyType, int frameCount) {
-        super(partyIDs, partyType);
+    public Tournament_RoundRobin(List<Long> partyIds, PartyType partyType, int frameCount) {
+        super(partyIds, partyType);
         this.frameCount = frameCount;
     }
 

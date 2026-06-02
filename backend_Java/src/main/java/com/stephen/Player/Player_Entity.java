@@ -10,7 +10,7 @@ public class Player_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
     @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -31,7 +31,7 @@ public class Player_Entity {
     private boolean isCaptain = false;
 
     @Column(name = "firebase_uid", unique = true)
-    private String firebaseUID; // links this player to their Firebase auth account
+    private String firebaseUid; // links this player to their Firebase auth account
 
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -42,7 +42,7 @@ public class Player_Entity {
     }
 
     // --- Getters & Setters ---
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -62,8 +62,8 @@ public class Player_Entity {
     public boolean isCaptain() { return isCaptain; }
     public void setCaptain(boolean captain) { isCaptain = captain; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 
     public Instant getCreatedAt() { return createdAt; }
 }

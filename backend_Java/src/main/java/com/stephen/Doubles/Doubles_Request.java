@@ -2,27 +2,27 @@ package com.stephen.Doubles;
 
 public class Doubles_Request {
 
-    private Long player1ID;
-    private Long player2ID;
+    private Long player1Id;
+    private Long player2Id;
     private String teamName;
-    private String firebaseUID;
+    private String firebaseUid;
     private String phoneNumber;
     private String address;
 
     public Doubles_Request() {}
 
     // --- GETTERS & SETTERS ---
-    public Long getPlayer1ID() { return player1ID; }
-    public void setPlayer1ID(Long player1ID) { this.player1ID = player1ID; }
+    public Long getPlayer1Id() { return player1Id; }
+    public void setPlayer1Id(Long player1Id) { this.player1Id = player1Id; }
 
-    public Long getPlayer2ID() { return player2ID; }
-    public void setPlayer2ID(Long player2ID) { this.player2ID = player2ID; }
+    public Long getPlayer2Id() { return player2Id; }
+    public void setPlayer2Id(Long player2Id) { this.player2Id = player2Id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) { this.teamName = teamName; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }

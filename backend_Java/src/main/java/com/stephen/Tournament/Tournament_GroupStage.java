@@ -30,9 +30,9 @@ public class Tournament_GroupStage extends Tournament {
     protected Tournament_GroupStage() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_GroupStage(List<Long> partyIDs, PartyType partyType,
+    public Tournament_GroupStage(List<Long> partyIds, PartyType partyType,
                                  int groupCount, int frameCount, boolean isRandom) {
-        super(partyIDs, partyType);
+        super(partyIds, partyType);
         this.groupCount = groupCount;
         this.frameCount = frameCount;
         this.isRandom = isRandom;

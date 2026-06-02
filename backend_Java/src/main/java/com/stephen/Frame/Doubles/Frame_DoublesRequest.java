@@ -1,12 +1,12 @@
 package com.stephen.Frame.Doubles;
 
 public class Frame_DoublesRequest {
-    private Long doublesAID;
-    private Long doublesBID;
+    private Long doublesAid;
+    private Long doublesBid;
 
-    public Long getDoublesAID() { return doublesAID; }
-    public void setDoublesAID(Long ID) { this.doublesAID = ID; }
+    public Long getDoublesAid() { return doublesAid; }
+    public void setDoublesAid(Long Id) { this.doublesAid = Id; }
 
-    public Long getDoublesBID() { return doublesBID; }
-    public void setDoublesBID(Long ID) { this.doublesBID = ID; }
+    public Long getDoublesBid() { return doublesBid; }
+    public void setDoublesBid(Long Id) { this.doublesBid = Id; }
 }

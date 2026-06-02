@@ -21,7 +21,7 @@ public class Team_Service {
     public Team createTeam(Team_Request req) {
         Team team = new Team();
         team.setTeamName(req.getTeamName());
-        team.setFirebaseUID(req.getFirebaseUID());
+        team.setFirebaseUid(req.getFirebaseUid());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
             team.setContactDetails(new Team_ContactDetails(
                     req.getPhoneNumber(), req.getAddress()
@@ -30,17 +30,17 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Optional<Team> getByID(Long ID) {
-        return teamRepo.findByID(ID);
+    public Optional<Team> getById(Long Id) {
+        return teamRepo.findById(Id);
     }
 
     public List<Team> getAllTeams() {
         return teamRepo.findAll();
     }
 
-    public Team updateTeam(Long ID, Team_Request req) {
-        Team team = teamRepo.findByID(ID)
-                .orElseThrow(() -> new TeamNotFoundException(ID));
+    public Team updateTeam(Long Id, Team_Request req) {
+        Team team = teamRepo.findById(Id)
+                .orElseThrow(() -> new TeamNotFoundException(Id));
         team.setTeamName(req.getTeamName());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
             team.setContactDetails(new Team_ContactDetails(
@@ -50,34 +50,34 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Team addPlayer(Long teamID, Long playerID) {
-        Team team = teamRepo.findByID(teamID)
-                .orElseThrow(() -> new TeamNotFoundException(teamID));
-        Player player = playerRepo.findByID(playerID)
-                .orElseThrow(() -> new PlayerNotFoundException(playerID));
+    public Team addPlayer(Long teamId, Long playerId) {
+        Team team = teamRepo.findById(teamId)
+                .orElseThrow(() -> new TeamNotFoundException(teamId));
+        Player player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.addPlayer(player);
         return teamRepo.save(team);
     }
 
-    public Team removePlayer(Long teamID, Long playerID) {
-        Team team = teamRepo.findByID(teamID)
-                .orElseThrow(() -> new TeamNotFoundException(teamID));
-        Player player = playerRepo.findByID(playerID)
-                .orElseThrow(() -> new PlayerNotFoundException(playerID));
+    public Team removePlayer(Long teamId, Long playerId) {
+        Team team = teamRepo.findById(teamId)
+                .orElseThrow(() -> new TeamNotFoundException(teamId));
+        Player player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.removePlayer(player);
         return teamRepo.save(team);
     }
 
-    public Team setCaptain(Long teamID, Long playerID) {
-        Team team = teamRepo.findByID(teamID)
-                .orElseThrow(() -> new TeamNotFoundException(teamID));
-        Player player = playerRepo.findByID(playerID)
-                .orElseThrow(() -> new PlayerNotFoundException(playerID));
+    public Team setCaptain(Long teamId, Long playerId) {
+        Team team = teamRepo.findById(teamId)
+                .orElseThrow(() -> new TeamNotFoundException(teamId));
+        Player player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.setCaptain(player);
         return teamRepo.save(team);
     }
 
-    public void deleteTeam(Long ID) {
-        teamRepo.deleteByID(ID);
+    public void deleteTeam(Long Id) {
+        teamRepo.deleteById(Id);
     }
 }

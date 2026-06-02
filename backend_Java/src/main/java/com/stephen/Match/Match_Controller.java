@@ -36,31 +36,31 @@ public class Match_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Match> getMatch(@PathVariable Long ID) {
-        return matchService.getByID(ID)
+    public ResponseEntity<Match> getMatch(@PathVariable Long Id) {
+        return matchService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/slots")
-    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long ID) {
-        return ResponseEntity.ok(matchService.getSlotsForMatch(ID));
+    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long Id) {
+        return ResponseEntity.ok(matchService.getSlotsForMatch(Id));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-a")
     public ResponseEntity<Match_Slot> assignPlayerA(
-            @PathVariable Long matchID,
+            @PathVariable Long matchId,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerA(matchID, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerA(matchId, slotNumber, req));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-b")
     public ResponseEntity<Match_Slot> assignPlayerB(
-            @PathVariable Long matchID,
+            @PathVariable Long matchId,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerB(matchID, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerB(matchId, slotNumber, req));
     }
 
     @GetMapping("/unplayed")

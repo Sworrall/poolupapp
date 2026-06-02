@@ -2,21 +2,21 @@ package com.stephen.Tournament;
 
 import java.util.List;
 
-public class Tournament_Request_GroupStage {
+public class Tournament_GroupStage_Request {
 
-    private List<Long> partyIDs;
+    private List<Long> partyIds;
     private PartyType partyType;
     private int groupCount;
     private int frameCount;
     private boolean isRandom = true;
 
     // --- JPA ---
-    public Tournament_Request_GroupStage() {}
+    public Tournament_GroupStage_Request() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_Request_GroupStage(List<Long> partyIDs, PartyType partyType,
+    public Tournament_GroupStage_Request(List<Long> partyIds, PartyType partyType,
                                          int groupCount, int frameCount, boolean isRandom) {
-        this.partyIDs = partyIDs;
+        this.partyIds = partyIds;
         this.partyType = partyType;
         this.groupCount = groupCount;
         this.frameCount = frameCount;
@@ -24,8 +24,8 @@ public class Tournament_Request_GroupStage {
     }
 
     // --- GETTERS ---
-    public List<Long> getPartyIDs() {
-        return partyIDs;
+    public List<Long> getPartyIds() {
+        return partyIds;
     }
 
     public PartyType getPartyType() {
@@ -45,8 +45,8 @@ public class Tournament_Request_GroupStage {
     }
 
     // --- SETTERS ---
-    public void setPartyIDs(List<Long> partyIDs) {
-        this.partyIDs = partyIDs;
+    public void setPartyIds(List<Long> partyIds) {
+        this.partyIds = partyIds;
     }
 
     public void setPartyType(PartyType partyType) {

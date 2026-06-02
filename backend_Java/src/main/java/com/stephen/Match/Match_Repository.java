@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface Match_Repository extends JpaRepository<Match, Long> {
     List<Match> findByIsPlayed(boolean isPlayed);
     List<Match> findByIsBye(boolean isBye);
-    Optional<Match_Slot> findByFrameID(Long frameID);
-    Optional<Match_Slot> findByFrameIDAndIsPlayed(Long frameID, boolean isPlayed);
-    Optional<Match_Slot> findByFrameIDAndIsBye(Long frameID, boolean isBye);
-    Optional<Match> findByID(Long ID);
+    Optional<Match_Slot> findByFrameId(Long frameId);
+    Optional<Match_Slot> findByFrameIdAndIsPlayed(Long frameId, boolean isPlayed);
+    Optional<Match_Slot> findByFrameIdAndIsBye(Long frameId, boolean isBye);
+    Optional<Match> findById(Long Id);
 }

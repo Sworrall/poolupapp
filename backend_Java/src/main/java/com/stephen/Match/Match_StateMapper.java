@@ -13,7 +13,7 @@ public class Match_StateMapper {
 
     public Match_StateDTO toDTO(Match match, List<Match_Slot> slots) {
         Match_StateDTO dto = new Match_StateDTO();
-        dto.setMatchID(match.getID());
+        dto.setMatchId(match.getId());
         dto.setPlayed(match.isPlayed());
         dto.setDraw(match.isDraw());
         dto.setBye(match.isBye());
@@ -22,18 +22,18 @@ public class Match_StateMapper {
         switch (match) {
             case Match_Singles m -> {
                 dto.setMatchType("SINGLES");
-                if (m.getWinner() != null) dto.setWinnerID(m.getWinner().getID());
-                if (m.getLoser() != null) dto.setLoserID(m.getLoser().getID());
+                if (m.getWinner() != null) dto.setWinnerId(m.getWinner().getId());
+                if (m.getLoser() != null) dto.setLoserId(m.getLoser().getId());
             }
             case Match_Doubles m -> {
                 dto.setMatchType("DOUBLES");
-                if (m.getWinner() != null) dto.setWinnerID(m.getWinner().getID());
-                if (m.getLoser() != null) dto.setLoserID(m.getLoser().getID());
+                if (m.getWinner() != null) dto.setWinnerId(m.getWinner().getId());
+                if (m.getLoser() != null) dto.setLoserId(m.getLoser().getId());
             }
             case Match_Team m -> {
                 dto.setMatchType("TEAM");
-                if (m.getWinner() != null) dto.setWinnerID(m.getWinner().getID());
-                if (m.getLoser() != null) dto.setLoserID(m.getLoser().getID());
+                if (m.getWinner() != null) dto.setWinnerId(m.getWinner().getId());
+                if (m.getLoser() != null) dto.setLoserId(m.getLoser().getId());
             }
             default -> {
             }
@@ -49,21 +49,21 @@ public class Match_StateMapper {
         dto.setStatus(slot.getStatus().name());
 
         if (slot.getPlayerA() != null) {
-            dto.setPlayerAID(slot.getPlayerA().getID());
+            dto.setPlayerAId(slot.getPlayerA().getId());
             dto.setPlayerAName(slot.getPlayerA().getFullName());
         }
         if (slot.getPlayerB() != null) {
-            dto.setPlayerBID(slot.getPlayerB().getID());
+            dto.setPlayerBId(slot.getPlayerB().getId());
             dto.setPlayerBName(slot.getPlayerB().getFullName());
         }
         if (slot.getFrame() != null) {
-            dto.setFrameID(slot.getFrame().getID());
+            dto.setFrameId(slot.getFrame().getId());
             dto.setBreakDish(slot.getFrame().isBreakDish());
 
             if (slot.getFrame() instanceof Frame_Singles f && f.getWinner() != null) {
-                dto.setFrameWinnerID(f.getWinner().getID());
+                dto.setFrameWinnerId(f.getWinner().getId());
             } else if (slot.getFrame() instanceof Frame_Doubles f && f.getWinner() != null) {
-                dto.setFrameWinnerID(f.getWinner().getID());
+                dto.setFrameWinnerId(f.getWinner().getId());
             }
         }
         return dto;

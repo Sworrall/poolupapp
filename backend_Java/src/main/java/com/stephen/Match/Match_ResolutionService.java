@@ -22,19 +22,23 @@ public class Match_ResolutionService {
     }
 
     @Transactional
-    public void checkAndResolveMatch(Long matchID) {
-        Match match = matchRepo.findByID(matchID)
-                .orElseThrow(() -> new MatchNotFoundException(matchID));
+    public void checkAndResolveMatch(Long matchId) {
+        Match match = matchRepo.findById(matchId)
+                .orElseThrow(() -> new MatchNotFoundException(matchId));
 
-        List<Match_Slot> slots = slotRepo.findByMatchID(matchID);
+        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
 
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
         if (!allComplete) return;
 
-        if (match instanceof Match_Singles m) resolveSingles(m, slots);
-        else if (match instanceof Match_Doubles m) resolveDoubles(m, slots);
-        else if (match instanceof Match_Team m) resolveTeam(m, slots);
+        switch (match) {
+            case Match_Singles m -> resolveSingles(m, slots);
+            case Match_Doubles m -> resolveDoubles(m, slots);
+            case Match_Team m -> resolveTeam(m, slots);
+            default -> {
+            }
+        }
 
         matchRepo.save(match);
     }

@@ -17,18 +17,18 @@ public abstract class Tournament {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long Id;
 
     /**
      * Discriminates which party type participates in this tournament.
-     * Used by the service layer to resolve partyIDs to the correct repository.
+     * Used by the service layer to resolve partyIss to the correct repository.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "party_type", nullable = false)
     private PartyType partyType;
 
     /**
-     * Flat list of participant IDs. The service layer resolves these
+     * Flat list of participant Ids. The service layer resolves these
      * against Player_Repository, Doubles_Repository, or Team_Repository
      * depending on partyType. Stored as a joined collection table to avoid
      * a fixed-width column array.
@@ -40,21 +40,21 @@ public abstract class Tournament {
     )
     @Column(name = "party_id")
     @OrderColumn(name = "party_order")
-    private List<Long> partyIDs = new ArrayList<>();
+    private List<Long> partyIds = new ArrayList<>();
 
     // Podium — nullable until tournament is complete.
     // Resolved to full party objects by the service layer via partyType.
     @Column(name = "place1_id")
-    private Long place1ID;
+    private Long place1Id;
 
     @Column(name = "place2_id")
-    private Long place2ID;
+    private Long place2Id;
 
     @Column(name = "place3_id")
-    private Long place3ID;
+    private Long place3Id;
 
     @Column(name = "place4_id")
-    private Long place4ID;
+    private Long place4Id;
 
     @Column(name = "is_started", nullable = false)
     private boolean isStarted = false;
@@ -66,38 +66,38 @@ public abstract class Tournament {
     protected Tournament() {}
 
     // --- CONSTRUCTOR ---
-    protected Tournament(List<Long> partyIDs, PartyType partyType) {
-        this.partyIDs = new ArrayList<>(partyIDs);
+    protected Tournament(List<Long> partyIds, PartyType partyType) {
+        this.partyIds = new ArrayList<>(partyIds);
         this.partyType = partyType;
     }
 
     // --- GETTERS ---
-    public Long getID() {
-        return ID;
+    public Long getId() {
+        return Id;
     }
 
     public PartyType getPartyType() {
         return partyType;
     }
 
-    public List<Long> getPartyIDs() {
-        return partyIDs;
+    public List<Long> getPartyIds() {
+        return partyIds;
     }
 
-    public Long getPlace1ID() {
-        return place1ID;
+    public Long getPlace1Id() {
+        return place1Id;
     }
 
-    public Long getPlace2ID() {
-        return place2ID;
+    public Long getPlace2Id() {
+        return place2Id;
     }
 
-    public Long getPlace3ID() {
-        return place3ID;
+    public Long getPlace3Id() {
+        return place3Id;
     }
 
-    public Long getPlace4ID() {
-        return place4ID;
+    public Long getPlace4Id() {
+        return place4Id;
     }
 
     public boolean isStarted() {
@@ -109,24 +109,24 @@ public abstract class Tournament {
     }
 
     // --- SETTERS ---
-    public void setPartyIDs(List<Long> partyIDs) {
-        this.partyIDs = new ArrayList<>(partyIDs);
+    public void setPartyIds(List<Long> partyIds) {
+        this.partyIds = new ArrayList<>(partyIds);
     }
 
-    public void setPlace1ID(Long place1ID) {
-        this.place1ID = place1ID;
+    public void setPlace1Id(Long place1Id) {
+        this.place1Id = place1Id;
     }
 
-    public void setPlace2ID(Long place2ID) {
-        this.place2ID = place2ID;
+    public void setPlace2Id(Long place2Id) {
+        this.place2Id = place2Id;
     }
 
-    public void setPlace3ID(Long place3ID) {
-        this.place3ID = place3ID;
+    public void setPlace3Id(Long place3Id) {
+        this.place3Id = place3Id;
     }
 
-    public void setPlace4ID(Long place4ID) {
-        this.place4ID = place4ID;
+    public void setPlace4Id(Long place4Id) {
+        this.place4Id = place4Id;
     }
 
     public void setStarted(boolean started) {
@@ -138,17 +138,17 @@ public abstract class Tournament {
     }
 
     /**
-     * Convenience setter — accepts an ordered list of at least 4 IDs.
+     * Convenience setter — accepts an ordered list of at least 4 Ids.
      * Consistent with original setPositions() behaviour.
      */
     public void setPositions(List<Long> positions) {
         if (positions.size() < 4) {
-            log.error("setPositions requires at least 4 IDs, received {}", positions.size());
+            log.error("setPositions requires at least 4 Ids, received {}", positions.size());
             throw new IllegalArgumentException("Need at least 4 positions");
         }
-        this.place1ID = positions.get(0);
-        this.place2ID = positions.get(1);
-        this.place3ID = positions.get(2);
-        this.place4ID = positions.get(3);
+        this.place1Id = positions.get(0);
+        this.place2Id = positions.get(1);
+        this.place3Id = positions.get(2);
+        this.place4Id = positions.get(3);
     }
 }

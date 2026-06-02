@@ -2,25 +2,25 @@ package com.stephen.Tournament;
 
 import java.util.List;
 
-public class Tournament_Request_KO {
+public class Tournament_KO_Request {
 
-    private List<Long> partyIDs;
+    private List<Long> partyIds;
     private PartyType partyType;
     private int frameCount;
 
     // --- JPA ---
-    public Tournament_Request_KO() {}
+    public Tournament_KO_Request() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_Request_KO(List<Long> partyIDs, PartyType partyType, int frameCount) {
-        this.partyIDs = partyIDs;
+    public Tournament_KO_Request(List<Long> partyIds, PartyType partyType, int frameCount) {
+        this.partyIds = partyIds;
         this.partyType = partyType;
         this.frameCount = frameCount;
     }
 
     // --- GETTERS ---
-    public List<Long> getPartyIDs() {
-        return partyIDs;
+    public List<Long> getPartyIds() {
+        return partyIds;
     }
 
     public PartyType getPartyType() {
@@ -32,8 +32,8 @@ public class Tournament_Request_KO {
     }
 
     // --- SETTERS ---
-    public void setPartyIDs(List<Long> partyIDs) {
-        this.partyIDs = partyIDs;
+    public void setPartyIds(List<Long> partyIds) {
+        this.partyIds = partyIds;
     }
 
     public void setPartyType(PartyType partyType) {

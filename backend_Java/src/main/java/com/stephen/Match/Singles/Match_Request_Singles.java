@@ -1,20 +1,20 @@
 package com.stephen.Match.Singles;
 
 public class Match_Request_Singles {
-    private Long playerAID;
-    private Long playerBID;
-    private Long teamAID;
-    private Long teamBID;
+    private Long playerAId;
+    private Long playerBId;
+    private Long teamAId;
+    private Long teamBId;
     private int frameCount;
 
-    public Long getPlayerAID() { return playerAID; }
-    public void setPlayerAID(Long ID) { this.playerAID = ID; }
-    public Long getPlayerBID() { return playerBID; }
-    public void setPlayerBID(Long ID) { this.playerBID = ID; }
-    public Long getTeamAID() { return teamAID; }
-    public void setTeamAID(Long ID) { this.teamAID = ID; }
-    public Long getTeamBID() { return teamBID; }
-    public void setTeamBID(Long ID) { this.teamBID = ID; }
+    public Long getPlayerAId() { return playerAId; }
+    public void setPlayerAId(Long Id) { this.playerAId = Id; }
+    public Long getPlayerBId() { return playerBId; }
+    public void setPlayerBId(Long Id) { this.playerBId = Id; }
+    public Long getTeamAId() { return teamAId; }
+    public void setTeamAId(Long Id) { this.teamAId = Id; }
+    public Long getTeamBId() { return teamBId; }
+    public void setTeamBId(Long Id) { this.teamBId = Id; }
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
 }

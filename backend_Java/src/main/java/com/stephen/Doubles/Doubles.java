@@ -12,7 +12,7 @@ public class Doubles {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doubles_seq")
     @SequenceGenerator(name = "doubles_seq", sequenceName = "doubles_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @Column(name = "team_name")
     private String teamName;
@@ -36,7 +36,7 @@ public class Doubles {
     private boolean isBye = false;
 
     @Column(name = "firebase_uid", unique = true)
-    private String firebaseUID;
+    private String firebaseUid;
 
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -61,21 +61,21 @@ public class Doubles {
         Objects.requireNonNull(p1, "Player 1 cannot be null");
         Objects.requireNonNull(p2, "Player 2 cannot be null");
         if (p1.isBye() || p2.isBye()) throw new IllegalArgumentException("Cannot add bye player to doubles team");
-        if (p1.getID().equals(p2.getID())) throw new IllegalArgumentException("Players must be different");
+        if (p1.getId().equals(p2.getId())) throw new IllegalArgumentException("Players must be different");
         this.player1 = p1;
         this.player2 = p2;
     }
 
     public void setCaptain(Player captain) {
         if (captain == null || captain.isBye()) throw new IllegalArgumentException("Invalid captain");
-        if (!captain.getID().equals(player1.getID()) && !captain.getID().equals(player2.getID())) {
+        if (!captain.getId().equals(player1.getId()) && !captain.getId().equals(player2.getId())) {
             throw new IllegalArgumentException("Captain must be one of the two players");
         }
         this.captain = captain;
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {
@@ -93,8 +93,8 @@ public class Doubles {
 
     public boolean isBye() { return isBye; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 
     public Instant getCreatedAt() { return createdAt; }
 }

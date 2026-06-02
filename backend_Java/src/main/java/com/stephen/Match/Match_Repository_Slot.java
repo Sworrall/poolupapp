@@ -7,8 +7,8 @@ import java.util.Optional;
 
 @Repository
 public interface Match_Repository_Slot extends JpaRepository<Match_Slot, Long> {
-    List<Match_Slot> findByMatchID(Long matchID);
-    Optional<Match_Slot> findByMatchIDAndSlotNumber(Long matchID, int slotNumber);
-    List<Match_Slot> findByMatchIDAndStatus(Long matchID, Match_Slot.Status status);
-    Optional<Match_Slot> findByFrameID(Long frameID);  // ← add this
+    List<Match_Slot> findByMatchId(Long matchId);
+    Optional<Match_Slot> findByMatchIdAndSlotNumber(Long matchId, int slotNumber);
+    List<Match_Slot> findByMatchIdAndStatus(Long matchId, Match_Slot.Status status);
+    Optional<Match_Slot> findByFrameId(Long frameId);  // ← add this
 }

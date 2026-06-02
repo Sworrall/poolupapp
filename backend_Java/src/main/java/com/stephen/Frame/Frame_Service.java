@@ -56,24 +56,24 @@ public class Frame_Service {
 
     // --- RECORD RESULT ---
     @Transactional
-    public Frame recordResult(Long frameID, Frame_ResultRequest req) {
-        Frame frame = frameRepo.findByID(frameID)
-                .orElseThrow(() -> new FrameNotFoundException(frameID));
+    public Frame recordResult(Long frameId, Frame_ResultRequest req) {
+        Frame frame = frameRepo.findById(frameId)
+                .orElseThrow(() -> new FrameNotFoundException(frameId));
 
         switch (frame) {
             case Frame_Singles singles -> recordSinglesResult(singles, req);
             case Frame_Doubles doubles -> recordDoublesResult(doubles, req);
             case Frame_Killer frameKiller -> throw new IllegalArgumentException(
                     "Use POST /frames/killer/{id}/result with Frame_KillerResultRequest for killer frames");
-            default -> throw new IllegalStateException("Unknown frame type for id: " + frameID);
+            default -> throw new IllegalStateException("Unknown frame type for id: " + frameId);
         }
 
-        slotRepo.findByFrameID(frameID).ifPresent(slot -> {
+        slotRepo.findByFrameId(frameId).ifPresent(slot -> {
             slot.markComplete();
             slotRepo.save(slot);
-            Long matchID = slot.getMatch().getID();
-            matchResolutionService.checkAndResolveMatch(matchID);
-            matchEventPublisher.publishMatchUpdate(matchID);
+            Long matchId = slot.getMatch().getId();
+            matchResolutionService.checkAndResolveMatch(matchId);
+            matchEventPublisher.publishMatchUpdate(matchId);
         });
 
         return frame;
@@ -82,17 +82,17 @@ public class Frame_Service {
 
     // --- SINGLES ---
     public Frame_Singles createSinglesFrame(Frame_Request_Singles req) {
-        Player playerA = playerRepo.findByID(req.getPlayerAID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAID()));
-        Player playerB = playerRepo.findByID(req.getPlayerBID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBID()));
+        Player playerA = playerRepo.findById(req.getPlayerAid())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAid()));
+        Player playerB = playerRepo.findById(req.getPlayerBid())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBid()));
 
         Frame_Singles frame;
-        if (req.getTeamAID() != null && req.getTeamBID() != null) {
-            Team teamA = teamRepo.findByID(req.getTeamAID())
-                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamAID()));
-            Team teamB = teamRepo.findByID(req.getTeamBID())
-                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamBID()));
+        if (req.getTeamAid() != null && req.getTeamBid() != null) {
+            Team teamA = teamRepo.findById(req.getTeamAid())
+                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamAid()));
+            Team teamB = teamRepo.findById(req.getTeamBid())
+                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamBid()));
             frame = new Frame_Singles(playerA, playerB, teamA, teamB);
         } else {
             frame = new Frame_Singles(playerA, playerB);
@@ -111,7 +111,7 @@ public class Frame_Service {
     private void recordSinglesResult(Frame_Singles frame, Frame_ResultRequest req) {
         if (frame.isPlayed()) throw new IllegalStateException("Frame already played");
 
-        Player winner = req.getWinnerID().equals(frame.getPlayerA().getID())
+        Player winner = req.getWinnerId().equals(frame.getPlayerA().getId())
                 ? frame.getPlayerA()
                 : frame.getPlayerB();
         Player loser = winner.equals(frame.getPlayerA())
@@ -128,10 +128,10 @@ public class Frame_Service {
 
     // --- DOUBLES ---
     public Frame_Doubles createDoublesFrame(Frame_DoublesRequest req) {
-        Doubles doublesA = doublesRepo.findByID(req.getDoublesAID())
-                .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesAID()));
-        Doubles doublesB = doublesRepo.findByID(req.getDoublesBID())
-                .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesBID()));
+        Doubles doublesA = doublesRepo.findById(req.getDoublesAid())
+                .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesAid()));
+        Doubles doublesB = doublesRepo.findById(req.getDoublesBid())
+                .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesBid()));
 
         Frame_Doubles frame = new Frame_Doubles(doublesA, doublesB);
 
@@ -147,7 +147,7 @@ public class Frame_Service {
     private void recordDoublesResult(Frame_Doubles frame, Frame_ResultRequest req) {
         if (frame.isPlayed()) throw new IllegalStateException("Frame already played");
 
-        Doubles winner = req.getWinnerID().equals(frame.getDoublesA().getID())
+        Doubles winner = req.getWinnerId().equals(frame.getDoublesA().getId())
                 ? frame.getDoublesA()
                 : frame.getDoublesB();
 
@@ -169,9 +169,9 @@ public class Frame_Service {
         Frame_Killer frame = new Frame_Killer(req.getStartingLives());
         frameRepo.save(frame);
 
-        for (Long playerID : req.getPlayerIDs()) {
-            Player player = playerRepo.findByID(playerID)
-                    .orElseThrow(() -> new PlayerNotFoundException(playerID));
+        for (Long playerId : req.getPlayerIds()) {
+            Player player = playerRepo.findById(playerId)
+                    .orElseThrow(() -> new PlayerNotFoundException(playerId));
             killerLivesRepo.save(new Frame_KillerLives(frame, player, req.getStartingLives()));
         }
 
@@ -184,25 +184,25 @@ public class Frame_Service {
      * played only when a single player remains (last one standing).
      */
     @Transactional
-    public Frame_Killer recordKillerResult(Long frameID, Frame_KillerResultRequest req) {
-        Frame frame = frameRepo.findByID(frameID)
-                .orElseThrow(() -> new FrameNotFoundException(frameID));
+    public Frame_Killer recordKillerResult(Long frameId, Frame_KillerResultRequest req) {
+        Frame frame = frameRepo.findById(frameId)
+                .orElseThrow(() -> new FrameNotFoundException(frameId));
         if (!(frame instanceof Frame_Killer killer)) {
-            throw new IllegalArgumentException("Frame " + frameID + " is not a killer frame");
+            throw new IllegalArgumentException("Frame " + frameId + " is not a killer frame");
         }
         if (killer.isPlayed()) throw new IllegalStateException("Frame already played");
 
         Frame_KillerLives lives = killerLivesRepo
-                .findByFrameIDAndPlayerID(frameID, req.getPlayerID())
+                .findByFrameIdAndPlayerId(frameId, req.getPlayerId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No lives record for player " + req.getPlayerID() + " in frame " + frameID));
+                        "No lives record for player " + req.getPlayerId() + " in frame " + frameId));
 
         lives.setLivesRemaining(req.getLivesRemaining());
         killerLivesRepo.save(lives);
         killer.setBreakDish(req.isBreakDish());
 
         // Check if only one player remains with lives > 0
-        List<Frame_KillerLives> allLives = killerLivesRepo.findByFrameID(frameID);
+        List<Frame_KillerLives> allLives = killerLivesRepo.findByFrameId(frameId);
         long activePlayers = allLives.stream()
                 .filter(l -> l.getLivesRemaining() > 0)
                 .count();
@@ -211,12 +211,12 @@ public class Frame_Service {
             killer.setPlayed(true);
             frameRepo.save(killer);
 
-            slotRepo.findByFrameID(frameID).ifPresent(slot -> {
+            slotRepo.findByFrameId(frameId).ifPresent(slot -> {
                 slot.markComplete();
                 slotRepo.save(slot);
-                Long matchID = slot.getMatch().getID();
-                matchResolutionService.checkAndResolveMatch(matchID);
-                matchEventPublisher.publishMatchUpdate(matchID);
+                Long matchId = slot.getMatch().getId();
+                matchResolutionService.checkAndResolveMatch(matchId);
+                matchEventPublisher.publishMatchUpdate(matchId);
             });
         } else {
             frameRepo.save(killer);

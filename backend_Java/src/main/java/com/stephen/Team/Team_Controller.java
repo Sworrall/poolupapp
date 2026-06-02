@@ -25,43 +25,43 @@ public class Team_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getTeam(@PathVariable Long ID) {
-        return teamService.getByID(ID)
+    public ResponseEntity<Team> getTeam(@PathVariable Long Id) {
+        return teamService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Team> updateTeam(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Team_Request req) {
-        return ResponseEntity.ok(teamService.updateTeam(ID, req));
+        return ResponseEntity.ok(teamService.updateTeam(Id, req));
     }
 
     @PostMapping("/{teamId}/players/{playerId}")
     public ResponseEntity<Team> addPlayer(
-            @PathVariable Long teamID,
-            @PathVariable Long playerID) {
-        return ResponseEntity.ok(teamService.addPlayer(teamID, playerID));
+            @PathVariable Long teamId,
+            @PathVariable Long playerId) {
+        return ResponseEntity.ok(teamService.addPlayer(teamId, playerId));
     }
 
     @DeleteMapping("/{teamId}/players/{playerId}")
     public ResponseEntity<Team> removePlayer(
-            @PathVariable Long teamID,
-            @PathVariable Long playerID) {
-        return ResponseEntity.ok(teamService.removePlayer(teamID, playerID));
+            @PathVariable Long teamId,
+            @PathVariable Long playerId) {
+        return ResponseEntity.ok(teamService.removePlayer(teamId, playerId));
     }
 
     @PatchMapping("/{teamId}/captain/{playerId}")
     public ResponseEntity<Team> setCaptain(
-            @PathVariable Long teamID,
-            @PathVariable Long playerID) {
-        return ResponseEntity.ok(teamService.setCaptain(teamID, playerID));
+            @PathVariable Long teamId,
+            @PathVariable Long playerId) {
+        return ResponseEntity.ok(teamService.setCaptain(teamId, playerId));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long ID) {
-        teamService.deleteTeam(ID);
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long Id) {
+        teamService.deleteTeam(Id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -5,7 +5,7 @@ public class Player_Request {
     private String lastName;
     private String nickName;
     private Long phoneNumber;
-    private String firebaseUID;
+    private String firebaseUid;
 
     // getters & setters
     public String getFirstName() { return firstName; }
@@ -20,6 +20,6 @@ public class Player_Request {
     public Long getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(Long phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 }

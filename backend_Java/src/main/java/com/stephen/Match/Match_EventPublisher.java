@@ -12,7 +12,7 @@ public class Match_EventPublisher {
         this.publisher = publisher;
     }
 
-    public void publishMatchUpdate(Long matchID) {
-        publisher.publishEvent(new Match_UpdateEvent(this, matchID));
+    public void publishMatchUpdate(Long matchId) {
+        publisher.publishEvent(new Match_UpdateEvent(this, matchId));
     }
 }

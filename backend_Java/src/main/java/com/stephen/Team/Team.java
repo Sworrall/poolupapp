@@ -14,7 +14,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
     @SequenceGenerator(name = "team_seq", sequenceName = "team_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @Column(name = "team_name", nullable = false)
     private String teamName;
@@ -38,7 +38,8 @@ public class Team {
     private boolean isBye = false;
 
     @Column(name = "firebase_uid", unique = true)
-    private String firebaseUID;
+    private String firebaseUid
+            ;
 
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -82,7 +83,7 @@ public class Team {
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {
@@ -99,8 +100,14 @@ public class Team {
 
     public boolean isBye() { return isBye; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid
+            () { return firebaseUid
+            ; }
+    public void setFirebaseUid
+            (String firebaseUid
+            ) { this.firebaseUid
+            = firebaseUid
+    ; }
 
     public Instant getCreatedAt() { return createdAt; }
 }

@@ -1,11 +1,11 @@
 package com.stephen.Frame;
 
 public class Frame_ResultRequest {
-    private Long winnerID;
+    private Long winnerId;
     private boolean breakDish;
 
-    public Long getWinnerID() { return winnerID; }
-    public void setWinnerID(Long ID) { this.winnerID = ID; }
+    public Long getWinnerId() { return winnerId; }
+    public void setWinnerId(Long Id) { this.winnerId = Id; }
 
     public boolean isBreakDish() { return breakDish; }
     public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }

@@ -19,7 +19,7 @@ public class Doubles_Controller {
 
     @PostMapping
     public ResponseEntity<Doubles> createDoubles(@RequestBody Doubles_Request req) {
-        log.info("POST /api/doubles — players: {}, {}", req.getPlayer1ID(), req.getPlayer2ID());
+        log.info("POST /api/doubles — players: {}, {}", req.getPlayer1Id(), req.getPlayer2Id());
         return ResponseEntity.ok(doublesService.createDoubles(req));
     }
 
@@ -29,32 +29,32 @@ public class Doubles_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doubles> getDoubles(@PathVariable Long ID) {
-        return doublesService.getByID(ID)
+    public ResponseEntity<Doubles> getDoubles(@PathVariable Long Id) {
+        return doublesService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Doubles> updateDoubles(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Doubles_Request req) {
-        log.info("PUT /api/doubles/{}", ID);
-        return ResponseEntity.ok(doublesService.updateDoubles(ID, req));
+        log.info("PUT /api/doubles/{}", Id);
+        return ResponseEntity.ok(doublesService.updateDoubles(Id, req));
     }
 
     @PatchMapping("/{doublesId}/captain/{playerId}")
     public ResponseEntity<Doubles> setCaptain(
-            @PathVariable Long doublesID,
-            @PathVariable Long playerID) {
-        log.info("PATCH /api/doubles/{}/captain/{}", doublesID, playerID);
-        return ResponseEntity.ok(doublesService.setCaptain(doublesID, playerID));
+            @PathVariable Long doublesId,
+            @PathVariable Long playerId) {
+        log.info("PATCH /api/doubles/{}/captain/{}", doublesId, playerId);
+        return ResponseEntity.ok(doublesService.setCaptain(doublesId, playerId));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDoubles(@PathVariable Long ID) {
-        log.info("DELETE /api/doubles/{}", ID);
-        doublesService.deleteDoubles(ID);
+    public ResponseEntity<Void> deleteDoubles(@PathVariable Long Id) {
+        log.info("DELETE /api/doubles/{}", Id);
+        doublesService.deleteDoubles(Id);
         return ResponseEntity.noContent().build();
     }
 

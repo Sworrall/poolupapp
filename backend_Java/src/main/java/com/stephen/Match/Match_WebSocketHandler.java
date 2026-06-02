@@ -25,17 +25,17 @@ public class Match_WebSocketHandler {
 
     @EventListener
     public void onMatchUpdate(Match_UpdateEvent event) {
-        Long matchID = event.getMatchID();
+        Long matchId = event.getMatchId();
 
-        Match match = matchRepo.findByID(matchID)
-                .orElseThrow(() -> new MatchNotFoundException(matchID));
-        List<Match_Slot> slots = slotRepo.findByMatchID(matchID);
+        Match match = matchRepo.findById(matchId)
+                .orElseThrow(() -> new MatchNotFoundException(matchId));
+        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
 
         Match_StateDTO dto = mapper.toDTO(match, slots);
 
         // broadcast to all subscribers of this match
         messagingTemplate.convertAndSend(
-                "/topic/matches/" + matchID,
+                "/topic/matches/" + matchId,
                 dto
         );
     }

@@ -23,5 +23,5 @@ public interface Tournament_Repository extends JpaRepository<Tournament, Long> {
      */
     List<Tournament> findByPartyTypeAndIsCompleteTrue(PartyType partyType);
 
-    Optional<Tournament> findByID(Long ID);
+    Optional<Tournament> findById(Long Id);
 }

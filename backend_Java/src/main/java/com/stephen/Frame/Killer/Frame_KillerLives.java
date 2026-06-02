@@ -10,7 +10,7 @@ public class Frame_KillerLives {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "killer_lives_seq")
     @SequenceGenerator(name = "killer_lives_seq", sequenceName = "killer_lives_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @ManyToOne
     @JoinColumn(name = "frame_id", nullable = false)
@@ -31,7 +31,7 @@ public class Frame_KillerLives {
         this.livesRemaining = startingLives;
     }
 
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
     public Frame_Killer getFrame() { return frame; }
     public Player getPlayer() { return player; }
     public int getLivesRemaining() { return livesRemaining; }

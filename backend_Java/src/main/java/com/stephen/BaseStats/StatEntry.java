@@ -5,20 +5,20 @@ import java.time.Instant;
 
 /**
  * Persistent stat record for one party in one event context.
- *
- * One row per (holderID, holderType, eventID, eventScope, teamID) combination:
- *
- *   eventScope = GLOBAL     → career stats, eventID = 0
+
+ * One row per (holderId, holderType, eventId, eventScope, teamId) combination:
+
+ *   eventScope = GLOBAL     → career stats, eventId = 0
  *   eventScope = FRAME      → stats for one specific frame
  *   eventScope = MATCH      → stats for one specific match
  *   eventScope = TOURNAMENT → stats for one specific tournament
- *
- * matchID and tournamentID carry parent context on frame/match rows so stats
+
+ * matchId and tournamentId carry parent context on frame/match rows so stats
  * can be traced back up the hierarchy without joins:
- *
- *   Frame row:      (frameID,      FRAME,      matchID,  tournamentID)
- *   Match row:      (matchID,      MATCH,      null,     tournamentID)
- *   Tournament row: (tournamentID, TOURNAMENT, null,     null)
+
+ *   Frame row:      (frameId,      FRAME,      matchId,  tournamentId)
+ *   Match row:      (matchId,      MATCH,      null,     tournamentId)
+ *   Tournament row: (tournamentId, TOURNAMENT, null,     null)
  *   Global row:     (0,            GLOBAL,     null,     null)
  */
 @Entity
@@ -37,10 +37,10 @@ public class StatEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stat_entry_seq")
     @SequenceGenerator(name = "stat_entry_seq", sequenceName = "stat_entry_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @Column(name = "holder_id", nullable = false)
-    private Long holderID;
+    private Long holderId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "holder_type", nullable = false)
@@ -48,10 +48,10 @@ public class StatEntry {
 
     /**
      * The ID of the event this row is scoped to.
-     * 0 = global. Otherwise, a frame, match, or tournament ID per eventScope.
+     * 0 = global. Otherwise, a frame, match, or tournament Id per eventScope.
      */
     @Column(name = "event_id", nullable = false)
-    private Long eventID;
+    private Long eventId;
 
     /**
      * What kind of event event_id refers to.
@@ -65,7 +65,7 @@ public class StatEntry {
      * Null on MATCH, TOURNAMENT, and GLOBAL rows.
      */
     @Column(name = "match_id")
-    private Long matchID;
+    private Long matchId;
 
     /**
      * Parent tournament ID. Set on FRAME and MATCH-scoped rows where
@@ -73,13 +73,13 @@ public class StatEntry {
      * TOURNAMENT rows, and GLOBAL rows.
      */
     @Column(name = "tournament_id")
-    private Long tournamentID;
+    private Long tournamentId;
 
     /**
      * Optional team context. Null for standalone singles/doubles events.
      */
     @Column(name = "team_id")
-    private Long teamID;
+    private Long teamId;
 
     // --- STAT FIELDS ---
     @Column(name = "frame_win",       nullable = false) private int frameWin      = 0;
@@ -98,16 +98,16 @@ public class StatEntry {
     protected StatEntry() {}
 
     // --- CONSTRUCTOR ---
-    public StatEntry(Long holderID, HolderType holderType,
-                     Long eventID, StatScope eventScope,
-                     Long matchID, Long tournamentID, Long teamID) {
-        this.holderID     = holderID;
+    public StatEntry(Long holderId, HolderType holderType,
+                     Long eventId, StatScope eventScope,
+                     Long matchId, Long tournamentId, Long teamId) {
+        this.holderId     = holderId;
         this.holderType   = holderType;
-        this.eventID      = eventID;
+        this.eventId      = eventId;
         this.eventScope   = eventScope;
-        this.matchID      = matchID;
-        this.tournamentID = tournamentID;
-        this.teamID       = teamID;
+        this.matchId      = matchId;
+        this.tournamentId = tournamentId;
+        this.teamId       = teamId;
     }
 
     @PrePersist
@@ -152,14 +152,14 @@ public class StatEntry {
     }
 
     // --- GETTERS ---
-    public Long getID()               { return ID; }
-    public Long getHolderID()         { return holderID; }
+    public Long getId()               { return Id; }
+    public Long getHolderId()         { return holderId; }
     public HolderType getHolderType() { return holderType; }
-    public Long getEventID()          { return eventID; }
+    public Long getEventId()          { return eventId; }
     public StatScope getEventScope()  { return eventScope; }
-    public Long getMatchID()          { return matchID; }
-    public Long getTournamentID()     { return tournamentID; }
-    public Long getTeamID()           { return teamID; }
+    public Long getMatchId()          { return matchId; }
+    public Long getTournamentId()     { return tournamentId; }
+    public Long getTeamId()           { return teamId; }
     public int getFrameWin()          { return frameWin; }
     public int getFrameLoss()         { return frameLoss; }
     public int getFrameBreakDish()    { return frameBreakDish; }

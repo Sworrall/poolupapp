@@ -5,7 +5,7 @@ public class Frame_KillerResultRequest {
     /**
      * The player whose lives are being updated this frame.
      */
-    private Long playerID;
+    private Long playerId;
 
     /**
      * Lives remaining for this player after the frame.
@@ -17,8 +17,8 @@ public class Frame_KillerResultRequest {
 
     public Frame_KillerResultRequest() {}
 
-    public Long getPlayerID() { return playerID; }
-    public void setPlayerID(Long playerID) { this.playerID = playerID; }
+    public Long getPlayerId() { return playerId; }
+    public void setPlayerId(Long playerId) { this.playerId = playerId; }
 
     public int getLivesRemaining() { return livesRemaining; }
     public void setLivesRemaining(int livesRemaining) { this.livesRemaining = livesRemaining; }

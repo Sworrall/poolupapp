@@ -13,7 +13,7 @@ public class Match_Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_slot_seq")
     @SequenceGenerator(name = "match_slot_seq", sequenceName = "match_slot_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "match_id", nullable = false)
@@ -79,7 +79,7 @@ public class Match_Slot {
     public boolean isReady() { return status == Status.READY; }
     public boolean isComplete() { return status == Status.COMPLETE; }
 
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
     public Match getMatch() { return match; }
     public int getSlotNumber() { return slotNumber; }
     public Status getStatus() { return status; }

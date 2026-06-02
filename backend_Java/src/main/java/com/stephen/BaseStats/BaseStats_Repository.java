@@ -14,37 +14,37 @@ public interface BaseStats_Repository extends JpaRepository<StatEntry, Long> {
      * All stat rows for a party across all scopes.
      * Used to build a full career stats picture.
      */
-    List<StatEntry> findByHolderIDAndHolderType(Long holderID, HolderType holderType);
+    List<StatEntry> findByHolderIdAndHolderType(Long holderId, HolderType holderType);
 
     /**
      * All stat rows for a party at a specific scope (e.g. all FRAME rows).
      */
-    List<StatEntry> findByHolderIDAndHolderTypeAndEventScope(
-            Long holderID, HolderType holderType, StatScope eventScope);
+    List<StatEntry> findByHolderIdAndHolderTypeAndEventScope(
+            Long holderId, HolderType holderType, StatScope eventScope);
 
     /**
      * Exact stat row lookup — one row per unique context.
      */
-    Optional<StatEntry> findByHolderIDAndHolderTypeAndEventIDAndEventScopeAndTeamID(
-            Long holderID, HolderType holderType,
-            Long eventID, StatScope eventScope, Long teamID);
+    Optional<StatEntry> findByHolderIdAndHolderTypeAndEventIdAndEventScopeAndTeamId(
+            Long holderId, HolderType holderType,
+            Long eventId, StatScope eventScope, Long teamId);
 
     /**
      * All stat rows scoped to a specific tournament (includes frame and match rows).
      * Used for tournament leaderboard construction.
      */
-    List<StatEntry> findByTournamentIDAndHolderType(Long tournamentID, HolderType holderType);
+    List<StatEntry> findByTournamentIdAndHolderType(Long tournamentId, HolderType holderType);
 
     /**
      * All match-scoped rows for a specific tournament.
      */
-    List<StatEntry> findByTournamentIDAndHolderTypeAndEventScope(
-            Long tournamentID, HolderType holderType, StatScope eventScope);
+    List<StatEntry> findByTournamentIdAndHolderTypeAndEventScope(
+            Long tournamentId, HolderType holderType, StatScope eventScope);
 
     /**
      * All frame-scoped rows for a specific match.
      */
-    List<StatEntry> findByMatchIDAndHolderType(Long matchID, HolderType holderType);
+    List<StatEntry> findByMatchIdAndHolderType(Long matchId, HolderType holderType);
 
     /**
      * Global stats (eventScope = GLOBAL) for all parties of a given type.

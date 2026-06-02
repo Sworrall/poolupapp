@@ -4,7 +4,7 @@ public class Team_Request {
     private String teamName;
     private Long phoneNumber;
     private String address;
-    private String firebaseUID;
+    private String firebaseUid;
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) { this.teamName = teamName; }
@@ -15,6 +15,6 @@ public class Team_Request {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public String getFirebaseUID() { return firebaseUID; }
-    public void setFirebaseUID(String firebaseUID) { this.firebaseUID = firebaseUID; }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 }

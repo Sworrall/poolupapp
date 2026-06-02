@@ -6,8 +6,8 @@ import java.util.Optional;
 
 @Repository
 public interface Doubles_Repository extends JpaRepository<Doubles, Long> {
-    Optional<Doubles> findByFirebaseUID(String firebaseUID);
-    boolean existsByFirebaseUID(String firebaseUID);
-    Optional<Doubles> findByID(Long ID);
-    void deleteByID(Long ID);
+    Optional<Doubles> findByFirebaseUid(String firebaseUid);
+    boolean existsByFirebaseUid(String firebaseUid);
+    Optional<Doubles> findById(Long Id);
+    void deleteById(Long Id);
 }

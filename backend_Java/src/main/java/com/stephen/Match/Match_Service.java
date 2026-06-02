@@ -50,17 +50,17 @@ public class Match_Service {
     // --- CREATE ---
     @Transactional
     public Match_Singles createSinglesMatch(Match_Request_Singles req) {
-        Player playerA = playerRepo.findByID(req.getPlayerAID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAID()));
-        Player playerB = playerRepo.findByID(req.getPlayerBID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBID()));
+        Player playerA = playerRepo.findById(req.getPlayerAId())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAId()));
+        Player playerB = playerRepo.findById(req.getPlayerBId())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBId()));
 
         Match_Singles match;
-        if (req.getTeamAID() != null && req.getTeamBID() != null) {
-            Team teamA = teamRepo.findByID(req.getTeamAID())
-                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamAID()));
-            Team teamB = teamRepo.findByID(req.getTeamBID())
-                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamBID()));
+        if (req.getTeamAId() != null && req.getTeamBId() != null) {
+            Team teamA = teamRepo.findById(req.getTeamAId())
+                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamAId()));
+            Team teamB = teamRepo.findById(req.getTeamBId())
+                    .orElseThrow(() -> new TeamNotFoundException(req.getTeamBId()));
             match = new Match_Singles(playerA, playerB, teamA, teamB);
         } else {
             match = new Match_Singles(playerA, playerB);
@@ -73,10 +73,10 @@ public class Match_Service {
 
     @Transactional
     public Match_Doubles createDoublesMatch(Match_Request_Doubles req) {
-        Doubles doublesA = doublesRepo.findByID(req.getDoublesAID())
-                .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesAID()));
-        Doubles doublesB = doublesRepo.findByID(req.getDoublesBID())
-                .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesBID()));
+        Doubles doublesA = doublesRepo.findById(req.getDoublesAid())
+                .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesAid()));
+        Doubles doublesB = doublesRepo.findById(req.getDoublesBid())
+                .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesBid()));
 
         Match_Doubles match = new Match_Doubles(doublesA, doublesB);
         match.setFrameCount(req.getFrameCount());
@@ -87,10 +87,10 @@ public class Match_Service {
 
     @Transactional
     public Match_Team createTeamMatch(Match_Request_Team req) {
-        Team teamA = teamRepo.findByID(req.getTeamAID())
-                .orElseThrow(() -> new TeamNotFoundException(req.getTeamAID()));
-        Team teamB = teamRepo.findByID(req.getTeamBID())
-                .orElseThrow(() -> new TeamNotFoundException(req.getTeamBID()));
+        Team teamA = teamRepo.findById(req.getTeamAid())
+                .orElseThrow(() -> new TeamNotFoundException(req.getTeamAid()));
+        Team teamB = teamRepo.findById(req.getTeamBid())
+                .orElseThrow(() -> new TeamNotFoundException(req.getTeamBid()));
 
         Match_Team match = new Match_Team(teamA, teamB);
         match.setFrameCount(req.getFrameCount());
@@ -107,10 +107,10 @@ public class Match_Service {
 
     // --- SLOT PLAYER ASSIGNMENT ---
     @Transactional
-    public Match_Slot assignPlayerA(Long matchID, int slotNumber, Match_PlayerRequest_Slot req) {
-        Match_Slot slot = getSlot(matchID, slotNumber);
-        Player player = playerRepo.findByID(req.getPlayerID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerID()));
+    public Match_Slot assignPlayerA(Long matchId, int slotNumber, Match_PlayerRequest_Slot req) {
+        Match_Slot slot = getSlot(matchId, slotNumber);
+        Player player = playerRepo.findById(req.getPlayerId())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerA(player);
         slotRepo.save(slot);
         if (slot.isReady()) createFrameForSlot(slot);
@@ -118,10 +118,10 @@ public class Match_Service {
     }
 
     @Transactional
-    public Match_Slot assignPlayerB(Long matchID, int slotNumber, Match_PlayerRequest_Slot req) {
-        Match_Slot slot = getSlot(matchID, slotNumber);
-        Player player = playerRepo.findByID(req.getPlayerID())
-                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerID()));
+    public Match_Slot assignPlayerB(Long matchId, int slotNumber, Match_PlayerRequest_Slot req) {
+        Match_Slot slot = getSlot(matchId, slotNumber);
+        Player player = playerRepo.findById(req.getPlayerId())
+                .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerB(player);
         slotRepo.save(slot);
         if (slot.isReady()) createFrameForSlot(slot);
@@ -153,10 +153,10 @@ public class Match_Service {
 
     // --- MATCH RESOLUTION ---
     @Transactional
-    public void checkAndResolveMatch(Long matchID) {
-        Match match = matchRepo.findByID(matchID)
-                .orElseThrow(() -> new MatchNotFoundException(matchID));
-        List<Match_Slot> slots = slotRepo.findByMatchID(matchID);
+    public void checkAndResolveMatch(Long matchId) {
+        Match match = matchRepo.findById(matchId)
+                .orElseThrow(() -> new MatchNotFoundException(matchId));
+        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
         if (!allComplete) return;
@@ -224,12 +224,12 @@ public class Match_Service {
     }
 
     // --- QUERIES ---
-    public Optional<Match> getByID(Long ID) {
-        return matchRepo.findByID(ID);
+    public Optional<Match> getById(Long Id) {
+        return matchRepo.findById(Id);
     }
 
-    public List<Match_Slot> getSlotsForMatch(Long matchID) {
-        return slotRepo.findByMatchID(matchID);
+    public List<Match_Slot> getSlotsForMatch(Long matchId) {
+        return slotRepo.findByMatchId(matchId);
     }
 
     public List<Match> getUnplayed() {
@@ -237,9 +237,9 @@ public class Match_Service {
     }
 
     // --- HELPERS ---
-    private Match_Slot getSlot(Long matchID, int slotNumber) {
-        return slotRepo.findByMatchIDAndSlotNumber(matchID, slotNumber)
+    private Match_Slot getSlot(Long matchId, int slotNumber) {
+        return slotRepo.findByMatchIdAndSlotNumber(matchId, slotNumber)
                 .orElseThrow(() -> new RuntimeException(
-                        "Slot " + slotNumber + " not found for match " + matchID));
+                        "Slot " + slotNumber + " not found for match " + matchId));
     }
 }

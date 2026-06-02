@@ -2,25 +2,25 @@ package com.stephen.Tournament;
 
 import java.util.List;
 
-public class Tournament_Request_Killer {
+public class Tournament_Killer_Request {
 
-    private List<Long> partyIDs;
+    private List<Long> partyIds;
     private PartyType partyType;
     private boolean isRandom = true;
 
     // --- JPA ---
-    public Tournament_Request_Killer() {}
+    public Tournament_Killer_Request() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_Request_Killer(List<Long> partyIDs, PartyType partyType, boolean isRandom) {
-        this.partyIDs = partyIDs;
+    public Tournament_Killer_Request(List<Long> partyIds, PartyType partyType, boolean isRandom) {
+        this.partyIds = partyIds;
         this.partyType = partyType;
         this.isRandom = isRandom;
     }
 
     // --- GETTERS ---
-    public List<Long> getPartyIDs() {
-        return partyIDs;
+    public List<Long> getPartyIds() {
+        return partyIds;
     }
 
     public PartyType getPartyType() {
@@ -32,8 +32,8 @@ public class Tournament_Request_Killer {
     }
 
     // --- SETTERS ---
-    public void setPartyIDs(List<Long> partyIDs) {
-        this.partyIDs = partyIDs;
+    public void setPartyIds(List<Long> partyIds) {
+        this.partyIds = partyIds;
     }
 
     public void setPartyType(PartyType partyType) {

@@ -18,8 +18,8 @@ public class Tournament_Killer extends Tournament {
     protected Tournament_Killer() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_Killer(List<Long> partyIDs, PartyType partyType, boolean isRandom) {
-        super(partyIDs, partyType);
+    public Tournament_Killer(List<Long> partyIds, PartyType partyType, boolean isRandom) {
+        super(partyIds, partyType);
         this.isRandom = isRandom;
     }
 

@@ -1,8 +1,8 @@
 package com.stephen.Match;
 
 public class Match_PlayerRequest_Slot {
-    private Long playerID;
+    private Long playerId;
 
-    public Long getPlayerID() { return playerID; }
-    public void setPlayerID(Long ID) { this.playerID = ID; }
+    public Long getPlayerId() { return playerId; }
+    public void setPlayerId(Long Id) { this.playerId = Id; }
 }

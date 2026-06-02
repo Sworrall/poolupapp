@@ -17,8 +17,8 @@ public class Tournament_KO extends Tournament {
     protected Tournament_KO() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_KO(List<Long> partyIDs, PartyType partyType, int frameCount) {
-        super(partyIDs, partyType);
+    public Tournament_KO(List<Long> partyIds, PartyType partyType, int frameCount) {
+        super(partyIds, partyType);
         this.frameCount = frameCount;
     }
 

@@ -12,7 +12,7 @@ public abstract class Frame {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
     @SequenceGenerator(name = "frame_seq", sequenceName = "frame_seq", allocationSize = 1)
-    private Long ID;
+    private Long Id;
 
     @Column(name = "is_played", nullable = false)
     private boolean isPlayed = false;
@@ -33,7 +33,7 @@ public abstract class Frame {
         this.createdAt = Instant.now();
     }
 
-    public Long getID() { return ID; }
+    public Long getId() { return Id; }
 
     public boolean isPlayed() { return isPlayed; }
     public void setPlayed(boolean played) { this.isPlayed = played; }

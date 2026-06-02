@@ -12,7 +12,7 @@ public abstract class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
     @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
-    private Long ID;
+    private Long frameId;
 
     @Column(name = "frame_count", nullable = false)
     private int frameCount;
@@ -36,7 +36,7 @@ public abstract class Match {
         this.createdAt = Instant.now();
     }
 
-    public Long getID() { return ID; }
+    public Long getId() { return frameId; }
 
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }

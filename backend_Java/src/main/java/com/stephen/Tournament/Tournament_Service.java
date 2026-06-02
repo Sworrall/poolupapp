@@ -28,14 +28,14 @@ public class Tournament_Service {
     private static final Logger log = LoggerFactory.getLogger(Tournament_Service.class);
 
     private final Tournament_Repository tournamentRepository;
-    private final Tournament_Repository_Match tournamentMatchRepository;
+    private final Tournament_Match_Repository tournamentMatchRepository;
     private final Match_Repository matchRepository;
     private final Player_Repository playerRepository;
     private final Doubles_Repository doublesRepository;
     private final Team_Repository teamRepository;
 
     public Tournament_Service(Tournament_Repository tournamentRepository,
-                              Tournament_Repository_Match tournamentMatchRepository,
+                              Tournament_Match_Repository tournamentMatchRepository,
                               Match_Repository matchRepository,
                               Player_Repository playerRepository,
                               Doubles_Repository doublesRepository,
@@ -56,26 +56,26 @@ public class Tournament_Service {
     /**
      * Creates a RoundRobin tournament and eagerly generates all fixtures.
      * Every party plays every other party exactly once.
-     * Bye party (ID = -1L) is injected if the party count is odd.
+     * Bye party (d = -1L) is injected if the party count is odd.
      */
     @Transactional
-    public Tournament_RoundRobin createRoundRobin(Tournament_Request_RoundRobin request) {
-        List<Long> partyIDs = new ArrayList<>(request.getPartyIDs());
-        if (partyIDs.size() % 2 == 1) {
-            partyIDs.add(byeID());
+    public Tournament_RoundRobin createRoundRobin(Tournament_RoundRobin_Request request) {
+        List<Long> partyIds = new ArrayList<>(request.getPartyIds());
+        if (partyIds.size() % 2 == 1) {
+            partyIds.add(byeId());
             log.info("RoundRobin: odd party count — bye party injected");
         }
-        Collections.shuffle(partyIDs);
+        Collections.shuffle(partyIds);
 
         Tournament_RoundRobin tournament = new Tournament_RoundRobin(
-                partyIDs, request.getPartyType(), request.getFrameCount());
+                partyIds, request.getPartyType(), request.getFrameCount());
         tournamentRepository.save(tournament);
 
         // All pairs — each party plays every other party once
         int sequence = 0;
-        for (int i = 0; i < partyIDs.size(); i++) {
-            for (int j = i + 1; j < partyIDs.size(); j++) {
-                Match match = createMatch(partyIDs.get(i), partyIDs.get(j),
+        for (int i = 0; i < partyIds.size(); i++) {
+            for (int j = i + 1; j < partyIds.size(); j++) {
+                Match match = createMatch(partyIds.get(i), partyIds.get(j),
                         request.getPartyType(), request.getFrameCount());
                 tournamentMatchRepository.save(
                         new Tournament_Match(tournament, match, 0, sequence++));
@@ -83,7 +83,7 @@ public class Tournament_Service {
         }
 
         log.info("RoundRobin tournament {} created with {} fixtures",
-                tournament.getID(), sequence);
+                tournament.getId(), sequence);
         return tournament;
     }
 
@@ -93,30 +93,30 @@ public class Tournament_Service {
      * Bye matches are persisted with status BYE — the winner is the non-bye party.
      */
     @Transactional
-    public Tournament_KO createKO(Tournament_Request_KO request) {
-        List<Long> partyIDs = new ArrayList<>(request.getPartyIDs());
+    public Tournament_KO createKO(Tournament_KO_Request request) {
+        List<Long> partyIds = new ArrayList<>(request.getPartyIds());
 
         // Pad to next power of 2
-        while (!isPowerOf2(partyIDs.size())) {
-            partyIDs.add(byeID());
-            log.info("KO: bye injected, size now {}", partyIDs.size());
+        while (!isPowerOf2(partyIds.size())) {
+            partyIds.add(byeId());
+            log.info("KO: bye injected, size now {}", partyIds.size());
         }
 
-        if (partyIDs.size() < 4) {
-            log.error("KO tournament requires at least 4 parties, received {}", partyIDs.size());
+        if (partyIds.size() < 4) {
+            log.error("KO tournament requires at least 4 parties, received {}", partyIds.size());
             throw new IllegalArgumentException("KO tournament requires at least 4 parties");
         }
 
-        Collections.shuffle(partyIDs);
+        Collections.shuffle(partyIds);
 
         Tournament_KO tournament = new Tournament_KO(
-                partyIDs, request.getPartyType(), request.getFrameCount());
+                partyIds, request.getPartyType(), request.getFrameCount());
         tournamentRepository.save(tournament);
 
         // Eagerly scaffold all rounds
-        scaffoldKORounds(tournament, partyIDs, request.getPartyType(), request.getFrameCount());
+        scaffoldKORounds(tournament, partyIds, request.getPartyType(), request.getFrameCount());
 
-        log.info("KO tournament {} created. Rounds: {}", tournament.getID(), getRounds(partyIDs.size()));
+        log.info("KO tournament {} created. Rounds: {}", tournament.getId(), getRounds(partyIds.size()));
         return tournament;
     }
 
@@ -125,27 +125,27 @@ public class Tournament_Service {
      * Parties are paired sequentially; odd party count gets a bye.
      */
     @Transactional
-    public Tournament_Killer createKiller(Tournament_Request_Killer request) {
-        List<Long> partyIDs = new ArrayList<>(request.getPartyIDs());
-        if (partyIDs.size() % 2 == 1) {
-            partyIDs.add(byeID());
+    public Tournament_Killer createKiller(Tournament_Killer_Request request) {
+        List<Long> partyIds = new ArrayList<>(request.getPartyIds());
+        if (partyIds.size() % 2 == 1) {
+            partyIds.add(byeId());
             log.info("Killer: odd party count — bye party injected");
         }
-        if (request.isRandom()) Collections.shuffle(partyIDs);
+        if (request.isRandom()) Collections.shuffle(partyIds);
 
         Tournament_Killer tournament = new Tournament_Killer(
-                partyIDs, request.getPartyType(), request.isRandom());
+                partyIds, request.getPartyType(), request.isRandom());
         tournamentRepository.save(tournament);
 
         // Sequential pairing — party[0] vs party[1], party[2] vs party[3], ...
-        for (int i = 0; i < partyIDs.size(); i += 2) {
-            Match match = createMatch(partyIDs.get(i), partyIDs.get(i + 1),
+        for (int i = 0; i < partyIds.size(); i += 2) {
+            Match match = createMatch(partyIds.get(i), partyIds.get(i + 1),
                     request.getPartyType(), 1); // Killer: 1 frame per match
             tournamentMatchRepository.save(new Tournament_Match(tournament, match, 0, i / 2));
         }
 
         log.info("Killer tournament {} created with {} fixtures",
-                tournament.getID(), partyIDs.size() / 2);
+                tournament.getId(), partyIds.size() / 2);
         return tournament;
     }
 
@@ -155,32 +155,32 @@ public class Tournament_Service {
      * Byes are injected to reach 4 * groupCount if needed.
      */
     @Transactional
-    public Tournament_GroupStage createGroupStage(Tournament_Request_GroupStage request) {
-        List<Long> partyIDs = new ArrayList<>(request.getPartyIDs());
+    public Tournament_GroupStage createGroupStage(Tournament_GroupStage_Request request) {
+        List<Long> partyIds = new ArrayList<>(request.getPartyIds());
         int groupCount = request.getGroupCount();
 
-        if (partyIDs.size() < 4) {
-            log.error("GroupStage requires at least 4 parties, received {}", partyIDs.size());
+        if (partyIds.size() < 4) {
+            log.error("GroupStage requires at least 4 parties, received {}", partyIds.size());
             throw new IllegalArgumentException("GroupStage requires at least 4 parties");
         }
 
         // Pad to 4 * groupCount minimum
-        while (partyIDs.size() < 4 * groupCount) {
-            partyIDs.add(byeID());
-            log.info("GroupStage: bye injected, size now {}", partyIDs.size());
+        while (partyIds.size() < 4 * groupCount) {
+            partyIds.add(byeId());
+            log.info("GroupStage: bye injected, size now {}", partyIds.size());
         }
 
-        if (request.isRandom()) Collections.shuffle(partyIDs);
+        if (request.isRandom()) Collections.shuffle(partyIds);
 
         Tournament_GroupStage tournament = new Tournament_GroupStage(
-                partyIDs, request.getPartyType(),
+                partyIds, request.getPartyType(),
                 groupCount, request.getFrameCount(), request.isRandom());
         tournamentRepository.save(tournament);
 
         // Distribute parties into groups and generate round-robin fixtures per group
-        int partiesPerGroup = partyIDs.size() / groupCount;
+        int partiesPerGroup = partyIds.size() / groupCount;
         for (int g = 0; g < groupCount; g++) {
-            List<Long> group = partyIDs.subList(g * partiesPerGroup, (g + 1) * partiesPerGroup);
+            List<Long> group = partyIds.subList(g * partiesPerGroup, (g + 1) * partiesPerGroup);
             int sequence = 0;
             for (int i = 0; i < group.size(); i++) {
                 for (int j = i + 1; j < group.size(); j++) {
@@ -191,11 +191,11 @@ public class Tournament_Service {
                             new Tournament_Match(tournament, match, g, sequence++));
                 }
             }
-            log.info("GroupStage tournament {}: group {} fixtures generated", tournament.getID(), g);
+            log.info("GroupStage tournament {}: group {} fixtures generated", tournament.getId(), g);
         }
 
         log.info("GroupStage tournament {} created. Groups: {}, parties: {}",
-                tournament.getID(), groupCount, partyIDs.size());
+                tournament.getId(), groupCount, partyIds.size());
         return tournament;
     }
 
@@ -204,9 +204,9 @@ public class Tournament_Service {
     // READS
     // -------------------------------------------------------------------------
 
-    public Tournament getByID(Long ID) {
-        return tournamentRepository.findByID(ID)
-                .orElseThrow(() -> new TournamentNotFoundException(ID));
+    public Tournament getById(Long Id) {
+        return tournamentRepository.findById(Id)
+                .orElseThrow(() -> new TournamentNotFoundException(Id));
     }
 
     public List<Tournament> getAll() {
@@ -225,18 +225,18 @@ public class Tournament_Service {
      * Returns all TournamentMatch rows for a tournament, grouped by roundNumber.
      * Reconstructs the original 2D matchList structure for the caller.
      */
-    public Map<Integer, List<Tournament_Match>> getFixturesByRound(Long tournamentID) {
+    public Map<Integer, List<Tournament_Match>> getFixturesByRound(Long tournamentId) {
         List<Tournament_Match> all = tournamentMatchRepository
-                .findByTournamentIDOrderByRoundNumberAscSequenceAsc(tournamentID);
+                .findByTournamentIdOrderByRoundNumberAscSequenceAsc(tournamentId);
         return all.stream().collect(Collectors.groupingBy(Tournament_Match::getRoundNumber));
     }
 
     /**
      * Returns fixtures for a specific round/group index.
      */
-    public List<Tournament_Match> getFixturesForRound(Long tournamentID, int roundNumber) {
+    public List<Tournament_Match> getFixturesForRound(Long tournamentId, int roundNumber) {
         return tournamentMatchRepository
-                .findByTournamentIDAndRoundNumberOrderBySequenceAsc(tournamentID, roundNumber);
+                .findByTournamentIdAndRoundNumberOrderBySequenceAsc(tournamentId, roundNumber);
     }
 
 
@@ -251,44 +251,44 @@ public class Tournament_Service {
      * complete when the final round is done and records the podium.
      */
     @Transactional
-    public Tournament_KO advanceKORound(Long tournamentID) {
-        Tournament tournament = getByID(tournamentID);
+    public Tournament_KO advanceKORound(Long tournamentId) {
+        Tournament tournament = getById(tournamentId);
         if (!(tournament instanceof Tournament_KO ko)) {
-            throw new IllegalArgumentException("Tournament " + tournamentID + " is not a KO tournament");
+            throw new IllegalArgumentException("Tournament " + tournamentId + " is not a KO tournament");
         }
         if (ko.isComplete()) {
-            log.warn("KO tournament {} is already complete", tournamentID);
+            log.warn("KO tournament {} is already complete", tournamentId);
             return ko;
         }
 
-        Integer currentRound = tournamentMatchRepository.findMaxRoundNumber(tournamentID);
+        Integer currentRound = tournamentMatchRepository.findMaxRoundNumber(tournamentId);
         if (currentRound == null) {
-            throw new IllegalStateException("No fixtures found for tournament " + tournamentID);
+            throw new IllegalStateException("No fixtures found for tournament " + tournamentId);
         }
 
         // Validate current round is fully complete
         List<Tournament_Match> currentFixtures = tournamentMatchRepository
-                .findByTournamentIDAndRoundNumberOrderBySequenceAsc(tournamentID, currentRound);
+                .findByTournamentIdAndRoundNumberOrderBySequenceAsc(tournamentId, currentRound);
 
         boolean allComplete = currentFixtures.stream()
                 .map(Tournament_Match::getMatch)
                 .allMatch(Match::isPlayed);
 
         if (!allComplete) {
-            log.warn("KO tournament {}: not all matches in round {} are complete", tournamentID, currentRound);
+            log.warn("KO tournament {}: not all matches in round {} are complete", tournamentId, currentRound);
             throw new IllegalStateException("Not all matches in round " + currentRound + " are complete");
         }
 
-        int totalRounds = getRounds(ko.getPartyIDs().size());
+        int totalRounds = getRounds(ko.getPartyIds().size());
 
         if (currentRound == totalRounds - 1) {
             // Final round complete — set podium and mark done
             resolveKOPodium(ko, currentFixtures);
             ko.setComplete(true);
             tournamentRepository.save(ko);
-            log.info("KO tournament {} complete. Winner: {}", tournamentID, ko.getPlace1ID());
+            log.info("KO tournament {} complete. Winner: {}", tournamentId, ko.getPlace1Id());
         } else {
-            log.info("KO tournament {}: round {} complete, advancing", tournamentID, currentRound);
+            log.info("KO tournament {}: round {} complete, advancing", tournamentId, currentRound);
         }
 
         return ko;
@@ -299,9 +299,9 @@ public class Tournament_Service {
      * Used by RoundRobin, Killer, and GroupStage to gate podium resolution.
      */
     @Transactional
-    public boolean checkAllComplete(Long tournamentID) {
+    public boolean checkAllComplete(Long tournamentId) {
         List<Tournament_Match> all = tournamentMatchRepository
-                .findByTournamentIDOrderByRoundNumberAscSequenceAsc(tournamentID);
+                .findByTournamentIdOrderByRoundNumberAscSequenceAsc(tournamentId);
         return all.stream()
                 .map(Tournament_Match::getMatch)
                 .allMatch(Match::isPlayed);
@@ -312,15 +312,15 @@ public class Tournament_Service {
      * Promote/demote lists are the caller's responsibility (service consumer or controller).
      */
     @Transactional
-    public Tournament markComplete(Long tournamentID) {
-        Tournament tournament = getByID(tournamentID);
-        if (!checkAllComplete(tournamentID)) {
-            log.warn("Tournament {}: cannot mark complete — unplayed matches remain", tournamentID);
-            throw new IllegalStateException("Not all matches are complete for tournament " + tournamentID);
+    public Tournament markComplete(Long tournamentId) {
+        Tournament tournament = getById(tournamentId);
+        if (!checkAllComplete(tournamentId)) {
+            log.warn("Tournament {}: cannot mark complete — unplayed matches remain", tournamentId);
+            throw new IllegalStateException("Not all matches are complete for tournament " + tournamentId);
         }
         tournament.setComplete(true);
         tournamentRepository.save(tournament);
-        log.info("Tournament {} marked complete", tournamentID);
+        log.info("Tournament {} marked complete", tournamentId);
         return tournament;
     }
 
@@ -331,14 +331,14 @@ public class Tournament_Service {
 
     /**
      * Manually sets the podium for a completed tournament.
-     * Consistent with original setPositions() — caller provides ordered list of IDs.
+     * Consistent with original setPositions() — caller provides ordered list of Ids.
      */
     @Transactional
-    public Tournament setPositions(Long tournamentID, List<Long> positions) {
-        Tournament tournament = getByID(tournamentID);
+    public Tournament setPositions(Long tournamentId, List<Long> positions) {
+        Tournament tournament = getById(tournamentId);
         tournament.setPositions(positions);
         tournamentRepository.save(tournament);
-        log.info("Tournament {} positions set: {}", tournamentID, positions);
+        log.info("Tournament {} positions set: {}", tournamentId, positions);
         return tournament;
     }
 
@@ -348,32 +348,32 @@ public class Tournament_Service {
     // -------------------------------------------------------------------------
 
     /**
-     * Returns the top N party IDs from a completed RoundRobin or GroupStage tournament.
+     * Returns the top N party Ids from a completed RoundRobin or GroupStage tournament.
      * Ordering is determined by the caller supplying a pre-ranked list (from leaderboard/
      * ranking service) — this method slices the front of it.
 
      * The ranking strategy (Ranking_Points, Ranking_Elimination) is not replicated here;
      * that belongs in a dedicated Leaderboard_Service once migrated.
      */
-    public List<Long> getPromoted(Long tournamentID, List<Long> rankedPartyIDs, int promoteCount) {
-        if (!checkAllComplete(tournamentID)) {
+    public List<Long> getPromoted(Long tournamentId, List<Long> rankedPartyIds, int promoteCount) {
+        if (!checkAllComplete(tournamentId)) {
             throw new IllegalStateException("Cannot get promoted parties — not all matches complete");
         }
-        if (promoteCount > rankedPartyIDs.size()) {
+        if (promoteCount > rankedPartyIds.size()) {
             throw new IllegalArgumentException("promoteCount exceeds number of ranked parties");
         }
-        return new ArrayList<>(rankedPartyIDs.subList(0, promoteCount));
+        return new ArrayList<>(rankedPartyIds.subList(0, promoteCount));
     }
 
-    public List<Long> getDemoted(Long tournamentID, List<Long> rankedPartyIDs, int demoteCount) {
-        if (!checkAllComplete(tournamentID)) {
+    public List<Long> getDemoted(Long tournamentId, List<Long> rankedPartyIds, int demoteCount) {
+        if (!checkAllComplete(tournamentId)) {
             throw new IllegalStateException("Cannot get demoted parties — not all matches complete");
         }
-        if (demoteCount > rankedPartyIDs.size()) {
+        if (demoteCount > rankedPartyIds.size()) {
             throw new IllegalArgumentException("demoteCount exceeds number of ranked parties");
         }
-        return new ArrayList<>(rankedPartyIDs.subList(rankedPartyIDs.size() - demoteCount,
-                rankedPartyIDs.size()));
+        return new ArrayList<>(rankedPartyIds.subList(rankedPartyIds.size() - demoteCount,
+                rankedPartyIds.size()));
     }
 
 
@@ -431,68 +431,68 @@ public class Tournament_Service {
      * place1 = winner of final, place2 = loser of final.
      * place3/place4 from semi-final losers if they exist.
 
-     * Winner/loser IDs are extracted via the match subtype since Match base class
-     * only holds the entity reference, not a bare winnerID column.
+     * Winner/loser Ids are extracted via the match subtype since Match base class
+     * only holds the entity reference, not a bare winnerId column.
      */
     private void resolveKOPodium(Tournament_KO tournament, List<Tournament_Match> finalRoundFixtures) {
         if (finalRoundFixtures.size() == 1) {
             Match finalMatch = finalRoundFixtures.getFirst().getMatch();
-            tournament.setPlace1ID(extractWinnerID(finalMatch));
-            tournament.setPlace2ID(extractLoserID(finalMatch));
+            tournament.setPlace1Id(extractWinnerId(finalMatch));
+            tournament.setPlace2Id(extractLoserId(finalMatch));
         }
 
-        Integer finalRound = tournamentMatchRepository.findMaxRoundNumber(tournament.getID());
+        Integer finalRound = tournamentMatchRepository.findMaxRoundNumber(tournament.getId());
         if (finalRound != null && finalRound > 0) {
             List<Tournament_Match> semiFinals = tournamentMatchRepository
-                    .findByTournamentIDAndRoundNumberOrderBySequenceAsc(
-                            tournament.getID(), finalRound - 1);
+                    .findByTournamentIdAndRoundNumberOrderBySequenceAsc(
+                            tournament.getId(), finalRound - 1);
             if (semiFinals.size() >= 2) {
-                tournament.setPlace3ID(extractLoserID(semiFinals.get(0).getMatch()));
-                tournament.setPlace4ID(extractLoserID(semiFinals.get(1).getMatch()));
+                tournament.setPlace3Id(extractLoserId(semiFinals.get(0).getMatch()));
+                tournament.setPlace4Id(extractLoserId(semiFinals.get(1).getMatch()));
             }
         }
     }
 
     /**
-     * Extracts the winner ID from any Match subtype.
+     * Extracts the winner Id from any Match subtype.
      * Returns null if the match has no winner set yet.
      */
-    private Long extractWinnerID(Match match) {
+    private Long extractWinnerId(Match match) {
         return switch (match) {
-            case Match_Singles m -> m.getWinner() != null ? m.getWinner().getID() : null;
-            case Match_Doubles m -> m.getWinner() != null ? m.getWinner().getID() : null;
-            case Match_Team m    -> m.getWinner() != null ? m.getWinner().getID() : null;
+            case Match_Singles m -> m.getWinner() != null ? m.getWinner().getId() : null;
+            case Match_Doubles m -> m.getWinner() != null ? m.getWinner().getId() : null;
+            case Match_Team m    -> m.getWinner() != null ? m.getWinner().getId() : null;
             default -> null;
         };
     }
 
     /**
-     * Extracts the loser ID from any Match subtype.
+     * Extracts the loser Id from any Match subtype.
      * Returns null if the match has no loser set yet.
      */
-    private Long extractLoserID(Match match) {
+    private Long extractLoserId(Match match) {
         return switch (match) {
-            case Match_Singles m -> m.getLoser() != null ? m.getLoser().getID() : null;
-            case Match_Doubles m -> m.getLoser() != null ? m.getLoser().getID() : null;
-            case Match_Team m    -> m.getLoser() != null ? m.getLoser().getID() : null;
+            case Match_Singles m -> m.getLoser() != null ? m.getLoser().getId() : null;
+            case Match_Doubles m -> m.getLoser() != null ? m.getLoser().getId() : null;
+            case Match_Team m    -> m.getLoser() != null ? m.getLoser().getId() : null;
             default -> null;
         };
     }
 
     /**
-     * Resolves two party IDs to entities and creates the correct Match subtype.
+     * Resolves two party Ids to entities and creates the correct Match subtype.
      * Bye party (id = -1L) is handled per subtype — the match is flagged isBye
      * and only the non-bye party is set, consistent with bye handling conventions.
      * frameCount is set via setFrameCount() since Match subtypes have no frameCount
      * constructor parameter.
      */
-    private Match createMatch(Long party1ID, Long party2ID, PartyType partyType, int frameCount) {
+    private Match createMatch(Long party1Id, Long party2Id, PartyType partyType, int frameCount) {
         Match match = switch (partyType) {
             case SINGLES -> {
-                Player p1 = isBye(party1ID) ? null : playerRepository.findByID(party1ID)
-                        .orElseThrow(() -> new PlayerNotFoundException(party1ID));
-                Player p2 = isBye(party2ID) ? null : playerRepository.findByID(party2ID)
-                        .orElseThrow(() -> new PlayerNotFoundException(party2ID));
+                Player p1 = isBye(party1Id) ? null : playerRepository.findById(party1Id)
+                        .orElseThrow(() -> new PlayerNotFoundException(party1Id));
+                Player p2 = isBye(party2Id) ? null : playerRepository.findById(party2Id)
+                        .orElseThrow(() -> new PlayerNotFoundException(party2Id));
                 Match_Singles m = (p1 == null || p2 == null)
                         ? new Match_Singles(p1 != null ? p1 : p2)
                         : new Match_Singles(p1, p2);
@@ -500,10 +500,10 @@ public class Tournament_Service {
                 yield m;
             }
             case DOUBLES -> {
-                Doubles d1 = isBye(party1ID) ? null : doublesRepository.findByID(party1ID)
-                        .orElseThrow(() -> new DoublesNotFoundException(party1ID));
-                Doubles d2 = isBye(party2ID) ? null : doublesRepository.findByID(party2ID)
-                        .orElseThrow(() -> new DoublesNotFoundException(party2ID));
+                Doubles d1 = isBye(party1Id) ? null : doublesRepository.findById(party1Id)
+                        .orElseThrow(() -> new DoublesNotFoundException(party1Id));
+                Doubles d2 = isBye(party2Id) ? null : doublesRepository.findById(party2Id)
+                        .orElseThrow(() -> new DoublesNotFoundException(party2Id));
                 Match_Doubles m = (d1 == null || d2 == null)
                         ? new Match_Doubles(d1 != null ? d1 : d2)
                         : new Match_Doubles(d1, d2);
@@ -511,10 +511,10 @@ public class Tournament_Service {
                 yield m;
             }
             case TEAM -> {
-                Team t1 = isBye(party1ID) ? null : teamRepository.findByID(party1ID)
-                        .orElseThrow(() -> new TeamNotFoundException(party1ID));
-                Team t2 = isBye(party2ID) ? null : teamRepository.findByID(party2ID)
-                        .orElseThrow(() -> new TeamNotFoundException(party2ID));
+                Team t1 = isBye(party1Id) ? null : teamRepository.findById(party1Id)
+                        .orElseThrow(() -> new TeamNotFoundException(party1Id));
+                Team t2 = isBye(party2Id) ? null : teamRepository.findById(party2Id)
+                        .orElseThrow(() -> new TeamNotFoundException(party2Id));
                 Match_Team m = (t1 == null || t2 == null)
                         ? new Match_Team(t1 != null ? t1 : t2)
                         : new Match_Team(t1, t2);
@@ -531,15 +531,15 @@ public class Tournament_Service {
     }
 
     /**
-     * Sentinel ID for bye parties. Consistent with convention established in
+     * Sentinel Id for bye parties. Consistent with convention established in
      * the existing bye handling at service level.
      */
-    private Long byeID() {
+    private Long byeId() {
         return -1L;
     }
 
-    private boolean isBye(Long partyID) {
-        return partyID != null && partyID == -1L;
+    private boolean isBye(Long partyId) {
+        return partyId != null && partyId == -1L;
     }
 
     private int getRounds(int partyCount) {

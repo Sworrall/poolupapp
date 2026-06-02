@@ -34,32 +34,32 @@ public class Player_Controller {
     }
 
     @GetMapping("/players/{id}")
-    public ResponseEntity<Player> getPlayer(@PathVariable Long ID) {
-        return playerService.getByID(ID)
+    public ResponseEntity<Player> getPlayer(@PathVariable Long Id) {
+        return playerService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/players/{id}")
     public ResponseEntity<Player> updatePlayer(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Player_Request req) {
-        return ResponseEntity.ok(playerService.updatePlayer(ID, req));
+        return ResponseEntity.ok(playerService.updatePlayer(Id, req));
     }
 
     @PatchMapping("/players/{id}/captain")
     public ResponseEntity<Player> setCaptain(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Map<String, Boolean> body) {
         Player updated = Boolean.TRUE.equals(body.get("isCaptain"))
-                ? playerService.makeCaptain(ID)
-                : playerService.removeCaptain(ID);
+                ? playerService.makeCaptain(Id)
+                : playerService.removeCaptain(Id);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/players/{id}")
-    public ResponseEntity<Void> deletePlayer(@PathVariable Long ID) {
-        playerService.deletePlayer(ID);
+    public ResponseEntity<Void> deletePlayer(@PathVariable Long Id) {
+        playerService.deletePlayer(Id);
         return ResponseEntity.noContent().build();
     }
 }

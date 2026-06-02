@@ -13,7 +13,7 @@ package com.stephen.BaseStats;
  */
 public interface StatHolder {
 
-    Long getID();
+    Long getId();
 
     String getName();
 

@@ -38,21 +38,21 @@ public class Frame_Controller {
 
     @PostMapping("/{id}/result")
     public ResponseEntity<Frame> recordResult(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Frame_ResultRequest req) {
-        return ResponseEntity.ok(frameService.recordResult(ID, req));
+        return ResponseEntity.ok(frameService.recordResult(Id, req));
     }
 
     /**
      * Records a per-player lives update for a killer frame.
      * Separate endpoint from /result since killer frames use a different
-     * request shape (playerID + livesRemaining vs winnerID).
+     * request shape (playerId + livesRemaining vs winnerId).
      */
     @PostMapping("/killer/{id}/result")
     public ResponseEntity<Frame_Killer> recordKillerResult(
-            @PathVariable Long ID,
+            @PathVariable Long Id,
             @RequestBody Frame_KillerResultRequest req) {
-        return ResponseEntity.ok(frameService.recordKillerResult(ID, req));
+        return ResponseEntity.ok(frameService.recordKillerResult(Id, req));
     }
 
     @GetMapping("/unplayed")
