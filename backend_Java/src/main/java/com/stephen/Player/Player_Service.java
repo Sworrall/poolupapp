@@ -1,5 +1,6 @@
 package com.stephen.Player;
 
+import com.stephen.Player.dto.Player_Request;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,11 @@ public class Player_Service {
         player.setNickName(req.getNickName());
         player.setPhoneNumber(req.getPhoneNumber());
         player.setFirebaseUid(req.getFirebaseUid());
-        return playerRepo.save(player);
+        try {
+            return playerRepo.save(player);
+        } catch (org.springframework.dao.DataIntegrityViolationException e){
+            throw new IllegalArgumentException("A player already exists for Firebase Uid: " + req.getFirebaseUid());
+        }
     }
 
     public Optional<Player> getById(Long Id) {
@@ -51,15 +56,13 @@ public class Player_Service {
     }
 
     public Player makeCaptain(Long Id) {
-        Player player = playerRepo.findById(Id)
-                .orElseThrow(() -> new PlayerNotFoundException(Id));
+        Player player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
         player.setCaptain(true);
         return playerRepo.save(player);
     }
 
     public Player removeCaptain(Long Id) {
-        Player player = playerRepo.findById(Id)
-                .orElseThrow(() -> new PlayerNotFoundException(Id));
+        Player player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
         player.setCaptain(false);
         return playerRepo.save(player);
     }

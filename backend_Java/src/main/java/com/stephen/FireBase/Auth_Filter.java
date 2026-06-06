@@ -27,7 +27,7 @@ public class Auth_Filter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.equals("/api/test");
+        return path.startsWith("/api/");
     }
 
     @Override
@@ -35,24 +35,27 @@ public class Auth_Filter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        filterChain.doFilter(request, response);
+        return;
 
-        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
-            return;
-        }
-
-        String idToken = authHeader.substring(7);
-
-        try {
-            FirebaseToken decoded = authService.verifyToken(idToken);
-            request.setAttribute("uid", decoded.getUid());
-            request.setAttribute("email", decoded.getEmail());
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            log.error("Token verification failed", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-        }
+//        String authHeader = request.getHeader("Authorization");
+//
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
+//            return;
+//        }
+//
+//        String idToken = authHeader.substring(7);
+//
+//        try {
+//            FirebaseToken decoded = authService.verifyToken(idToken);
+//            request.setAttribute("uid", decoded.getUid());
+//            request.setAttribute("email", decoded.getEmail());
+//            filterChain.doFilter(request, response);
+//        } catch (Exception e) {
+//            log.error("Token verification failed", e);
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+//        }
     }
 }

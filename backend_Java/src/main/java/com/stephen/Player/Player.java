@@ -74,8 +74,8 @@ public class Player {
     public String getNickName() { return nickName; }
     public void setNickName(String nickName) { this.nickName = nickName; }
 
-    public Long getPhoneNumber() { return contactDetails.getPhoneNumber(); }
-    public void setPhoneNumber(Long phoneNumber) { contactDetails.setPhoneNumber(phoneNumber); }
+    public String getPhoneNumber() { return contactDetails.getPhoneNumber(); }
+    public void setPhoneNumber(String phoneNumber) { contactDetails.setPhoneNumber(phoneNumber); }
 
     public boolean isBye() { return isBye; }
 

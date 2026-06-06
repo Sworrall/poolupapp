@@ -1,5 +1,6 @@
 package com.stephen.Player;
 
+import com.stephen.Player.dto.Player_Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,32 +35,32 @@ public class Player_Controller {
     }
 
     @GetMapping("/players/{id}")
-    public ResponseEntity<Player> getPlayer(@PathVariable Long Id) {
-        return playerService.getById(Id)
+    public ResponseEntity<Player> getPlayer(@PathVariable Long id) {
+        return playerService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/players/{id}")
     public ResponseEntity<Player> updatePlayer(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Player_Request req) {
-        return ResponseEntity.ok(playerService.updatePlayer(Id, req));
+        return ResponseEntity.ok(playerService.updatePlayer(id, req));
     }
 
     @PatchMapping("/players/{id}/captain")
     public ResponseEntity<Player> setCaptain(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Map<String, Boolean> body) {
         Player updated = Boolean.TRUE.equals(body.get("isCaptain"))
-                ? playerService.makeCaptain(Id)
-                : playerService.removeCaptain(Id);
+                ? playerService.makeCaptain(id)
+                : playerService.removeCaptain(id);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/players/{id}")
-    public ResponseEntity<Void> deletePlayer(@PathVariable Long Id) {
-        playerService.deletePlayer(Id);
+    public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
+        playerService.deletePlayer(id);
         return ResponseEntity.noContent().build();
     }
 }

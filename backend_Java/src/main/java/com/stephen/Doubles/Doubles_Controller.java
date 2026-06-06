@@ -29,18 +29,18 @@ public class Doubles_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doubles> getDoubles(@PathVariable Long Id) {
-        return doublesService.getById(Id)
+    public ResponseEntity<Doubles> getDoubles(@PathVariable Long id) {
+        return doublesService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Doubles> updateDoubles(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Doubles_Request req) {
-        log.info("PUT /api/doubles/{}", Id);
-        return ResponseEntity.ok(doublesService.updateDoubles(Id, req));
+        log.info("PUT /api/doubles/{}", id);
+        return ResponseEntity.ok(doublesService.updateDoubles(id, req));
     }
 
     @PatchMapping("/{doublesId}/captain/{playerId}")
@@ -52,9 +52,9 @@ public class Doubles_Controller {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDoubles(@PathVariable Long Id) {
-        log.info("DELETE /api/doubles/{}", Id);
-        doublesService.deleteDoubles(Id);
+    public ResponseEntity<Void> deleteDoubles(@PathVariable Long id) {
+        log.info("DELETE /api/doubles/{}", id);
+        doublesService.deleteDoubles(id);
         return ResponseEntity.noContent().build();
     }
 

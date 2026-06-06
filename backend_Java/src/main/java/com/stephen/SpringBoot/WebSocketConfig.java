@@ -1,4 +1,4 @@
-package com.stephen.Config;
+package com.stephen.SpringBoot;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

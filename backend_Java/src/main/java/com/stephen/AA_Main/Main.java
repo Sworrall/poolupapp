@@ -20,7 +20,6 @@ public class Main {
         log.info("PoolManager application starting...");
         SpringApplication.run(Main.class, args);
     }
-
     @Bean
     CommandLineRunner test(ApplicationContext ctx) {
         return args -> {
