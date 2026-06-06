@@ -50,3 +50,5 @@ Outdated/
 application.properties
 logs/
 *.log
+.idea/
+*.class
