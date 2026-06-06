@@ -100,14 +100,13 @@ public class Team {
 
     public boolean isBye() { return isBye; }
 
-    public String getFirebaseUid
-            () { return firebaseUid
-            ; }
-    public void setFirebaseUid
-            (String firebaseUid
-            ) { this.firebaseUid
-            = firebaseUid
-    ; }
+    public String getFirebaseUid() {
+        return firebaseUid;
+    }
+
+    public void setFirebaseUid(String firebaseUid) {
+        this.firebaseUid = firebaseUid;
+    }
 
     public Instant getCreatedAt() { return createdAt; }
 }

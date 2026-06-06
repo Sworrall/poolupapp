@@ -467,7 +467,7 @@ public class Tournament_Service {
     }
 
     /**
-     * Extracts the loser Id from any Match subtype.
+     * Extracts the loser ID from any Match subtype.
      * Returns null if the match has no loser set yet.
      */
     private Long extractLoserId(Match match) {
@@ -480,7 +480,7 @@ public class Tournament_Service {
     }
 
     /**
-     * Resolves two party Ids to entities and creates the correct Match subtype.
+     * Resolves two party IDs to entities and creates the correct Match subtype.
      * Bye party (id = -1L) is handled per subtype — the match is flagged isBye
      * and only the non-bye party is set, consistent with bye handling conventions.
      * frameCount is set via setFrameCount() since Match subtypes have no frameCount
@@ -539,7 +539,7 @@ public class Tournament_Service {
     }
 
     private boolean isBye(Long partyId) {
-        return partyId != null && partyId == -1L;
+        return partyId != null && partyId.equals(-1L);
     }
 
     private int getRounds(int partyCount) {

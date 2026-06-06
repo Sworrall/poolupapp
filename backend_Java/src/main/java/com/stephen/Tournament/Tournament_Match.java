@@ -18,7 +18,7 @@ import jakarta.persistence.*;
  * sequence preserves ordering within a round/group, which matters for
  * KO bracket display and deterministic reconstruction of the original lists.
  */
-@Entity
+@Entity(name = "TournamentMatch")
 @Table(name = "tournament_match", indexes = {
         @Index(name = "idx_tm_tournament", columnList = "tournament_id"),
         @Index(name = "idx_tm_match", columnList = "match_id")

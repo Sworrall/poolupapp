@@ -42,18 +42,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    @Profile("dev")
-    @Component
-    public static class DevSecurityConfig {
-
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http
-                    .csrf(csrf -> csrf.disable())
-                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-
-            return http.build();
-        }
-    }
 }

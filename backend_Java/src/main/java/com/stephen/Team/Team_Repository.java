@@ -8,7 +8,5 @@ import java.util.Optional;
 public interface Team_Repository extends JpaRepository<Team, Long> {
     Optional<Team> findByFirebaseUid(String firebaseUid);
     boolean existsByFirebaseUid(String firebaseUid);
-    Optional<Team> findById(Long id);
     Optional<Team> findByTeamName(String name);
-    void deleteById(Long Id);
 }

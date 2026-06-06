@@ -15,7 +15,6 @@ import java.io.IOException;
 @Component
 public class Config {
 
-    @Transient
     private static final Logger log = LoggerFactory.getLogger(Config.class);
 
     @PostConstruct

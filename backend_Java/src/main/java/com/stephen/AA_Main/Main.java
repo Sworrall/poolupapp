@@ -20,19 +20,4 @@ public class Main {
         log.info("PoolManager application starting...");
         SpringApplication.run(Main.class, args);
     }
-    @Bean
-    CommandLineRunner test(ApplicationContext ctx) {
-        return args -> {
-            System.out.println(ctx.getBeansOfType(BaseStats_Repository.class));
-        };
-    }
-    @Bean
-    CommandLineRunner debug(BaseStats_Repository repo) {
-        return args -> System.out.println("REPO LOADED: " + repo.getClass());
-    }
-
-    @GetMapping("/public/ping")
-    public ResponseEntity<String> publicPing() {
-        return ResponseEntity.ok("Backend is alive!");
-    }
 }

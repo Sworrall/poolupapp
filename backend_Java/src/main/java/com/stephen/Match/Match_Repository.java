@@ -12,5 +12,4 @@ public interface Match_Repository extends JpaRepository<Match, Long> {
     Optional<Match_Slot> findByFrameId(Long frameId);
     Optional<Match_Slot> findByFrameIdAndIsPlayed(Long frameId, boolean isPlayed);
     Optional<Match_Slot> findByFrameIdAndIsBye(Long frameId, boolean isBye);
-    Optional<Match> findById(Long Id);
 }

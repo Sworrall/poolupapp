@@ -28,7 +28,6 @@ public class BaseStats_Key {
         return Objects.hash(getEventId(), getTeamId());
     }
 
-    @Transient
     private static final Logger log = LoggerFactory.getLogger(BaseStats_Key.class);
 
     public BaseStats_Key(Long eventId) {

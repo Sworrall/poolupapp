@@ -12,6 +12,4 @@ public interface Player_Repository extends JpaRepository<Player, Long> {
     List<Player> findByLastName(String lastName);
     List<Player> findByIsCaptainTrue();
     boolean existsByFirebaseUid(String firebaseUid);
-    Optional<Player> findById(Long Id);
-    void deleteById(@NonNull Long Id);
 }

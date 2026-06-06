@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface Frame_Repository extends JpaRepository<Frame, Long> {
     List<Frame> findByIsPlayed(boolean isPlayed);
     List<Frame> findByIsBye(boolean isBye);
-    Optional<Frame> findById(Long Id);
 }
