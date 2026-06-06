@@ -40,7 +40,13 @@ target/
 # IDE files (optional but recommended)
 backend_Java/.idea/
 *.iml
-.vscode/
 
 # outdated files
 Outdated/
+
+# In your .gitignore
+*.json
+*.plist
+application.properties
+logs/
+*.log
