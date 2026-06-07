@@ -1,7 +1,7 @@
 package com.stephen.Match;
 
-import com.stephen.Frame.Frame;
-import com.stephen.Player.Player;
+import com.stephen.Frame.Frame_Entity;
+import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +17,7 @@ public class Match_Slot {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "match_id", nullable = false)
-    private Match match;
+    private Match_Entity match;
 
     @Column(name = "slot_number", nullable = false)
     private int slotNumber;
@@ -28,31 +28,31 @@ public class Match_Slot {
 
     @ManyToOne
     @JoinColumn(name = "player_a_id")
-    private Player playerA;
+    private Player_Entity playerA;
 
     @ManyToOne
     @JoinColumn(name = "player_b_id")
-    private Player playerB;
+    private Player_Entity playerB;
 
     @ManyToOne
     @JoinColumn(name = "frame_id")
-    private Frame frame;
+    private Frame_Entity frame;
 
     protected Match_Slot() {}
 
-    public Match_Slot(Match match, int slotNumber) {
+    public Match_Slot(Match_Entity match, int slotNumber) {
         this.match = match;
         this.slotNumber = slotNumber;
         this.status = Status.PENDING;
     }
 
     // called when a player is assigned — auto-transitions to READY if both set
-    public void assignPlayerA(Player player) {
+    public void assignPlayerA(Player_Entity player) {
         this.playerA = player;
         updateStatus();
     }
 
-    public void assignPlayerB(Player player) {
+    public void assignPlayerB(Player_Entity player) {
         this.playerB = player;
         updateStatus();
     }
@@ -64,7 +64,7 @@ public class Match_Slot {
         }
     }
 
-    public void linkFrame(Frame frame) {
+    public void linkFrame(Frame_Entity frame) {
         this.frame = frame;
     }
 
@@ -80,10 +80,10 @@ public class Match_Slot {
     public boolean isComplete() { return status == Status.COMPLETE; }
 
     public Long getId() { return Id; }
-    public Match getMatch() { return match; }
+    public Match_Entity getMatch() { return match; }
     public int getSlotNumber() { return slotNumber; }
     public Status getStatus() { return status; }
-    public Player getPlayerA() { return playerA; }
-    public Player getPlayerB() { return playerB; }
-    public Frame getFrame() { return frame; }
+    public Player_Entity getPlayerA() { return playerA; }
+    public Player_Entity getPlayerB() { return playerB; }
+    public Frame_Entity getFrame() { return frame; }
 }

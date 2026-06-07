@@ -1,4 +1,4 @@
-package com.stephen.Match.Doubles;
+package com.stephen.Match.DTO;
 
 public class Match_Request_Doubles {
     private Long doublesAid;

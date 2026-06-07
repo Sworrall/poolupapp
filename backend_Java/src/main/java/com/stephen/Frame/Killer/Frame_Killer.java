@@ -1,13 +1,13 @@
 package com.stephen.Frame.Killer;
 
 
-import com.stephen.Frame.Frame;
+import com.stephen.Frame.Frame_Entity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "frames_killer")
 @DiscriminatorValue("KILLER")
-public class Frame_Killer extends Frame {
+public class Frame_Killer extends Frame_Entity {
 
     @Column(name = "starting_lives", nullable = false)
     private int startingLives;

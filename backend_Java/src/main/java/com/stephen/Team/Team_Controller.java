@@ -15,45 +15,45 @@ public class Team_Controller {
     }
 
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody Team_Request req) {
+    public ResponseEntity<Team_Entity> createTeam(@RequestBody Team_Request req) {
         return ResponseEntity.ok(teamService.createTeam(req));
     }
 
     @GetMapping
-    public ResponseEntity<List<Team>> getAllTeams() {
+    public ResponseEntity<List<Team_Entity>> getAllTeams() {
         return ResponseEntity.ok(teamService.getAllTeams());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team> getTeam(@PathVariable Long Id) {
+    public ResponseEntity<Team_Entity> getTeam(@PathVariable Long Id) {
         return teamService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Team> updateTeam(
+    public ResponseEntity<Team_Entity> updateTeam(
             @PathVariable Long Id,
             @RequestBody Team_Request req) {
         return ResponseEntity.ok(teamService.updateTeam(Id, req));
     }
 
     @PostMapping("/{teamId}/players/{playerId}")
-    public ResponseEntity<Team> addPlayer(
+    public ResponseEntity<Team_Entity> addPlayer(
             @PathVariable Long teamId,
             @PathVariable Long playerId) {
         return ResponseEntity.ok(teamService.addPlayer(teamId, playerId));
     }
 
     @DeleteMapping("/{teamId}/players/{playerId}")
-    public ResponseEntity<Team> removePlayer(
+    public ResponseEntity<Team_Entity> removePlayer(
             @PathVariable Long teamId,
             @PathVariable Long playerId) {
         return ResponseEntity.ok(teamService.removePlayer(teamId, playerId));
     }
 
     @PatchMapping("/{teamId}/captain/{playerId}")
-    public ResponseEntity<Team> setCaptain(
+    public ResponseEntity<Team_Entity> setCaptain(
             @PathVariable Long teamId,
             @PathVariable Long playerId) {
         return ResponseEntity.ok(teamService.setCaptain(teamId, playerId));

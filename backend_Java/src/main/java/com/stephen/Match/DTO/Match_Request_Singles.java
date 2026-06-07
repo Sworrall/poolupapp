@@ -1,4 +1,4 @@
-package com.stephen.Match.Singles;
+package com.stephen.Match.DTO;
 
 public class Match_Request_Singles {
     private Long playerAId;

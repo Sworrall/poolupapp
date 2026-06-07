@@ -1,6 +1,6 @@
 package com.stephen.Team;
 
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class Team_Service {
         this.playerRepo = playerRepo;
     }
 
-    public Team createTeam(Team_Request req) {
-        Team team = new Team();
+    public Team_Entity createTeam(Team_Request req) {
+        Team_Entity team = new Team_Entity();
         team.setTeamName(req.getTeamName());
         team.setFirebaseUid(req.getFirebaseUid());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
@@ -30,16 +30,16 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Optional<Team> getById(Long Id) {
+    public Optional<Team_Entity> getById(Long Id) {
         return teamRepo.findById(Id);
     }
 
-    public List<Team> getAllTeams() {
+    public List<Team_Entity> getAllTeams() {
         return teamRepo.findAll();
     }
 
-    public Team updateTeam(Long Id, Team_Request req) {
-        Team team = teamRepo.findById(Id)
+    public Team_Entity updateTeam(Long Id, Team_Request req) {
+        Team_Entity team = teamRepo.findById(Id)
                 .orElseThrow(() -> new TeamNotFoundException(Id));
         team.setTeamName(req.getTeamName());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
@@ -50,28 +50,28 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Team addPlayer(Long teamId, Long playerId) {
-        Team team = teamRepo.findById(teamId)
+    public Team_Entity addPlayer(Long teamId, Long playerId) {
+        Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
-        Player player = playerRepo.findById(playerId)
+        Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.addPlayer(player);
         return teamRepo.save(team);
     }
 
-    public Team removePlayer(Long teamId, Long playerId) {
-        Team team = teamRepo.findById(teamId)
+    public Team_Entity removePlayer(Long teamId, Long playerId) {
+        Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
-        Player player = playerRepo.findById(playerId)
+        Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.removePlayer(player);
         return teamRepo.save(team);
     }
 
-    public Team setCaptain(Long teamId, Long playerId) {
-        Team team = teamRepo.findById(teamId)
+    public Team_Entity setCaptain(Long teamId, Long playerId) {
+        Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
-        Player player = playerRepo.findById(playerId)
+        Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
         team.setCaptain(player);
         return teamRepo.save(team);

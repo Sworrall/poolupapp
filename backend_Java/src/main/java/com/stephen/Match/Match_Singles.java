@@ -1,47 +1,46 @@
-package com.stephen.Match.Singles;
+package com.stephen.Match;
 
-import com.stephen.Match.Match;
-import com.stephen.Player.Player;
-import com.stephen.Team.Team;
+import com.stephen.Player.Player_Entity;
+import com.stephen.Team.Team_Entity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "matches_singles")
 @DiscriminatorValue("SINGLES")
-public class Match_Singles extends Match {
+public class Match_Singles extends Match_Entity {
 
     @ManyToOne
     @JoinColumn(name = "player_a_id", nullable = false)
-    private Player playerA;
+    private Player_Entity playerA;
 
     @ManyToOne
     @JoinColumn(name = "player_b_id", nullable = false)
-    private Player playerB;
+    private Player_Entity playerB;
 
     @ManyToOne
     @JoinColumn(name = "team_a_id")
-    private Team teamA;
+    private Team_Entity teamA;
 
     @ManyToOne
     @JoinColumn(name = "team_b_id")
-    private Team teamB;
+    private Team_Entity teamB;
 
     @ManyToOne
     @JoinColumn(name = "winner_id")
-    private Player winner;
+    private Player_Entity winner;
 
     @ManyToOne
     @JoinColumn(name = "loser_id")
-    private Player loser;
+    private Player_Entity loser;
 
     protected Match_Singles() {}
 
-    public Match_Singles(Player playerA, Player playerB) {
+    public Match_Singles(Player_Entity playerA, Player_Entity playerB) {
         this.playerA = playerA;
         this.playerB = playerB;
     }
 
-    public Match_Singles(Player playerA, Player playerB, Team teamA, Team teamB) {
+    public Match_Singles(Player_Entity playerA, Player_Entity playerB, Team_Entity teamA, Team_Entity teamB) {
         this.playerA = playerA;
         this.playerB = playerB;
         this.teamA = teamA;
@@ -53,22 +52,22 @@ public class Match_Singles extends Match {
      * The real player is stored as playerA; playerB is left null.
      * setBye(true) is called by the service after construction.
      */
-    public Match_Singles(Player realPlayer) {
+    public Match_Singles(Player_Entity realPlayer) {
         this.playerA = realPlayer;
         this.playerB = null;
     }
 
     public boolean hasTeamContext() { return teamA != null && teamB != null; }
 
-    public Player getPlayerA() { return playerA; }
-    public Player getPlayerB() { return playerB; }
+    public Player_Entity getPlayerA() { return playerA; }
+    public Player_Entity getPlayerB() { return playerB; }
 
-    public Team getTeamA() { return teamA; }
-    public Team getTeamB() { return teamB; }
+    public Team_Entity getTeamA() { return teamA; }
+    public Team_Entity getTeamB() { return teamB; }
 
-    public Player getWinner() { return winner; }
-    public void setWinner(Player winner) { this.winner = winner; }
+    public Player_Entity getWinner() { return winner; }
+    public void setWinner(Player_Entity winner) { this.winner = winner; }
 
-    public Player getLoser() { return loser; }
-    public void setLoser(Player loser) { this.loser = loser; }
+    public Player_Entity getLoser() { return loser; }
+    public void setLoser(Player_Entity loser) { this.loser = loser; }
 }

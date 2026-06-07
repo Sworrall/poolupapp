@@ -7,7 +7,7 @@ import java.time.Instant;
 @Table(name = "frames")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "frame_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Frame {
+public abstract class Frame_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
@@ -26,7 +26,7 @@ public abstract class Frame {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    protected Frame() {}
+    protected Frame_Entity() {}
 
     @PrePersist
     protected void onCreate() {

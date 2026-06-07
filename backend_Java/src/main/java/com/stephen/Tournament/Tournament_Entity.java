@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 @Table(name = "tournament")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tournament_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Tournament {
+public abstract class Tournament_Entity {
 
     @Transient
-    private static final Logger log = LoggerFactory.getLogger(Tournament.class);
+    private static final Logger log = LoggerFactory.getLogger(Tournament_Entity.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,10 +63,10 @@ public abstract class Tournament {
     private boolean isComplete = false;
 
     // --- JPA ---
-    protected Tournament() {}
+    protected Tournament_Entity() {}
 
     // --- CONSTRUCTOR ---
-    protected Tournament(List<Long> partyIds, PartyType partyType) {
+    protected Tournament_Entity(List<Long> partyIds, PartyType partyType) {
         this.partyIds = new ArrayList<>(partyIds);
         this.partyType = partyType;
     }

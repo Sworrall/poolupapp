@@ -1,11 +1,8 @@
 package com.stephen.Match;
 
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Doubles.Match_Request_Doubles;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Singles.Match_Request_Singles;
-import com.stephen.Match.Team.Match_Team;
-import com.stephen.Match.Team.Match_Request_Team;
+import com.stephen.Match.DTO.Match_Request_Doubles;
+import com.stephen.Match.DTO.Match_Request_Singles;
+import com.stephen.Match.DTO.Match_Request_Team;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -36,7 +33,7 @@ public class Match_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Match> getMatch(@PathVariable Long Id) {
+    public ResponseEntity<Match_Entity> getMatch(@PathVariable Long Id) {
         return matchService.getById(Id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -64,7 +61,7 @@ public class Match_Controller {
     }
 
     @GetMapping("/unplayed")
-    public ResponseEntity<List<Match>> getUnplayed() {
+    public ResponseEntity<List<Match_Entity>> getUnplayed() {
         return ResponseEntity.ok(matchService.getUnplayed());
     }
 }

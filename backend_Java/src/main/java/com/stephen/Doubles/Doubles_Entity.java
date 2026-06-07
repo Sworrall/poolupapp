@@ -1,13 +1,13 @@
 package com.stephen.Doubles;
 
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "doubles")
-public class Doubles {
+public class Doubles_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doubles_seq")
@@ -19,15 +19,15 @@ public class Doubles {
 
     @ManyToOne
     @JoinColumn(name = "player1_id")
-    private Player player1;
+    private Player_Entity player1;
 
     @ManyToOne
     @JoinColumn(name = "player2_id")
-    private Player player2;
+    private Player_Entity player2;
 
     @ManyToOne
     @JoinColumn(name = "captain_id")
-    private Player captain;
+    private Player_Entity captain;
 
     @Embedded
     private Doubles_ContactDetails contactDetails;
@@ -41,11 +41,11 @@ public class Doubles {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    protected Doubles() {}
+    protected Doubles_Entity() {}
 
     // --- FACTORY ---
-    public static Doubles createBye() {
-        Doubles bye = new Doubles();
+    public static Doubles_Entity createBye() {
+        Doubles_Entity bye = new Doubles_Entity();
         bye.teamName = "BYE";
         bye.isBye = true;
         return bye;
@@ -57,7 +57,7 @@ public class Doubles {
     }
 
     // --- PLAYER MANAGEMENT ---
-    public void setPlayers(Player p1, Player p2) {
+    public void setPlayers(Player_Entity p1, Player_Entity p2) {
         Objects.requireNonNull(p1, "Player 1 cannot be null");
         Objects.requireNonNull(p2, "Player 2 cannot be null");
         if (p1.isBye() || p2.isBye()) throw new IllegalArgumentException("Cannot add bye player to doubles team");
@@ -66,7 +66,7 @@ public class Doubles {
         this.player2 = p2;
     }
 
-    public void setCaptain(Player captain) {
+    public void setCaptain(Player_Entity captain) {
         if (captain == null || captain.isBye()) throw new IllegalArgumentException("Invalid captain");
         if (!captain.getId().equals(player1.getId()) && !captain.getId().equals(player2.getId())) {
             throw new IllegalArgumentException("Captain must be one of the two players");
@@ -82,9 +82,9 @@ public class Doubles {
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
     }
 
-    public Player getPlayer1() { return player1; }
-    public Player getPlayer2() { return player2; }
-    public Player getCaptain() { return captain; }
+    public Player_Entity getPlayer1() { return player1; }
+    public Player_Entity getPlayer2() { return player2; }
+    public Player_Entity getCaptain() { return captain; }
 
     public Doubles_ContactDetails getContactDetails() { return contactDetails; }
     public void setContactDetails(Doubles_ContactDetails contactDetails) {

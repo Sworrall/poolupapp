@@ -25,34 +25,34 @@ public class Player_Controller {
     }
 
     @PostMapping("/players")
-    public ResponseEntity<Player> createPlayer(@RequestBody Player_Request req) {
+    public ResponseEntity<Player_Entity> createPlayer(@RequestBody Player_Request req) {
         return ResponseEntity.ok(playerService.createPlayer(req));
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<Player>> getAllPlayers() {
+    public ResponseEntity<List<Player_Entity>> getAllPlayers() {
         return ResponseEntity.ok(playerService.getAllPlayers());
     }
 
     @GetMapping("/players/{id}")
-    public ResponseEntity<Player> getPlayer(@PathVariable Long id) {
+    public ResponseEntity<Player_Entity> getPlayer(@PathVariable Long id) {
         return playerService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/players/{id}")
-    public ResponseEntity<Player> updatePlayer(
+    public ResponseEntity<Player_Entity> updatePlayer(
             @PathVariable Long id,
             @RequestBody Player_Request req) {
         return ResponseEntity.ok(playerService.updatePlayer(id, req));
     }
 
     @PatchMapping("/players/{id}/captain")
-    public ResponseEntity<Player> setCaptain(
+    public ResponseEntity<Player_Entity> setCaptain(
             @PathVariable Long id,
             @RequestBody Map<String, Boolean> body) {
-        Player updated = Boolean.TRUE.equals(body.get("isCaptain"))
+        Player_Entity updated = Boolean.TRUE.equals(body.get("isCaptain"))
                 ? playerService.makeCaptain(id)
                 : playerService.removeCaptain(id);
         return ResponseEntity.ok(updated);

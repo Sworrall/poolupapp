@@ -1,69 +1,69 @@
 package com.stephen.Frame.Doubles;
 
-import com.stephen.Doubles.Doubles;
-import com.stephen.Frame.Frame;
-import com.stephen.Player.Player;
+import com.stephen.Doubles.Doubles_Entity;
+import com.stephen.Frame.Frame_Entity;
+import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "frames_doubles")
 @DiscriminatorValue("DOUBLES")
-public class Frame_Doubles extends Frame {
+public class Frame_Doubles extends Frame_Entity {
 
     // --- TEAMS ---
     @ManyToOne
     @JoinColumn(name = "doubles_a_id", nullable = false)
-    private Doubles doublesA;
+    private Doubles_Entity doublesA;
 
     @ManyToOne
     @JoinColumn(name = "doubles_b_id", nullable = false)
-    private Doubles doublesB;
+    private Doubles_Entity doublesB;
 
     // --- PLAYER SNAPSHOT ---
     @ManyToOne
     @JoinColumn(name = "doubles_a_player_a_id")
-    private Player doublesAPlayerA;
+    private Player_Entity doublesAPlayerA;
 
     @ManyToOne
     @JoinColumn(name = "doubles_a_player_b_id")
-    private Player doublesAPlayerB;
+    private Player_Entity doublesAPlayerB;
 
     @ManyToOne
     @JoinColumn(name = "doubles_b_player_a_id")
-    private Player doublesBPlayerA;
+    private Player_Entity doublesBPlayerA;
 
     @ManyToOne
     @JoinColumn(name = "doubles_b_player_b_id")
-    private Player doublesBPlayerB;
+    private Player_Entity doublesBPlayerB;
 
     // --- RESULT ---
     @ManyToOne
     @JoinColumn(name = "winner_doubles_id")
-    private Doubles winnerDoubles;
+    private Doubles_Entity winnerDoubles;
 
     @ManyToOne
     @JoinColumn(name = "winner_player_a_id")
-    private Player winnerPlayerA;
+    private Player_Entity winnerPlayerA;
 
     @ManyToOne
     @JoinColumn(name = "winner_player_b_id")
-    private Player winnerPlayerB;
+    private Player_Entity winnerPlayerB;
 
     @ManyToOne
     @JoinColumn(name = "loser_doubles_id")
-    private Doubles loserDoubles;
+    private Doubles_Entity loserDoubles;
 
     @ManyToOne
     @JoinColumn(name = "loser_player_a_id")
-    private Player loserPlayerA;
+    private Player_Entity loserPlayerA;
 
     @ManyToOne
     @JoinColumn(name = "loser_player_b_id")
-    private Player loserPlayerB;
+    private Player_Entity loserPlayerB;
 
     protected Frame_Doubles() {}
 
-    public Frame_Doubles(Doubles doublesA, Doubles doublesB) {
+    public Frame_Doubles(Doubles_Entity doublesA, Doubles_Entity doublesB) {
         this.doublesA = doublesA;
         this.doublesB = doublesB;
         // snapshot players at frame creation time
@@ -81,7 +81,7 @@ public class Frame_Doubles extends Frame {
     }
 
     // --- RESULT HELPERS ---
-    public void setWinner(Doubles winner) {
+    public void setWinner(Doubles_Entity winner) {
         this.winnerDoubles = winner;
         if (winner.equals(doublesA)) {
             this.winnerPlayerA = doublesAPlayerA;
@@ -99,19 +99,19 @@ public class Frame_Doubles extends Frame {
     }
 
     // --- GETTERS ---
-    public Doubles getDoublesA() { return doublesA; }
-    public Doubles getDoublesB() { return doublesB; }
+    public Doubles_Entity getDoublesA() { return doublesA; }
+    public Doubles_Entity getDoublesB() { return doublesB; }
 
-    public Player getDoublesAPlayerA() { return doublesAPlayerA; }
-    public Player getDoublesAPlayerB() { return doublesAPlayerB; }
-    public Player getDoublesBPlayerA() { return doublesBPlayerA; }
-    public Player getDoublesBPlayerB() { return doublesBPlayerB; }
+    public Player_Entity getDoublesAPlayerA() { return doublesAPlayerA; }
+    public Player_Entity getDoublesAPlayerB() { return doublesAPlayerB; }
+    public Player_Entity getDoublesBPlayerA() { return doublesBPlayerA; }
+    public Player_Entity getDoublesBPlayerB() { return doublesBPlayerB; }
 
-    public Doubles getWinner() { return winnerDoubles; }
-    public Player getWinnerPlayerA() { return winnerPlayerA; }
-    public Player getWinnerPlayerB() { return winnerPlayerB; }
+    public Doubles_Entity getWinner() { return winnerDoubles; }
+    public Player_Entity getWinnerPlayerA() { return winnerPlayerA; }
+    public Player_Entity getWinnerPlayerB() { return winnerPlayerB; }
 
-    public Doubles getLoserDoubles() { return loserDoubles; }
-    public Player getLoserPlayerA() { return loserPlayerA; }
-    public Player getLoserPlayerB() { return loserPlayerB; }
+    public Doubles_Entity getLoserDoubles() { return loserDoubles; }
+    public Player_Entity getLoserPlayerA() { return loserPlayerA; }
+    public Player_Entity getLoserPlayerB() { return loserPlayerB; }
 }

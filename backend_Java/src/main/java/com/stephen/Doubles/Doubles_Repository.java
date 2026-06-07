@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface Doubles_Repository extends JpaRepository<Doubles, Long> {
-    Optional<Doubles> findByFirebaseUid(String firebaseUid);
+public interface Doubles_Repository extends JpaRepository<Doubles_Entity, Long> {
+    Optional<Doubles_Entity> findByFirebaseUid(String firebaseUid);
     boolean existsByFirebaseUid(String firebaseUid);
 }

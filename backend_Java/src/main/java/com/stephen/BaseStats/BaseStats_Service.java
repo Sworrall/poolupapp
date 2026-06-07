@@ -1,12 +1,12 @@
 package com.stephen.BaseStats;
 
 import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Frame;
+import com.stephen.Frame.Frame_Entity;
 import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Match;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Team.Match_Team;
+import com.stephen.Match.Match_Doubles;
+import com.stephen.Match.Match_Entity;
+import com.stephen.Match.Match_Singles;
+import com.stephen.Match.Match_Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -97,7 +97,7 @@ public class BaseStats_Service {
      * @param teamId       team context — null for standalone events
      */
     @Transactional
-    public void applyFrameResult(Frame frame, Long matchId, Long tournamentId, Long teamId) {
+    public void applyFrameResult(Frame_Entity frame, Long matchId, Long tournamentId, Long teamId) {
         if (!frame.isPlayed()) {
             log.error("Attempted to apply frame result for unplayed frame: {}", frame.getId());
             throw new IllegalArgumentException("Frame not played: " + frame.getId());
@@ -178,7 +178,7 @@ public class BaseStats_Service {
      * @param teamId       team context — null for standalone events
      */
     @Transactional
-    public void applyMatchResult(Match match, Long tournamentId, Long teamId) {
+    public void applyMatchResult(Match_Entity match, Long tournamentId, Long teamId) {
         if (!match.isPlayed()) {
             log.error("Attempted to apply match result for unplayed match: {}", match.getId());
             throw new IllegalArgumentException("Match not played: " + match.getId());

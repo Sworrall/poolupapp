@@ -2,9 +2,6 @@ package com.stephen.Match;
 
 import com.stephen.Frame.Doubles.Frame_Doubles;
 import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Team.Match_Team;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -23,7 +20,7 @@ public class Match_ResolutionService {
 
     @Transactional
     public void checkAndResolveMatch(Long matchId) {
-        Match match = matchRepo.findById(matchId)
+        Match_Entity match = matchRepo.findById(matchId)
                 .orElseThrow(() -> new MatchNotFoundException(matchId));
 
         List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
@@ -91,7 +88,7 @@ public class Match_ResolutionService {
                 match::setWinner, match::setLoser);
     }
 
-    private <T> void applyResult(Match match, long winsA, long winsB,
+    private <T> void applyResult(Match_Entity match, long winsA, long winsB,
                                  T partyA, T partyB,
                                  java.util.function.Consumer<T> setWinner,
                                  java.util.function.Consumer<T> setLoser) {

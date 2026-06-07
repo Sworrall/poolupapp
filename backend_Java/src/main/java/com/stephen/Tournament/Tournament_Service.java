@@ -1,17 +1,14 @@
 package com.stephen.Tournament;
 
-import com.stephen.Doubles.Doubles;
+import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.DoublesNotFoundException;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Match;
-import com.stephen.Match.Match_Repository;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Team.Match_Team;
-import com.stephen.Player.Player;
+import com.stephen.Match.*;
+import com.stephen.Match.Match_Entity;
+import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
-import com.stephen.Team.Team;
+import com.stephen.Team.Team_Entity;
 import com.stephen.Team.Team_Repository;
 import com.stephen.Team.TeamNotFoundException;
 import jakarta.transaction.Transactional;
@@ -75,7 +72,7 @@ public class Tournament_Service {
         int sequence = 0;
         for (int i = 0; i < partyIds.size(); i++) {
             for (int j = i + 1; j < partyIds.size(); j++) {
-                Match match = createMatch(partyIds.get(i), partyIds.get(j),
+                Match_Entity match = createMatch(partyIds.get(i), partyIds.get(j),
                         request.getPartyType(), request.getFrameCount());
                 tournamentMatchRepository.save(
                         new Tournament_Match(tournament, match, 0, sequence++));
@@ -139,7 +136,7 @@ public class Tournament_Service {
 
         // Sequential pairing — party[0] vs party[1], party[2] vs party[3], ...
         for (int i = 0; i < partyIds.size(); i += 2) {
-            Match match = createMatch(partyIds.get(i), partyIds.get(i + 1),
+            Match_Entity match = createMatch(partyIds.get(i), partyIds.get(i + 1),
                     request.getPartyType(), 1); // Killer: 1 frame per match
             tournamentMatchRepository.save(new Tournament_Match(tournament, match, 0, i / 2));
         }
@@ -184,7 +181,7 @@ public class Tournament_Service {
             int sequence = 0;
             for (int i = 0; i < group.size(); i++) {
                 for (int j = i + 1; j < group.size(); j++) {
-                    Match match = createMatch(group.get(i), group.get(j),
+                    Match_Entity match = createMatch(group.get(i), group.get(j),
                             request.getPartyType(), request.getFrameCount());
                     // roundNumber = group index
                     tournamentMatchRepository.save(
@@ -204,20 +201,20 @@ public class Tournament_Service {
     // READS
     // -------------------------------------------------------------------------
 
-    public Tournament getById(Long Id) {
+    public Tournament_Entity getById(Long Id) {
         return tournamentRepository.findById(Id)
                 .orElseThrow(() -> new TournamentNotFoundException(Id));
     }
 
-    public List<Tournament> getAll() {
+    public List<Tournament_Entity> getAll() {
         return tournamentRepository.findAll();
     }
 
-    public List<Tournament> getByPartyType(PartyType partyType) {
+    public List<Tournament_Entity> getByPartyType(PartyType partyType) {
         return tournamentRepository.findByPartyType(partyType);
     }
 
-    public List<Tournament> getIncomplete() {
+    public List<Tournament_Entity> getIncomplete() {
         return tournamentRepository.findByIsCompleteFalse();
     }
 
@@ -252,7 +249,7 @@ public class Tournament_Service {
      */
     @Transactional
     public Tournament_KO advanceKORound(Long tournamentId) {
-        Tournament tournament = getById(tournamentId);
+        Tournament_Entity tournament = getById(tournamentId);
         if (!(tournament instanceof Tournament_KO ko)) {
             throw new IllegalArgumentException("Tournament " + tournamentId + " is not a KO tournament");
         }
@@ -272,7 +269,7 @@ public class Tournament_Service {
 
         boolean allComplete = currentFixtures.stream()
                 .map(Tournament_Match::getMatch)
-                .allMatch(Match::isPlayed);
+                .allMatch(Match_Entity::isPlayed);
 
         if (!allComplete) {
             log.warn("KO tournament {}: not all matches in round {} are complete", tournamentId, currentRound);
@@ -304,7 +301,7 @@ public class Tournament_Service {
                 .findByTournamentIdOrderByRoundNumberAscSequenceAsc(tournamentId);
         return all.stream()
                 .map(Tournament_Match::getMatch)
-                .allMatch(Match::isPlayed);
+                .allMatch(Match_Entity::isPlayed);
     }
 
     /**
@@ -312,8 +309,8 @@ public class Tournament_Service {
      * Promote/demote lists are the caller's responsibility (service consumer or controller).
      */
     @Transactional
-    public Tournament markComplete(Long tournamentId) {
-        Tournament tournament = getById(tournamentId);
+    public Tournament_Entity markComplete(Long tournamentId) {
+        Tournament_Entity tournament = getById(tournamentId);
         if (!checkAllComplete(tournamentId)) {
             log.warn("Tournament {}: cannot mark complete — unplayed matches remain", tournamentId);
             throw new IllegalStateException("Not all matches are complete for tournament " + tournamentId);
@@ -334,8 +331,8 @@ public class Tournament_Service {
      * Consistent with original setPositions() — caller provides ordered list of Ids.
      */
     @Transactional
-    public Tournament setPositions(Long tournamentId, List<Long> positions) {
-        Tournament tournament = getById(tournamentId);
+    public Tournament_Entity setPositions(Long tournamentId, List<Long> positions) {
+        Tournament_Entity tournament = getById(tournamentId);
         tournament.setPositions(positions);
         tournamentRepository.save(tournament);
         log.info("Tournament {} positions set: {}", tournamentId, positions);
@@ -399,7 +396,7 @@ public class Tournament_Service {
             for (int i = 0; i < roundParties.size(); i += 2) {
                 Long p1 = roundParties.get(i);
                 Long p2 = roundParties.get(i + 1);
-                Match match = createMatch(p1, p2, partyType, frameCount);
+                Match_Entity match = createMatch(p1, p2, partyType, frameCount);
                 tournamentMatchRepository.save(new Tournament_Match(tournament, match, round, i / 2));
 
                 // Placeholder winner for next round bracket position.
@@ -436,7 +433,7 @@ public class Tournament_Service {
      */
     private void resolveKOPodium(Tournament_KO tournament, List<Tournament_Match> finalRoundFixtures) {
         if (finalRoundFixtures.size() == 1) {
-            Match finalMatch = finalRoundFixtures.getFirst().getMatch();
+            Match_Entity finalMatch = finalRoundFixtures.getFirst().getMatch();
             tournament.setPlace1Id(extractWinnerId(finalMatch));
             tournament.setPlace2Id(extractLoserId(finalMatch));
         }
@@ -457,7 +454,7 @@ public class Tournament_Service {
      * Extracts the winner Id from any Match subtype.
      * Returns null if the match has no winner set yet.
      */
-    private Long extractWinnerId(Match match) {
+    private Long extractWinnerId(Match_Entity match) {
         return switch (match) {
             case Match_Singles m -> m.getWinner() != null ? m.getWinner().getId() : null;
             case Match_Doubles m -> m.getWinner() != null ? m.getWinner().getId() : null;
@@ -470,7 +467,7 @@ public class Tournament_Service {
      * Extracts the loser ID from any Match subtype.
      * Returns null if the match has no loser set yet.
      */
-    private Long extractLoserId(Match match) {
+    private Long extractLoserId(Match_Entity match) {
         return switch (match) {
             case Match_Singles m -> m.getLoser() != null ? m.getLoser().getId() : null;
             case Match_Doubles m -> m.getLoser() != null ? m.getLoser().getId() : null;
@@ -486,12 +483,12 @@ public class Tournament_Service {
      * frameCount is set via setFrameCount() since Match subtypes have no frameCount
      * constructor parameter.
      */
-    private Match createMatch(Long party1Id, Long party2Id, PartyType partyType, int frameCount) {
-        Match match = switch (partyType) {
+    private Match_Entity createMatch(Long party1Id, Long party2Id, PartyType partyType, int frameCount) {
+        Match_Entity match = switch (partyType) {
             case SINGLES -> {
-                Player p1 = isBye(party1Id) ? null : playerRepository.findById(party1Id)
+                Player_Entity p1 = isBye(party1Id) ? null : playerRepository.findById(party1Id)
                         .orElseThrow(() -> new PlayerNotFoundException(party1Id));
-                Player p2 = isBye(party2Id) ? null : playerRepository.findById(party2Id)
+                Player_Entity p2 = isBye(party2Id) ? null : playerRepository.findById(party2Id)
                         .orElseThrow(() -> new PlayerNotFoundException(party2Id));
                 Match_Singles m = (p1 == null || p2 == null)
                         ? new Match_Singles(p1 != null ? p1 : p2)
@@ -500,9 +497,9 @@ public class Tournament_Service {
                 yield m;
             }
             case DOUBLES -> {
-                Doubles d1 = isBye(party1Id) ? null : doublesRepository.findById(party1Id)
+                Doubles_Entity d1 = isBye(party1Id) ? null : doublesRepository.findById(party1Id)
                         .orElseThrow(() -> new DoublesNotFoundException(party1Id));
-                Doubles d2 = isBye(party2Id) ? null : doublesRepository.findById(party2Id)
+                Doubles_Entity d2 = isBye(party2Id) ? null : doublesRepository.findById(party2Id)
                         .orElseThrow(() -> new DoublesNotFoundException(party2Id));
                 Match_Doubles m = (d1 == null || d2 == null)
                         ? new Match_Doubles(d1 != null ? d1 : d2)
@@ -511,9 +508,9 @@ public class Tournament_Service {
                 yield m;
             }
             case TEAM -> {
-                Team t1 = isBye(party1Id) ? null : teamRepository.findById(party1Id)
+                Team_Entity t1 = isBye(party1Id) ? null : teamRepository.findById(party1Id)
                         .orElseThrow(() -> new TeamNotFoundException(party1Id));
-                Team t2 = isBye(party2Id) ? null : teamRepository.findById(party2Id)
+                Team_Entity t2 = isBye(party2Id) ? null : teamRepository.findById(party2Id)
                         .orElseThrow(() -> new TeamNotFoundException(party2Id));
                 Match_Team m = (t1 == null || t2 == null)
                         ? new Match_Team(t1 != null ? t1 : t2)

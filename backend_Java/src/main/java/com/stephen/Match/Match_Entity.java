@@ -7,7 +7,7 @@ import java.time.Instant;
 @Table(name = "matches")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "match_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Match {
+public abstract class Match_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
@@ -29,7 +29,7 @@ public abstract class Match {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    protected Match() {}
+    protected Match_Entity() {}
 
     @PrePersist
     protected void onCreate() {

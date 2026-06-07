@@ -2,16 +2,13 @@ package com.stephen.Match;
 
 import com.stephen.Frame.Singles.Frame_Singles;
 import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Team.Match_Team;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
 public class Match_StateMapper {
 
-    public Match_StateDTO toDTO(Match match, List<Match_Slot> slots) {
+    public Match_StateDTO toDTO(Match_Entity match, List<Match_Slot> slots) {
         Match_StateDTO dto = new Match_StateDTO();
         dto.setMatchId(match.getId());
         dto.setPlayed(match.isPlayed());

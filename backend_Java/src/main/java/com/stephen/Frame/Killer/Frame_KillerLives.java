@@ -1,6 +1,6 @@
 package com.stephen.Frame.Killer;
 
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,14 +18,14 @@ public class Frame_KillerLives {
 
     @ManyToOne
     @JoinColumn(name = "player_id", nullable = false)
-    private Player player;
+    private Player_Entity player;
 
     @Column(name = "lives_remaining", nullable = false)
     private int livesRemaining;
 
     protected Frame_KillerLives() {}
 
-    public Frame_KillerLives(Frame_Killer frame, Player player, int startingLives) {
+    public Frame_KillerLives(Frame_Killer frame, Player_Entity player, int startingLives) {
         this.frame = frame;
         this.player = player;
         this.livesRemaining = startingLives;
@@ -33,7 +33,7 @@ public class Frame_KillerLives {
 
     public Long getId() { return Id; }
     public Frame_Killer getFrame() { return frame; }
-    public Player getPlayer() { return player; }
+    public Player_Entity getPlayer() { return player; }
     public int getLivesRemaining() { return livesRemaining; }
     public void setLivesRemaining(int lives) { this.livesRemaining = lives; }
 }

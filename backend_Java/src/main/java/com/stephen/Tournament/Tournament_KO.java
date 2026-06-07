@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("KO")
-public class Tournament_KO extends Tournament {
+public class Tournament_KO extends Tournament_Entity {
 
     /**
      * Number of frames per match in each KO round.

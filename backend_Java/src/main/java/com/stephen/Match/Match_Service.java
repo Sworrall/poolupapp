@@ -1,20 +1,17 @@
 package com.stephen.Match;
 
-import com.stephen.Doubles.Doubles;
+import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
 import com.stephen.Frame.Doubles.Frame_Doubles;
 import com.stephen.Frame.Frame_Repository;
 import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Match.Doubles.Match_Doubles;
-import com.stephen.Match.Doubles.Match_Request_Doubles;
-import com.stephen.Match.Singles.Match_Singles;
-import com.stephen.Match.Singles.Match_Request_Singles;
-import com.stephen.Match.Team.Match_Team;
-import com.stephen.Match.Team.Match_Request_Team;
-import com.stephen.Player.Player;
+import com.stephen.Match.DTO.Match_Request_Doubles;
+import com.stephen.Match.DTO.Match_Request_Singles;
+import com.stephen.Match.DTO.Match_Request_Team;
+import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
-import com.stephen.Team.Team;
+import com.stephen.Team.Team_Entity;
 import com.stephen.Team.Team_Repository;
 import com.stephen.Team.TeamNotFoundException;
 import org.springframework.stereotype.Service;
@@ -50,16 +47,16 @@ public class Match_Service {
     // --- CREATE ---
     @Transactional
     public Match_Singles createSinglesMatch(Match_Request_Singles req) {
-        Player playerA = playerRepo.findById(req.getPlayerAId())
+        Player_Entity playerA = playerRepo.findById(req.getPlayerAId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAId()));
-        Player playerB = playerRepo.findById(req.getPlayerBId())
+        Player_Entity playerB = playerRepo.findById(req.getPlayerBId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBId()));
 
         Match_Singles match;
         if (req.getTeamAId() != null && req.getTeamBId() != null) {
-            Team teamA = teamRepo.findById(req.getTeamAId())
+            Team_Entity teamA = teamRepo.findById(req.getTeamAId())
                     .orElseThrow(() -> new TeamNotFoundException(req.getTeamAId()));
-            Team teamB = teamRepo.findById(req.getTeamBId())
+            Team_Entity teamB = teamRepo.findById(req.getTeamBId())
                     .orElseThrow(() -> new TeamNotFoundException(req.getTeamBId()));
             match = new Match_Singles(playerA, playerB, teamA, teamB);
         } else {
@@ -73,9 +70,9 @@ public class Match_Service {
 
     @Transactional
     public Match_Doubles createDoublesMatch(Match_Request_Doubles req) {
-        Doubles doublesA = doublesRepo.findById(req.getDoublesAid())
+        Doubles_Entity doublesA = doublesRepo.findById(req.getDoublesAid())
                 .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesAid()));
-        Doubles doublesB = doublesRepo.findById(req.getDoublesBid())
+        Doubles_Entity doublesB = doublesRepo.findById(req.getDoublesBid())
                 .orElseThrow(() -> new RuntimeException("Doubles not found: " + req.getDoublesBid()));
 
         Match_Doubles match = new Match_Doubles(doublesA, doublesB);
@@ -87,9 +84,9 @@ public class Match_Service {
 
     @Transactional
     public Match_Team createTeamMatch(Match_Request_Team req) {
-        Team teamA = teamRepo.findById(req.getTeamAid())
+        Team_Entity teamA = teamRepo.findById(req.getTeamAid())
                 .orElseThrow(() -> new TeamNotFoundException(req.getTeamAid()));
-        Team teamB = teamRepo.findById(req.getTeamBid())
+        Team_Entity teamB = teamRepo.findById(req.getTeamBid())
                 .orElseThrow(() -> new TeamNotFoundException(req.getTeamBid()));
 
         Match_Team match = new Match_Team(teamA, teamB);
@@ -99,7 +96,7 @@ public class Match_Service {
         return match;
     }
 
-    private void createSlots(Match match, int frameCount) {
+    private void createSlots(Match_Entity match, int frameCount) {
         for (int i = 1; i <= frameCount; i++) {
             slotRepo.save(new Match_Slot(match, i));
         }
@@ -109,7 +106,7 @@ public class Match_Service {
     @Transactional
     public Match_Slot assignPlayerA(Long matchId, int slotNumber, Match_PlayerRequest_Slot req) {
         Match_Slot slot = getSlot(matchId, slotNumber);
-        Player player = playerRepo.findById(req.getPlayerId())
+        Player_Entity player = playerRepo.findById(req.getPlayerId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerA(player);
         slotRepo.save(slot);
@@ -120,7 +117,7 @@ public class Match_Service {
     @Transactional
     public Match_Slot assignPlayerB(Long matchId, int slotNumber, Match_PlayerRequest_Slot req) {
         Match_Slot slot = getSlot(matchId, slotNumber);
-        Player player = playerRepo.findById(req.getPlayerId())
+        Player_Entity player = playerRepo.findById(req.getPlayerId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerB(player);
         slotRepo.save(slot);
@@ -129,7 +126,7 @@ public class Match_Service {
     }
 
     private void createFrameForSlot(Match_Slot slot) {
-        Match match = slot.getMatch();
+        Match_Entity match = slot.getMatch();
         if (match instanceof Match_Team teamMatch) {
             Frame_Singles frame = new Frame_Singles(
                     slot.getPlayerA(),
@@ -154,7 +151,7 @@ public class Match_Service {
     // --- MATCH RESOLUTION ---
     @Transactional
     public void checkAndResolveMatch(Long matchId) {
-        Match match = matchRepo.findById(matchId)
+        Match_Entity match = matchRepo.findById(matchId)
                 .orElseThrow(() -> new MatchNotFoundException(matchId));
         List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
         boolean allComplete = slots.stream()
@@ -207,7 +204,7 @@ public class Match_Service {
                 match::setWinner, match::setLoser);
     }
 
-    private <T> void applyResult(Match match, long winsA, long winsB,
+    private <T> void applyResult(Match_Entity match, long winsA, long winsB,
                                  T partyA, T partyB,
                                  java.util.function.Consumer<T> setWinner,
                                  java.util.function.Consumer<T> setLoser) {
@@ -224,7 +221,7 @@ public class Match_Service {
     }
 
     // --- QUERIES ---
-    public Optional<Match> getById(Long Id) {
+    public Optional<Match_Entity> getById(Long Id) {
         return matchRepo.findById(Id);
     }
 
@@ -232,7 +229,7 @@ public class Match_Service {
         return slotRepo.findByMatchId(matchId);
     }
 
-    public List<Match> getUnplayed() {
+    public List<Match_Entity> getUnplayed() {
         return matchRepo.findByIsPlayed(false);
     }
 

@@ -1,6 +1,6 @@
 package com.stephen.Tournament;
 
-import com.stephen.Match.Match;
+import com.stephen.Match.Match_Entity;
 import jakarta.persistence.*;
 
 /**
@@ -31,11 +31,11 @@ public class Tournament_Match {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tournament_id", nullable = false)
-    private Tournament tournament;
+    private Tournament_Entity tournament;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "match_id", nullable = false)
-    private Match match;
+    private Match_Entity match;
 
     /**
      * Round index (KO) or group index (GroupStage).
@@ -54,7 +54,7 @@ public class Tournament_Match {
     protected Tournament_Match() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_Match(Tournament tournament, Match match, int roundNumber, int sequence) {
+    public Tournament_Match(Tournament_Entity tournament, Match_Entity match, int roundNumber, int sequence) {
         this.tournament = tournament;
         this.match = match;
         this.roundNumber = roundNumber;
@@ -66,11 +66,11 @@ public class Tournament_Match {
         return Id;
     }
 
-    public Tournament getTournament() {
+    public Tournament_Entity getTournament() {
         return tournament;
     }
 
-    public Match getMatch() {
+    public Match_Entity getMatch() {
         return match;
     }
 

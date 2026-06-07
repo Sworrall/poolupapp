@@ -1,12 +1,11 @@
 package com.stephen.Player;
 
-import com.stephen.BaseStats.BaseStats_Key;
 import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "players")
-public class Player {
+public class Player_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
@@ -37,11 +36,11 @@ public class Player {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    protected Player(){}
+    protected Player_Entity(){}
 
     // --- FACTORY ---
-    public static Player createBye() {
-        Player bye = new Player();
+    public static Player_Entity createBye() {
+        Player_Entity bye = new Player_Entity();
         bye.firstName = "BYE";
         bye.lastName = "";
         bye.isBye = true;

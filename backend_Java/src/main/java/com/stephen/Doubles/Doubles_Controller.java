@@ -18,25 +18,25 @@ public class Doubles_Controller {
     }
 
     @PostMapping
-    public ResponseEntity<Doubles> createDoubles(@RequestBody Doubles_Request req) {
+    public ResponseEntity<Doubles_Entity> createDoubles(@RequestBody Doubles_Request req) {
         log.info("POST /api/doubles — players: {}, {}", req.getPlayer1Id(), req.getPlayer2Id());
         return ResponseEntity.ok(doublesService.createDoubles(req));
     }
 
     @GetMapping
-    public ResponseEntity<List<Doubles>> getAllDoubles() {
+    public ResponseEntity<List<Doubles_Entity>> getAllDoubles() {
         return ResponseEntity.ok(doublesService.getAllDoubles());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doubles> getDoubles(@PathVariable Long id) {
+    public ResponseEntity<Doubles_Entity> getDoubles(@PathVariable Long id) {
         return doublesService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Doubles> updateDoubles(
+    public ResponseEntity<Doubles_Entity> updateDoubles(
             @PathVariable Long id,
             @RequestBody Doubles_Request req) {
         log.info("PUT /api/doubles/{}", id);
@@ -44,7 +44,7 @@ public class Doubles_Controller {
     }
 
     @PatchMapping("/{doublesId}/captain/{playerId}")
-    public ResponseEntity<Doubles> setCaptain(
+    public ResponseEntity<Doubles_Entity> setCaptain(
             @PathVariable Long doublesId,
             @PathVariable Long playerId) {
         log.info("PATCH /api/doubles/{}/captain/{}", doublesId, playerId);

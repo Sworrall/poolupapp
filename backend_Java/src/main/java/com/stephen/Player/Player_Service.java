@@ -14,13 +14,13 @@ public class Player_Service {
         this.playerRepo = playerRepo;
     }
 
-    public Player createPlayer(Player_Request req) {
+    public Player_Entity createPlayer(Player_Request req) {
         if (playerRepo.existsByFirebaseUid(req.getFirebaseUid())) {
             throw new IllegalArgumentException(
                     "A player already exists for Firebase Uid: " + req.getFirebaseUid()
             );
         }
-        Player player = new Player();
+        Player_Entity player = new Player_Entity();
         player.setFirstName(req.getFirstName());
         player.setLastName(req.getLastName());
         player.setNickName(req.getNickName());
@@ -33,20 +33,20 @@ public class Player_Service {
         }
     }
 
-    public Optional<Player> getById(Long Id) {
+    public Optional<Player_Entity> getById(Long Id) {
         return playerRepo.findById(Id);
     }
 
-    public Optional<Player> getByFirebaseUid(String uid) {
+    public Optional<Player_Entity> getByFirebaseUid(String uid) {
         return playerRepo.findByFirebaseUid(uid);
     }
 
-    public List<Player> getAllPlayers() {
+    public List<Player_Entity> getAllPlayers() {
         return playerRepo.findAll();
     }
 
-    public Player updatePlayer(Long Id, Player_Request req) {
-        Player player = playerRepo.findById(Id)
+    public Player_Entity updatePlayer(Long Id, Player_Request req) {
+        Player_Entity player = playerRepo.findById(Id)
                 .orElseThrow(() -> new PlayerNotFoundException(Id));
         player.setFirstName(req.getFirstName());
         player.setLastName(req.getLastName());
@@ -55,14 +55,14 @@ public class Player_Service {
         return playerRepo.save(player);
     }
 
-    public Player makeCaptain(Long Id) {
-        Player player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity makeCaptain(Long Id) {
+        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
         player.setCaptain(true);
         return playerRepo.save(player);
     }
 
-    public Player removeCaptain(Long Id) {
-        Player player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity removeCaptain(Long Id) {
+        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
         player.setCaptain(false);
         return playerRepo.save(player);
     }

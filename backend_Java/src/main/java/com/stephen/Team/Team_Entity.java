@@ -1,6 +1,6 @@
 package com.stephen.Team;
 
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.HashSet;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "teams")
-public class Team {
+public class Team_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
@@ -21,7 +21,7 @@ public class Team {
 
     @ManyToOne
     @JoinColumn(name = "captain_id")
-    private Player captain;
+    private Player_Entity captain;
 
     @ManyToMany
     @JoinTable(
@@ -29,7 +29,7 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id")
     )
-    private Set<Player> players = new HashSet<>();
+    private Set<Player_Entity> players = new HashSet<>();
 
     @Embedded
     private Team_ContactDetails contactDetails;
@@ -44,11 +44,11 @@ public class Team {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    protected Team() {}
+    protected Team_Entity() {}
 
     // --- FACTORY ---
-    public static Team createBye() {
-        Team bye = new Team();
+    public static Team_Entity createBye() {
+        Team_Entity bye = new Team_Entity();
         bye.teamName = "BYE";
         bye.isBye = true;
         return bye;
@@ -60,14 +60,14 @@ public class Team {
     }
 
     // --- PLAYER MANAGEMENT ---
-    public void addPlayer(Player p) {
+    public void addPlayer(Player_Entity p) {
         Objects.requireNonNull(p, "Player cannot be null");
         if (p.isBye()) throw new IllegalArgumentException("Cannot add bye player to team");
         players.add(p);
         if (captain == null) setCaptain(p);
     }
 
-    public void removePlayer(Player p) {
+    public void removePlayer(Player_Entity p) {
         Objects.requireNonNull(p, "Player cannot be null");
         players.remove(p);
         if (p.equals(captain)) {
@@ -75,7 +75,7 @@ public class Team {
         }
     }
 
-    public void setCaptain(Player p) {
+    public void setCaptain(Player_Entity p) {
         Objects.requireNonNull(p, "Captain cannot be null");
         if (p.isBye()) throw new IllegalArgumentException("Bye player cannot be captain");
         if (!players.contains(p)) throw new IllegalArgumentException("Captain must be in the team");
@@ -90,8 +90,8 @@ public class Team {
         this.teamName = Objects.requireNonNull(teamName, "Team name cannot be null");
     }
 
-    public Player getCaptain() { return captain; }
-    public Set<Player> getPlayers() { return players; }
+    public Player_Entity getCaptain() { return captain; }
+    public Set<Player_Entity> getPlayers() { return players; }
 
     public Team_ContactDetails getContactDetails() { return contactDetails; }
     public void setContactDetails(Team_ContactDetails contactDetails) {

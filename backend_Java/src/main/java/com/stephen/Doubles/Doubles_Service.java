@@ -1,6 +1,6 @@
 package com.stephen.Doubles;
 
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,18 +18,18 @@ public class Doubles_Service {
         this.playerRepo = playerRepo;
     }
 
-    public Doubles createDoubles(Doubles_Request req) {
+    public Doubles_Entity createDoubles(Doubles_Request req) {
         if (req.getFirebaseUid() != null && doublesRepo.existsByFirebaseUid(req.getFirebaseUid())) {
             throw new IllegalArgumentException(
                     "A doubles pair already exists for Firebase Uid: " + req.getFirebaseUid());
         }
 
-        Player p1 = playerRepo.findById(req.getPlayer1Id())
+        Player_Entity p1 = playerRepo.findById(req.getPlayer1Id())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1Id()));
-        Player p2 = playerRepo.findById(req.getPlayer2Id())
+        Player_Entity p2 = playerRepo.findById(req.getPlayer2Id())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2Id()));
 
-        Doubles doubles = new Doubles();
+        Doubles_Entity doubles = new Doubles_Entity();
         doubles.setPlayers(p1, p2);
 
         if (req.getTeamName() != null) doubles.setTeamName(req.getTeamName());
@@ -42,26 +42,26 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Optional<Doubles> getById(Long Id) {
+    public Optional<Doubles_Entity> getById(Long Id) {
         return doublesRepo.findById(Id);
     }
 
-    public Optional<Doubles> getByFirebaseUid(String uId) {
+    public Optional<Doubles_Entity> getByFirebaseUid(String uId) {
         return doublesRepo.findByFirebaseUid(uId);
     }
 
-    public List<Doubles> getAllDoubles() {
+    public List<Doubles_Entity> getAllDoubles() {
         return doublesRepo.findAll();
     }
 
-    public Doubles updateDoubles(Long Id, Doubles_Request req) {
-        Doubles doubles = doublesRepo.findById(Id)
+    public Doubles_Entity updateDoubles(Long Id, Doubles_Request req) {
+        Doubles_Entity doubles = doublesRepo.findById(Id)
                 .orElseThrow(() -> new DoublesNotFoundException(Id));
 
         if (req.getPlayer1Id() != null && req.getPlayer2Id() != null) {
-            Player p1 = playerRepo.findById(req.getPlayer1Id())
+            Player_Entity p1 = playerRepo.findById(req.getPlayer1Id())
                     .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer1Id()));
-            Player p2 = playerRepo.findById(req.getPlayer2Id())
+            Player_Entity p2 = playerRepo.findById(req.getPlayer2Id())
                     .orElseThrow(() -> new PlayerNotFoundException(req.getPlayer2Id()));
             doubles.setPlayers(p1, p2);
         }
@@ -75,10 +75,10 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Doubles setCaptain(Long doublesId, Long playerId) {
-        Doubles doubles = doublesRepo.findById(doublesId)
+    public Doubles_Entity setCaptain(Long doublesId, Long playerId) {
+        Doubles_Entity doubles = doublesRepo.findById(doublesId)
                 .orElseThrow(() -> new DoublesNotFoundException(doublesId));
-        Player player = playerRepo.findById(playerId)
+        Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
         doubles.setCaptain(player);
         return doublesRepo.save(doubles);

@@ -18,22 +18,25 @@ src
                     StatField
                     StatHolder
                     StatScope
-                Config
-                    WebSocketConfig
                 Doubles
-                    Doubles
+                    DTO
+                        Doubles_Request
                     Doubles_ContactDetails
                     Doubles_Controller
+                    Doubles_Entity
                     Doubles_Repository
-                    Doubles_Request
                     Doubles_Service
                     DoublesNotFoundException
                 FireBase
                     AuthFilter
                     AuthService
                     Config
-                    SecurityConfig
                 Frame
+                    DTO
+                        Frame_ResultRequest
+                        Frame_KillerRequest
+                        Frame_KillerResultRequest
+                        Frame_SinglesRequest
                     Doubles
                         Frame_Doubles
                         Frame_DoublesRepository
@@ -41,77 +44,68 @@ src
                         Frame_Killer
                         Frame_KillerLives
                         Frame_KillerLivesRepository
-                        Frame_KillerRequest
-                        Frame_KillerResultRequest
                     Singles
                         Frame_Singles
-                        Frame_SinglesRequest
-                    Frame
                     Frame_Controller
+                    Frame_Entity
                     Frame_Repository
-                    Frame_ResultRequest
                     Frame_Service
                     FrameNotFoundException
-                Leaderboard
-                    Leaderboard
-                    Ranking
-                    Ranking_Elimination
-                    Ranking_Points
                 Match
-                    Doubles
-                        Match_Doubles
+                    DTO
                         Match_DoublesRequest
-                    Singles
-                        Match_Singles
                         Match_SinglesRequest
-                    Team
-                        Match_Team
                         Match_TeamRequest
-                    Match
+                        Match_SlowPlayerRequest
                     Match_Controller
+                    Match_Doubles
+                    Match_Entity
                     Match_EventPublisher
                     Match_Repository
                     Match_ResolutionService
                     Match_Service
+                    Match_Singles
                     Match_Slot
-                    Match_SlowPlayerRequest
                     Match_SlotRepository
                     Match_SateDTO
                     Match_StateMapper
+                    Match_Team
                     Match_UpdateEvent
                     Match_WebsocketHandler
                     MatchNotFoundException
                 Player
-                    Player
+                    DTO
+                        Player_Request
                     Player_ContactDetails
                     Player_Controller
                     Player_Entity
                     Player_Repository
-                    Player_Request
                     Player_Service
                     PlayerNotFoundService
                 Team
-                    Team
+                    DTO
+                        Team_Request
                     Team_ContactDetails
                     Team_Controller
+                    Team_Entity
                     Team_Repository
-                    Team_Request
                     Team_Service
                     TeamNotFoundException
                 Tournament
+                    DTO
+                        Tournament_RequestGroupStage
+                        Tournament_RequestKiller
+                        Tournament_RequestKO
+                        Tournament_RequestRoundRobin
                     PartyType
-                    Tournament
                     Tournament_Controller
+                    Tournament_Entity
                     Tournament_GroupStage
                     Tournament_Killer
                     Tournament_KO
                     Tournament_Match
                     Tournament_MatchRepository
                     Tournament_Repository
-                    Tournament_RequestGroupStage
-                    Tournament_RequestKiller
-                    Tournament_RequestKO
-                    Tournament_RequestRoundRobin
                     Tournament_RoundRobin
                     Tournament_Service
                     TournamentNotFoundException

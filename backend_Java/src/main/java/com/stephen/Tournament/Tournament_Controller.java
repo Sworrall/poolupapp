@@ -67,23 +67,23 @@ public class Tournament_Controller {
     // -------------------------------------------------------------------------
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tournament> getById(@PathVariable Long Id) {
+    public ResponseEntity<Tournament_Entity> getById(@PathVariable Long Id) {
         return ResponseEntity.ok(tournamentService.getById(Id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Tournament>> getAll() {
+    public ResponseEntity<List<Tournament_Entity>> getAll() {
         return ResponseEntity.ok(tournamentService.getAll());
     }
 
     @GetMapping("/party-type/{partyType}")
-    public ResponseEntity<List<Tournament>> getByPartyType(
+    public ResponseEntity<List<Tournament_Entity>> getByPartyType(
             @PathVariable PartyType partyType) {
         return ResponseEntity.ok(tournamentService.getByPartyType(partyType));
     }
 
     @GetMapping("/incomplete")
-    public ResponseEntity<List<Tournament>> getIncomplete() {
+    public ResponseEntity<List<Tournament_Entity>> getIncomplete() {
         return ResponseEntity.ok(tournamentService.getIncomplete());
     }
 
@@ -128,7 +128,7 @@ public class Tournament_Controller {
      * Validates all matches are complete before marking.
      */
     @PostMapping("/{id}/complete")
-    public ResponseEntity<Tournament> markComplete(@PathVariable Long Id) {
+    public ResponseEntity<Tournament_Entity> markComplete(@PathVariable Long Id) {
         log.info("POST /tournaments/{}/complete", Id);
         return ResponseEntity.ok(tournamentService.markComplete(Id));
     }
@@ -151,7 +151,7 @@ public class Tournament_Controller {
      * Body: ordered list of party Ids [place1, place2, place3, place4].
      */
     @PostMapping("/{id}/positions")
-    public ResponseEntity<Tournament> setPositions(
+    public ResponseEntity<Tournament_Entity> setPositions(
             @PathVariable Long Id,
             @RequestBody List<Long> positions) {
         log.info("POST /tournaments/{}/positions — {}", Id, positions);

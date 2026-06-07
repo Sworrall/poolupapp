@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("ROUND_ROBIN")
-public class Tournament_RoundRobin extends Tournament {
+public class Tournament_RoundRobin extends Tournament_Entity {
 
     /**
      * Number of frames per match. Nullable in the DB column because

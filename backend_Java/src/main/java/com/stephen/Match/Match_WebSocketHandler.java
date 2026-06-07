@@ -27,7 +27,7 @@ public class Match_WebSocketHandler {
     public void onMatchUpdate(Match_UpdateEvent event) {
         Long matchId = event.getMatchId();
 
-        Match match = matchRepo.findById(matchId)
+        Match_Entity match = matchRepo.findById(matchId)
                 .orElseThrow(() -> new MatchNotFoundException(matchId));
         List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
 

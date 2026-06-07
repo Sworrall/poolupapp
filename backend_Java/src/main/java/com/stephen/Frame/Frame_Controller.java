@@ -37,7 +37,7 @@ public class Frame_Controller {
     }
 
     @PostMapping("/{id}/result")
-    public ResponseEntity<Frame> recordResult(
+    public ResponseEntity<Frame_Entity> recordResult(
             @PathVariable Long Id,
             @RequestBody Frame_ResultRequest req) {
         return ResponseEntity.ok(frameService.recordResult(Id, req));
@@ -56,12 +56,12 @@ public class Frame_Controller {
     }
 
     @GetMapping("/unplayed")
-    public ResponseEntity<List<Frame>> getUnplayed() {
+    public ResponseEntity<List<Frame_Entity>> getUnplayed() {
         return ResponseEntity.ok(frameService.getUnplayed());
     }
 
     @GetMapping("/played")
-    public ResponseEntity<List<Frame>> getPlayed() {
+    public ResponseEntity<List<Frame_Entity>> getPlayed() {
         return ResponseEntity.ok(frameService.getPlayed());
     }
 }

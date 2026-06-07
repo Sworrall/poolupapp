@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("GROUP_STAGE")
-public class Tournament_GroupStage extends Tournament {
+public class Tournament_GroupStage extends Tournament_Entity {
 
     /**
      * Number of groups to split participants into.

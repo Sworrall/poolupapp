@@ -1,6 +1,6 @@
 package com.stephen.Frame;
 
-import com.stephen.Doubles.Doubles;
+import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
 import com.stephen.Frame.Doubles.Frame_Doubles;
 import com.stephen.Frame.Doubles.Frame_DoublesRequest;
@@ -14,10 +14,10 @@ import com.stephen.Frame.Singles.Frame_Request_Singles;
 import com.stephen.Match.Match_EventPublisher;
 import com.stephen.Match.Match_ResolutionService;
 import com.stephen.Match.Match_Repository_Slot;
-import com.stephen.Player.Player;
+import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
-import com.stephen.Team.Team;
+import com.stephen.Team.Team_Entity;
 import com.stephen.Team.Team_Repository;
 import com.stephen.Team.TeamNotFoundException;
 import org.springframework.stereotype.Service;
@@ -56,8 +56,8 @@ public class Frame_Service {
 
     // --- RECORD RESULT ---
     @Transactional
-    public Frame recordResult(Long frameId, Frame_ResultRequest req) {
-        Frame frame = frameRepo.findById(frameId)
+    public Frame_Entity recordResult(Long frameId, Frame_ResultRequest req) {
+        Frame_Entity frame = frameRepo.findById(frameId)
                 .orElseThrow(() -> new FrameNotFoundException(frameId));
 
         switch (frame) {
@@ -82,16 +82,16 @@ public class Frame_Service {
 
     // --- SINGLES ---
     public Frame_Singles createSinglesFrame(Frame_Request_Singles req) {
-        Player playerA = playerRepo.findById(req.getPlayerAid())
+        Player_Entity playerA = playerRepo.findById(req.getPlayerAid())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAid()));
-        Player playerB = playerRepo.findById(req.getPlayerBid())
+        Player_Entity playerB = playerRepo.findById(req.getPlayerBid())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerBid()));
 
         Frame_Singles frame;
         if (req.getTeamAid() != null && req.getTeamBid() != null) {
-            Team teamA = teamRepo.findById(req.getTeamAid())
+            Team_Entity teamA = teamRepo.findById(req.getTeamAid())
                     .orElseThrow(() -> new TeamNotFoundException(req.getTeamAid()));
-            Team teamB = teamRepo.findById(req.getTeamBid())
+            Team_Entity teamB = teamRepo.findById(req.getTeamBid())
                     .orElseThrow(() -> new TeamNotFoundException(req.getTeamBid()));
             frame = new Frame_Singles(playerA, playerB, teamA, teamB);
         } else {
@@ -111,10 +111,10 @@ public class Frame_Service {
     private void recordSinglesResult(Frame_Singles frame, Frame_ResultRequest req) {
         if (frame.isPlayed()) throw new IllegalStateException("Frame already played");
 
-        Player winner = req.getWinnerId().equals(frame.getPlayerA().getId())
+        Player_Entity winner = req.getWinnerId().equals(frame.getPlayerA().getId())
                 ? frame.getPlayerA()
                 : frame.getPlayerB();
-        Player loser = winner.equals(frame.getPlayerA())
+        Player_Entity loser = winner.equals(frame.getPlayerA())
                 ? frame.getPlayerB()
                 : frame.getPlayerA();
 
@@ -128,9 +128,9 @@ public class Frame_Service {
 
     // --- DOUBLES ---
     public Frame_Doubles createDoublesFrame(Frame_DoublesRequest req) {
-        Doubles doublesA = doublesRepo.findById(req.getDoublesAid())
+        Doubles_Entity doublesA = doublesRepo.findById(req.getDoublesAid())
                 .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesAid()));
-        Doubles doublesB = doublesRepo.findById(req.getDoublesBid())
+        Doubles_Entity doublesB = doublesRepo.findById(req.getDoublesBid())
                 .orElseThrow(() -> new RuntimeException("Doubles team not found: " + req.getDoublesBid()));
 
         Frame_Doubles frame = new Frame_Doubles(doublesA, doublesB);
@@ -147,7 +147,7 @@ public class Frame_Service {
     private void recordDoublesResult(Frame_Doubles frame, Frame_ResultRequest req) {
         if (frame.isPlayed()) throw new IllegalStateException("Frame already played");
 
-        Doubles winner = req.getWinnerId().equals(frame.getDoublesA().getId())
+        Doubles_Entity winner = req.getWinnerId().equals(frame.getDoublesA().getId())
                 ? frame.getDoublesA()
                 : frame.getDoublesB();
 
@@ -170,7 +170,7 @@ public class Frame_Service {
         frameRepo.save(frame);
 
         for (Long playerId : req.getPlayerIds()) {
-            Player player = playerRepo.findById(playerId)
+            Player_Entity player = playerRepo.findById(playerId)
                     .orElseThrow(() -> new PlayerNotFoundException(playerId));
             killerLivesRepo.save(new Frame_KillerLives(frame, player, req.getStartingLives()));
         }
@@ -185,7 +185,7 @@ public class Frame_Service {
      */
     @Transactional
     public Frame_Killer recordKillerResult(Long frameId, Frame_KillerResultRequest req) {
-        Frame frame = frameRepo.findById(frameId)
+        Frame_Entity frame = frameRepo.findById(frameId)
                 .orElseThrow(() -> new FrameNotFoundException(frameId));
         if (!(frame instanceof Frame_Killer killer)) {
             throw new IllegalArgumentException("Frame " + frameId + " is not a killer frame");
@@ -227,11 +227,11 @@ public class Frame_Service {
 
 
     // --- QUERIES ---
-    public List<Frame> getUnplayed() {
+    public List<Frame_Entity> getUnplayed() {
         return frameRepo.findByIsPlayed(false);
     }
 
-    public List<Frame> getPlayed() {
+    public List<Frame_Entity> getPlayed() {
         return frameRepo.findByIsPlayed(true);
     }
 }

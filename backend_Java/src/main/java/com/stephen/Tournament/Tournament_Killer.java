@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("KILLER")
-public class Tournament_Killer extends Tournament {
+public class Tournament_Killer extends Tournament_Entity {
 
     /**
      * Whether the initial party order is randomised before fixture generation.
