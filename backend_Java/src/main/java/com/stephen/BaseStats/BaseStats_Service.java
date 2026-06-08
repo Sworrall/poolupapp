@@ -270,7 +270,6 @@ public class BaseStats_Service {
             applyEvent(loserId,  HolderType.TEAM, matchId, StatScope.MATCH,
                     null, tournamentId, teamId, StatField.MATCH_LOSS);
         }
-
         log.info("Applied team match result for match {}", matchId);
     }
 
