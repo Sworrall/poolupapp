@@ -1,12 +1,10 @@
 package com.stephen.Frame;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Doubles.Frame_DoublesRequest;
+import com.stephen.Frame.DTO.Frame_DoublesRequest;
 import com.stephen.Frame.Killer.Frame_Killer;
-import com.stephen.Frame.Killer.Frame_KillerRequest;
-import com.stephen.Frame.Killer.Frame_KillerResultRequest;
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Singles.Frame_Request_Singles;
+import com.stephen.Frame.DTO.Frame_KillerRequest;
+import com.stephen.Frame.DTO.Frame_KillerResultRequest;
+import com.stephen.Frame.DTO.Frame_SinglesRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -22,7 +20,7 @@ public class Frame_Controller {
     }
 
     @PostMapping("/singles")
-    public ResponseEntity<Frame_Singles> createSingles(@RequestBody Frame_Request_Singles req) {
+    public ResponseEntity<Frame_Singles> createSingles(@RequestBody Frame_SinglesRequest req) {
         return ResponseEntity.ok(frameService.createSinglesFrame(req));
     }
 

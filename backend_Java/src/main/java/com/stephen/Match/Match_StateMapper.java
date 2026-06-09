@@ -1,7 +1,7 @@
 package com.stephen.Match;
 
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Singles;
+import com.stephen.Frame.Frame_Doubles;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class Match_StateMapper {
 
     public Match_StateDTO toDTO(Match_Entity match, List<Match_Slot> slots) {
         Match_StateDTO dto = new Match_StateDTO();
-        dto.setMatchId(match.getId());
+        dto.setMatchId(match.getMatchId());
         dto.setPlayed(match.isPlayed());
         dto.setDraw(match.isDraw());
         dto.setBye(match.isBye());

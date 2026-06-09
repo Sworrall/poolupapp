@@ -1,6 +1,5 @@
-package com.stephen.Frame.Singles;
+package com.stephen.Frame;
 
-import com.stephen.Frame.Frame_Entity;
 import com.stephen.Player.Player_Entity;
 import com.stephen.Team.Team_Entity;
 import jakarta.persistence.*;

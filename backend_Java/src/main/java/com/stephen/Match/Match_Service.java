@@ -2,9 +2,9 @@ package com.stephen.Match;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Repository;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Singles;
 import com.stephen.Match.DTO.Match_Request_Doubles;
 import com.stephen.Match.DTO.Match_Request_Singles;
 import com.stephen.Match.DTO.Match_Request_Team;

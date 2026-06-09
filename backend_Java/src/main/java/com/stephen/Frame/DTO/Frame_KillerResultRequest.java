@@ -1,4 +1,4 @@
-package com.stephen.Frame.Killer;
+package com.stephen.Frame.DTO;
 
 public class Frame_KillerResultRequest {
 

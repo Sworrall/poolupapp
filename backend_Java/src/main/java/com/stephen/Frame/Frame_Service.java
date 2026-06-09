@@ -2,15 +2,13 @@ package com.stephen.Frame;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Doubles.Frame_DoublesRequest;
+import com.stephen.Frame.DTO.Frame_DoublesRequest;
 import com.stephen.Frame.Killer.Frame_Killer;
 import com.stephen.Frame.Killer.Frame_KillerLives;
 import com.stephen.Frame.Killer.Frame_KillerLivesRepository;
-import com.stephen.Frame.Killer.Frame_KillerRequest;
-import com.stephen.Frame.Killer.Frame_KillerResultRequest;
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Singles.Frame_Request_Singles;
+import com.stephen.Frame.DTO.Frame_KillerRequest;
+import com.stephen.Frame.DTO.Frame_KillerResultRequest;
+import com.stephen.Frame.DTO.Frame_SinglesRequest;
 import com.stephen.Match.Match_EventPublisher;
 import com.stephen.Match.Match_ResolutionService;
 import com.stephen.Match.Match_Repository_Slot;
@@ -71,7 +69,7 @@ public class Frame_Service {
         slotRepo.findByFrameId(frameId).ifPresent(slot -> {
             slot.markComplete();
             slotRepo.save(slot);
-            Long matchId = slot.getMatch().getId();
+            Long matchId = slot.getMatch().getMatchId();
             matchResolutionService.checkAndResolveMatch(matchId);
             matchEventPublisher.publishMatchUpdate(matchId);
         });
@@ -81,7 +79,7 @@ public class Frame_Service {
 
 
     // --- SINGLES ---
-    public Frame_Singles createSinglesFrame(Frame_Request_Singles req) {
+    public Frame_Singles createSinglesFrame(Frame_SinglesRequest req) {
         Player_Entity playerA = playerRepo.findById(req.getPlayerAid())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAid()));
         Player_Entity playerB = playerRepo.findById(req.getPlayerBid())
@@ -214,7 +212,7 @@ public class Frame_Service {
             slotRepo.findByFrameId(frameId).ifPresent(slot -> {
                 slot.markComplete();
                 slotRepo.save(slot);
-                Long matchId = slot.getMatch().getId();
+                Long matchId = slot.getMatch().getMatchId();
                 matchResolutionService.checkAndResolveMatch(matchId);
                 matchEventPublisher.publishMatchUpdate(matchId);
             });

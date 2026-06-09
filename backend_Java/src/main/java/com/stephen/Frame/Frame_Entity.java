@@ -1,5 +1,7 @@
 package com.stephen.Frame;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.stephen.Match.Match_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 
@@ -12,7 +14,12 @@ public abstract class Frame_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
     @SequenceGenerator(name = "frame_seq", sequenceName = "frame_seq", allocationSize = 1)
-    private Long Id;
+    private Long frameId;
+
+    @ManyToOne
+    @JoinColumn(name = "match_id")
+    @JsonBackReference
+    private Match_Entity match;
 
     @Column(name = "is_played", nullable = false)
     private boolean isPlayed = false;
@@ -33,7 +40,7 @@ public abstract class Frame_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return Id; }
+    public Long getId() { return frameId; }
 
     public boolean isPlayed() { return isPlayed; }
     public void setPlayed(boolean played) { this.isPlayed = played; }

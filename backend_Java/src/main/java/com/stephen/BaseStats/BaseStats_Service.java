@@ -1,8 +1,8 @@
 package com.stephen.BaseStats;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Entity;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Singles;
 import com.stephen.Match.Match_Doubles;
 import com.stephen.Match.Match_Entity;
 import com.stephen.Match.Match_Singles;
@@ -180,8 +180,8 @@ public class BaseStats_Service {
     @Transactional
     public void applyMatchResult(Match_Entity match, Long tournamentId, Long teamId) {
         if (!match.isPlayed()) {
-            log.error("Attempted to apply match result for unplayed match: {}", match.getId());
-            throw new IllegalArgumentException("Match not played: " + match.getId());
+            log.error("Attempted to apply match result for unplayed match: {}", match.getMatchId());
+            throw new IllegalArgumentException("Match not played: " + match.getMatchId());
         }
 
         switch (match) {
@@ -194,7 +194,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchSingles(Match_Singles match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long p1Id    = match.getPlayerA().getId();
         Long p2Id    = match.getPlayerB().getId();
 
@@ -221,7 +221,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchDoubles(Match_Doubles match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long d1Id    = match.getDoublesA().getId();
         Long d2Id    = match.getDoublesB().getId();
 
@@ -248,7 +248,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchTeam(Match_Team match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long t1Id    = match.getTeamA().getId();
         Long t2Id    = match.getTeamB().getId();
 

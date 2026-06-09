@@ -1,7 +1,6 @@
-package com.stephen.Frame.Doubles;
+package com.stephen.Frame;
 
 import com.stephen.Doubles.Doubles_Entity;
-import com.stephen.Frame.Frame_Entity;
 import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;
 

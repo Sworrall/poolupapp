@@ -1,7 +1,10 @@
 package com.stephen.Match;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.stephen.Frame.Frame_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "matches")
@@ -13,6 +16,10 @@ public abstract class Match_Entity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
     @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
     private Long matchId;
+
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Frame_Entity> frames;
 
     @Column(name = "frame_count", nullable = false)
     private int frameCount;
@@ -36,19 +43,51 @@ public abstract class Match_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return matchId; }
+    public Long getMatchId() {
+        return matchId;
+    }
 
-    public int getFrameCount() { return frameCount; }
-    public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
+    public List<Frame_Entity> getFrames() {
+        return frames;
+    }
 
-    public boolean isPlayed() { return isPlayed; }
-    public void setPlayed(boolean played) { this.isPlayed = played; }
+    public void setFrames(List<Frame_Entity> frames) {
+        this.frames = frames;
+    }
 
-    public boolean isBye() { return isBye; }
-    public void setBye(boolean bye) { this.isBye = bye; }
+    public int getFrameCount() {
+        return frameCount;
+    }
 
-    public boolean isDraw() { return isDraw; }
-    public void setDraw(boolean draw) { this.isDraw = draw; }
+    public void setFrameCount(int frameCount) {
+        this.frameCount = frameCount;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public boolean isPlayed() {
+        return isPlayed;
+    }
+
+    public void setPlayed(boolean played) {
+        this.isPlayed = played;
+    }
+
+    public boolean isBye() {
+        return isBye;
+    }
+
+    public void setBye(boolean bye) {
+        this.isBye = bye;
+    }
+
+    public boolean isDraw() {
+        return isDraw;
+    }
+
+    public void setDraw(boolean draw) {
+        this.isDraw = draw;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 }

@@ -1,6 +1,6 @@
-package com.stephen.Frame.Singles;
+package com.stephen.Frame.DTO;
 
-public class Frame_Request_Singles {
+public class Frame_SinglesRequest {
     private Long playerAid;
     private Long playerBid;
     private Long teamAid;

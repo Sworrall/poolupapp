@@ -1,4 +1,4 @@
-package com.stephen.Frame.Doubles;
+package com.stephen.Frame.DTO;
 
 public class Frame_DoublesRequest {
     private Long doublesAid;

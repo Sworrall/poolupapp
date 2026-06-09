@@ -1,7 +1,7 @@
 package com.stephen.Match;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Doubles;
+import com.stephen.Frame.Frame_Singles;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
