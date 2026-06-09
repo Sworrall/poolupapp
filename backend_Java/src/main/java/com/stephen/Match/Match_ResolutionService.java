@@ -19,11 +19,11 @@ public class Match_ResolutionService {
     }
 
     @Transactional
-    public void checkAndResolveMatch(Long matchId) {
-        Match_Entity match = matchRepo.findById(matchId)
-                .orElseThrow(() -> new MatchNotFoundException(matchId));
+    public void checkAndResolveMatch(Long id) {
+        Match_Entity match = matchRepo.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
 
-        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
+        List<Match_Slot> slots = slotRepo.findByMatchId(id);
 
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);

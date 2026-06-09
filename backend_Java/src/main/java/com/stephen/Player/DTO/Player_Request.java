@@ -1,4 +1,4 @@
-package com.stephen.Player.dto;
+package com.stephen.Player.DTO;
 
 public class Player_Request {
     private String firstName;

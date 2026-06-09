@@ -36,9 +36,9 @@ public class Frame_Controller {
 
     @PostMapping("/{id}/result")
     public ResponseEntity<Frame_Entity> recordResult(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Frame_ResultRequest req) {
-        return ResponseEntity.ok(frameService.recordResult(Id, req));
+        return ResponseEntity.ok(frameService.recordResult(id, req));
     }
 
     /**
@@ -48,9 +48,9 @@ public class Frame_Controller {
      */
     @PostMapping("/killer/{id}/result")
     public ResponseEntity<Frame_Killer> recordKillerResult(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Frame_KillerResultRequest req) {
-        return ResponseEntity.ok(frameService.recordKillerResult(Id, req));
+        return ResponseEntity.ok(frameService.recordKillerResult(id, req));
     }
 
     @GetMapping("/unplayed")

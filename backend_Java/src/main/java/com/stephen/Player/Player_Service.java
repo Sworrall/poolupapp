@@ -1,6 +1,6 @@
 package com.stephen.Player;
 
-import com.stephen.Player.dto.Player_Request;
+import com.stephen.Player.DTO.Player_Request;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +33,8 @@ public class Player_Service {
         }
     }
 
-    public Optional<Player_Entity> getById(Long Id) {
-        return playerRepo.findById(Id);
+    public Optional<Player_Entity> getById(Long playerId) {
+        return playerRepo.findById(playerId);
     }
 
     public Optional<Player_Entity> getByFirebaseUid(String uid) {
@@ -45,9 +45,9 @@ public class Player_Service {
         return playerRepo.findAll();
     }
 
-    public Player_Entity updatePlayer(Long Id, Player_Request req) {
-        Player_Entity player = playerRepo.findById(Id)
-                .orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity updatePlayer(Long playerId, Player_Request req) {
+        Player_Entity player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setFirstName(req.getFirstName());
         player.setLastName(req.getLastName());
         player.setNickName(req.getNickName());
@@ -55,19 +55,19 @@ public class Player_Service {
         return playerRepo.save(player);
     }
 
-    public Player_Entity makeCaptain(Long Id) {
-        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity makeCaptain(Long playerId) {
+        Player_Entity player = playerRepo.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setCaptain(true);
         return playerRepo.save(player);
     }
 
-    public Player_Entity removeCaptain(Long Id) {
-        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity removeCaptain(Long playerId) {
+        Player_Entity player = playerRepo.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setCaptain(false);
         return playerRepo.save(player);
     }
 
-    public void deletePlayer(Long Id) {
-        playerRepo.deleteById(Id);
+    public void deletePlayer(Long playerId) {
+        playerRepo.deleteById(playerId);
     }
 }

@@ -1,7 +1,7 @@
 package com.stephen.Player;
 
 public class PlayerNotFoundException extends RuntimeException {
-    public PlayerNotFoundException(Long Id) {
-        super("Player not found: " + Id);
+    public PlayerNotFoundException(Long id) {
+        super("Player not found: " + id);
     }
 }

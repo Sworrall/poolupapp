@@ -7,14 +7,14 @@ public class Frame_SinglesRequest {
     private Long teamBid;
 
     public Long getPlayerAid() { return playerAid; }
-    public void setPlayerAid(Long Id) { this.playerAid = Id; }
+    public void setPlayerAid(Long id) { this.playerAid = id; }
 
     public Long getPlayerBid() { return playerBid; }
-    public void setPlayerBid(Long Id) { this.playerBid = Id; }
+    public void setPlayerBid(Long id) { this.playerBid = id; }
 
     public Long getTeamAid() { return teamAid; }
-    public void setTeamAid(Long Id) { this.teamAid = Id; }
+    public void setTeamAid(Long id) { this.teamAid = id; }
 
     public Long getTeamBid() { return teamBid; }
-    public void setTeamBid(Long Id) { this.teamBid = Id; }
+    public void setTeamBid(Long id) { this.teamBid = id; }
 }

@@ -15,7 +15,7 @@ public abstract class Match_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
     @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
-    private Long matchId;
+    private Long id;
 
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -44,7 +44,7 @@ public abstract class Match_Entity {
     }
 
     public Long getMatchId() {
-        return matchId;
+        return id;
     }
 
     public List<Frame_Entity> getFrames() {

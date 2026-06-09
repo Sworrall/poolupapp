@@ -8,13 +8,13 @@ public class Match_Request_Singles {
     private int frameCount;
 
     public Long getPlayerAId() { return playerAId; }
-    public void setPlayerAId(Long Id) { this.playerAId = Id; }
+    public void setPlayerAId(Long id) { this.playerAId = id; }
     public Long getPlayerBId() { return playerBId; }
-    public void setPlayerBId(Long Id) { this.playerBId = Id; }
+    public void setPlayerBId(Long id) { this.playerBId = id; }
     public Long getTeamAId() { return teamAId; }
-    public void setTeamAId(Long Id) { this.teamAId = Id; }
+    public void setTeamAId(Long id) { this.teamAId = id; }
     public Long getTeamBId() { return teamBId; }
-    public void setTeamBId(Long Id) { this.teamBId = Id; }
+    public void setTeamBId(Long id) { this.teamBId = id; }
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
 }

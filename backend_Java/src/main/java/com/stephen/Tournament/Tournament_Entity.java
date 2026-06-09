@@ -17,7 +17,7 @@ public abstract class Tournament_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     /**
      * Discriminates which party type participates in this tournament.
@@ -73,7 +73,7 @@ public abstract class Tournament_Entity {
 
     // --- GETTERS ---
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public PartyType getPartyType() {

@@ -1,7 +1,7 @@
 package com.stephen.Match;
 
 public class MatchNotFoundException extends RuntimeException {
-    public MatchNotFoundException(Long Id) {
-        super("Match not found: " + Id);
+    public MatchNotFoundException(Long id) {
+        super("Match not found: " + id);
     }
 }

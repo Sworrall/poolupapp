@@ -150,10 +150,10 @@ public class Match_Service {
 
     // --- MATCH RESOLUTION ---
     @Transactional
-    public void checkAndResolveMatch(Long matchId) {
-        Match_Entity match = matchRepo.findById(matchId)
-                .orElseThrow(() -> new MatchNotFoundException(matchId));
-        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
+    public void checkAndResolveMatch(Long id) {
+        Match_Entity match = matchRepo.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
+        List<Match_Slot> slots = slotRepo.findByMatchId(id);
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
         if (!allComplete) return;
@@ -221,12 +221,12 @@ public class Match_Service {
     }
 
     // --- QUERIES ---
-    public Optional<Match_Entity> getById(Long Id) {
-        return matchRepo.findById(Id);
+    public Optional<Match_Entity> getById(Long id) {
+        return matchRepo.findById(id);
     }
 
-    public List<Match_Slot> getSlotsForMatch(Long matchId) {
-        return slotRepo.findByMatchId(matchId);
+    public List<Match_Slot> getSlotsForMatch(Long id) {
+        return slotRepo.findByMatchId(id);
     }
 
     public List<Match_Entity> getUnplayed() {
@@ -234,9 +234,9 @@ public class Match_Service {
     }
 
     // --- HELPERS ---
-    private Match_Slot getSlot(Long matchId, int slotNumber) {
-        return slotRepo.findByMatchIdAndSlotNumber(matchId, slotNumber)
+    private Match_Slot getSlot(Long id, int slotNumber) {
+        return slotRepo.findByMatchIdAndSlotNumber(id, slotNumber)
                 .orElseThrow(() -> new RuntimeException(
-                        "Slot " + slotNumber + " not found for match " + matchId));
+                        "Slot " + slotNumber + " not found for match " + id));
     }
 }

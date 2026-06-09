@@ -1,4 +1,4 @@
-package com.stephen.Match;
+package com.stephen.Match.DTO;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class Match_StateDTO {
 
     // getters & setters
     public Long getMatchId() { return matchId; }
-    public void setMatchId(Long matchId) { this.matchId = matchId; }
+    public void setMatchId(Long id) { this.matchId = id; }
 
     public String getMatchType() { return matchType; }
     public void setMatchType(String matchType) { this.matchType = matchType; }
@@ -74,10 +74,10 @@ public class Match_StateDTO {
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
 
     public Long getWinnerId() { return winnerId; }
-    public void setWinnerId(Long winnerId) { this.winnerId = winnerId; }
+    public void setWinnerId(Long id) { this.winnerId = id; }
 
     public Long getLoserId() { return loserId; }
-    public void setLoserId(Long loserId) { this.loserId = loserId; }
+    public void setLoserId(Long id) { this.loserId = id; }
 
     public List<SlotStateDTO> getSlots() { return slots; }
     public void setSlots(List<SlotStateDTO> slots) { this.slots = slots; }

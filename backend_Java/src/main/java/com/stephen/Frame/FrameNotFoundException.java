@@ -1,7 +1,7 @@
 package com.stephen.Frame;
 
 public class FrameNotFoundException extends RuntimeException {
-    public FrameNotFoundException(Long Id) {
-        super("Frame not found: " + Id);
+    public FrameNotFoundException(Long id) {
+        super("Frame not found: " + id);
     }
 }

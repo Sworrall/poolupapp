@@ -4,5 +4,5 @@ public class Match_PlayerRequest_Slot {
     private Long playerId;
 
     public Long getPlayerId() { return playerId; }
-    public void setPlayerId(Long Id) { this.playerId = Id; }
+    public void setPlayerId(Long id) { this.playerId = id; }
 }

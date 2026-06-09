@@ -1,1 +1,12 @@
-2026-06-02 21:52:54 [WARN] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'tournament_Controller' defined in file [/Users/stephen/IdeaProjects/PoolWorkspace/backend_Java/target/classes/com/stephen/Tournament/Tournament_Controller.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'tournament_Service' defined in file [/Users/stephen/IdeaProjects/PoolWorkspace/backend_Java/target/classes/com/stephen/Tournament/Tournament_Service.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'tournament_Repository_Match' defined in com.stephen.Tournament.Tournament_Match_Repository defined in @EnableJpaRepositories declared on DebugJpaConfig: Could not create query for public abstract java.lang.Integer com.stephen.Tournament.Tournament_Match_Repository.findMaxRoundNumber(java.lang.Long); Reason: Validation failed for query for method public abstract java.lang.Integer com.stephen.Tournament.Tournament_Match_Repository.findMaxRoundNumber(java.lang.Long)
+Error creating bean with name 'match_Repository'
+defined in com.stephen.Match.Match_Repository
+defined in @EnableJpaRepositories
+declared on DebugJpaConfig:
+Could not create query for public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean); Reason:
+Failed to create query for method public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean);
+No property 'frameId' found for type 'Match_Entity';
+Did you mean 'frames'

@@ -42,21 +42,21 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Optional<Doubles_Entity> getById(Long Id) {
-        return doublesRepo.findById(Id);
+    public Optional<Doubles_Entity> getById(Long id) {
+        return doublesRepo.findById(id);
     }
 
-    public Optional<Doubles_Entity> getByFirebaseUid(String uId) {
-        return doublesRepo.findByFirebaseUid(uId);
+    public Optional<Doubles_Entity> getByFirebaseUid(String uid) {
+        return doublesRepo.findByFirebaseUid(uid);
     }
 
     public List<Doubles_Entity> getAllDoubles() {
         return doublesRepo.findAll();
     }
 
-    public Doubles_Entity updateDoubles(Long Id, Doubles_Request req) {
-        Doubles_Entity doubles = doublesRepo.findById(Id)
-                .orElseThrow(() -> new DoublesNotFoundException(Id));
+    public Doubles_Entity updateDoubles(Long id, Doubles_Request req) {
+        Doubles_Entity doubles = doublesRepo.findById(id)
+                .orElseThrow(() -> new DoublesNotFoundException(id));
 
         if (req.getPlayer1Id() != null && req.getPlayer2Id() != null) {
             Player_Entity p1 = playerRepo.findById(req.getPlayer1Id())
@@ -84,7 +84,7 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public void deleteDoubles(Long Id) {
-        doublesRepo.deleteById(Id);
+    public void deleteDoubles(Long id) {
+        doublesRepo.deleteById(id);
     }
 }

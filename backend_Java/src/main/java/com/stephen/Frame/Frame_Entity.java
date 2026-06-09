@@ -14,7 +14,7 @@ public abstract class Frame_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
     @SequenceGenerator(name = "frame_seq", sequenceName = "frame_seq", allocationSize = 1)
-    private Long frameId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -40,7 +40,7 @@ public abstract class Frame_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return frameId; }
+    public Long getId() { return id; }
 
     public boolean isPlayed() { return isPlayed; }
     public void setPlayed(boolean played) { this.isPlayed = played; }

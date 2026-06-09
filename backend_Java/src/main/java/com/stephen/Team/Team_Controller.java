@@ -25,17 +25,17 @@ public class Team_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team_Entity> getTeam(@PathVariable Long Id) {
-        return teamService.getById(Id)
+    public ResponseEntity<Team_Entity> getTeam(@PathVariable Long id) {
+        return teamService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Team_Entity> updateTeam(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Team_Request req) {
-        return ResponseEntity.ok(teamService.updateTeam(Id, req));
+        return ResponseEntity.ok(teamService.updateTeam(id, req));
     }
 
     @PostMapping("/{teamId}/players/{playerId}")
@@ -60,8 +60,8 @@ public class Team_Controller {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long Id) {
-        teamService.deleteTeam(Id);
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        teamService.deleteTeam(id);
         return ResponseEntity.noContent().build();
     }
 }

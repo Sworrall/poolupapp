@@ -27,7 +27,7 @@ public class Tournament_Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tournament_id", nullable = false)
@@ -63,7 +63,7 @@ public class Tournament_Match {
 
     // --- GETTERS ---
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public Tournament_Entity getTournament() {

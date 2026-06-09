@@ -37,7 +37,7 @@ public class StatEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stat_entry_seq")
     @SequenceGenerator(name = "stat_entry_seq", sequenceName = "stat_entry_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "holder_id", nullable = false)
     private Long holderId;
@@ -152,7 +152,7 @@ public class StatEntry {
     }
 
     // --- GETTERS ---
-    public Long getId()               { return Id; }
+    public Long getId()               { return id; }
     public Long getHolderId()         { return holderId; }
     public HolderType getHolderType() { return holderType; }
     public Long getEventId()          { return eventId; }

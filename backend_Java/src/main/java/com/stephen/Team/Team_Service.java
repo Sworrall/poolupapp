@@ -30,17 +30,17 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Optional<Team_Entity> getById(Long Id) {
-        return teamRepo.findById(Id);
+    public Optional<Team_Entity> getById(Long id) {
+        return teamRepo.findById(id);
     }
 
     public List<Team_Entity> getAllTeams() {
         return teamRepo.findAll();
     }
 
-    public Team_Entity updateTeam(Long Id, Team_Request req) {
-        Team_Entity team = teamRepo.findById(Id)
-                .orElseThrow(() -> new TeamNotFoundException(Id));
+    public Team_Entity updateTeam(Long id, Team_Request req) {
+        Team_Entity team = teamRepo.findById(id)
+                .orElseThrow(() -> new TeamNotFoundException(id));
         team.setTeamName(req.getTeamName());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
             team.setContactDetails(new Team_ContactDetails(
@@ -77,7 +77,7 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public void deleteTeam(Long Id) {
-        teamRepo.deleteById(Id);
+    public void deleteTeam(Long id) {
+        teamRepo.deleteById(id);
     }
 }

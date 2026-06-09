@@ -14,7 +14,7 @@ public class Team_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
     @SequenceGenerator(name = "team_seq", sequenceName = "team_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "team_name", nullable = false)
     private String teamName;
@@ -83,7 +83,7 @@ public class Team_Entity {
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {

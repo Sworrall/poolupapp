@@ -12,7 +12,7 @@ public class Doubles_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doubles_seq")
     @SequenceGenerator(name = "doubles_seq", sequenceName = "doubles_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "team_name")
     private String teamName;
@@ -75,7 +75,7 @@ public class Doubles_Entity {
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {

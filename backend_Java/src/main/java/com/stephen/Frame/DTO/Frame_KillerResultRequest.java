@@ -18,7 +18,7 @@ public class Frame_KillerResultRequest {
     public Frame_KillerResultRequest() {}
 
     public Long getPlayerId() { return playerId; }
-    public void setPlayerId(Long playerId) { this.playerId = playerId; }
+    public void setPlayerId(Long id) { this.playerId = id; }
 
     public int getLivesRemaining() { return livesRemaining; }
     public void setLivesRemaining(int livesRemaining) { this.livesRemaining = livesRemaining; }

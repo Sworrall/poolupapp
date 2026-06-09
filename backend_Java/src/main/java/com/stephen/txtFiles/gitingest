@@ -293,9 +293,9 @@ FILE: backend_Java/src/main/java/com/stephen/BaseStats/BaseStats_Service.java
 ================================================
 package com.stephen.BaseStats;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Entity;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Singles;
 import com.stephen.Match.Match_Doubles;
 import com.stephen.Match.Match_Entity;
 import com.stephen.Match.Match_Singles;
@@ -473,8 +473,8 @@ public class BaseStats_Service {
     @Transactional
     public void applyMatchResult(Match_Entity match, Long tournamentId, Long teamId) {
         if (!match.isPlayed()) {
-            log.error("Attempted to apply match result for unplayed match: {}", match.getId());
-            throw new IllegalArgumentException("Match not played: " + match.getId());
+            log.error("Attempted to apply match result for unplayed match: {}", match.getMatchId());
+            throw new IllegalArgumentException("Match not played: " + match.getMatchId());
         }
 
         switch (match) {
@@ -487,7 +487,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchSingles(Match_Singles match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long p1Id    = match.getPlayerA().getId();
         Long p2Id    = match.getPlayerB().getId();
 
@@ -514,7 +514,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchDoubles(Match_Doubles match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long d1Id    = match.getDoublesA().getId();
         Long d2Id    = match.getDoublesB().getId();
 
@@ -541,7 +541,7 @@ public class BaseStats_Service {
     }
 
     private void applyMatchTeam(Match_Team match, Long tournamentId, Long teamId) {
-        Long matchId = match.getId();
+        Long matchId = match.getMatchId();
         Long t1Id    = match.getTeamA().getId();
         Long t2Id    = match.getTeamB().getId();
 
@@ -563,7 +563,6 @@ public class BaseStats_Service {
             applyEvent(loserId,  HolderType.TEAM, matchId, StatScope.MATCH,
                     null, tournamentId, teamId, StatField.MATCH_LOSS);
         }
-
         log.info("Applied team match result for match {}", matchId);
     }
 
@@ -1382,13 +1381,11 @@ FILE: backend_Java/src/main/java/com/stephen/Frame/Frame_Controller.java
 ================================================
 package com.stephen.Frame;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Doubles.Frame_DoublesRequest;
+import com.stephen.Frame.DTO.Frame_DoublesRequest;
 import com.stephen.Frame.Killer.Frame_Killer;
-import com.stephen.Frame.Killer.Frame_KillerRequest;
-import com.stephen.Frame.Killer.Frame_KillerResultRequest;
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Singles.Frame_Request_Singles;
+import com.stephen.Frame.DTO.Frame_KillerRequest;
+import com.stephen.Frame.DTO.Frame_KillerResultRequest;
+import com.stephen.Frame.DTO.Frame_SinglesRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -1404,7 +1401,7 @@ public class Frame_Controller {
     }
 
     @PostMapping("/singles")
-    public ResponseEntity<Frame_Singles> createSingles(@RequestBody Frame_Request_Singles req) {
+    public ResponseEntity<Frame_Singles> createSingles(@RequestBody Frame_SinglesRequest req) {
         return ResponseEntity.ok(frameService.createSinglesFrame(req));
     }
 
@@ -1450,10 +1447,133 @@ public class Frame_Controller {
 
 
 ================================================
+FILE: backend_Java/src/main/java/com/stephen/Frame/Frame_Doubles.java
+================================================
+package com.stephen.Frame;
+
+import com.stephen.Doubles.Doubles_Entity;
+import com.stephen.Player.Player_Entity;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "frames_doubles")
+@DiscriminatorValue("DOUBLES")
+public class Frame_Doubles extends Frame_Entity {
+
+    // --- TEAMS ---
+    @ManyToOne
+    @JoinColumn(name = "doubles_a_id", nullable = false)
+    private Doubles_Entity doublesA;
+
+    @ManyToOne
+    @JoinColumn(name = "doubles_b_id", nullable = false)
+    private Doubles_Entity doublesB;
+
+    // --- PLAYER SNAPSHOT ---
+    @ManyToOne
+    @JoinColumn(name = "doubles_a_player_a_id")
+    private Player_Entity doublesAPlayerA;
+
+    @ManyToOne
+    @JoinColumn(name = "doubles_a_player_b_id")
+    private Player_Entity doublesAPlayerB;
+
+    @ManyToOne
+    @JoinColumn(name = "doubles_b_player_a_id")
+    private Player_Entity doublesBPlayerA;
+
+    @ManyToOne
+    @JoinColumn(name = "doubles_b_player_b_id")
+    private Player_Entity doublesBPlayerB;
+
+    // --- RESULT ---
+    @ManyToOne
+    @JoinColumn(name = "winner_doubles_id")
+    private Doubles_Entity winnerDoubles;
+
+    @ManyToOne
+    @JoinColumn(name = "winner_player_a_id")
+    private Player_Entity winnerPlayerA;
+
+    @ManyToOne
+    @JoinColumn(name = "winner_player_b_id")
+    private Player_Entity winnerPlayerB;
+
+    @ManyToOne
+    @JoinColumn(name = "loser_doubles_id")
+    private Doubles_Entity loserDoubles;
+
+    @ManyToOne
+    @JoinColumn(name = "loser_player_a_id")
+    private Player_Entity loserPlayerA;
+
+    @ManyToOne
+    @JoinColumn(name = "loser_player_b_id")
+    private Player_Entity loserPlayerB;
+
+    protected Frame_Doubles() {}
+
+    public Frame_Doubles(Doubles_Entity doublesA, Doubles_Entity doublesB) {
+        this.doublesA = doublesA;
+        this.doublesB = doublesB;
+        // snapshot players at frame creation time
+        if (!doublesA.isBye()) {
+            this.doublesAPlayerA = doublesA.getPlayer1();
+            this.doublesAPlayerB = doublesA.getPlayer2();
+        }
+        if (!doublesB.isBye()) {
+            this.doublesBPlayerA = doublesB.getPlayer1();
+            this.doublesBPlayerB = doublesB.getPlayer2();
+        }
+        if (doublesA.isBye() || doublesB.isBye()) {
+            this.setBye(true);
+        }
+    }
+
+    // --- RESULT HELPERS ---
+    public void setWinner(Doubles_Entity winner) {
+        this.winnerDoubles = winner;
+        if (winner.equals(doublesA)) {
+            this.winnerPlayerA = doublesAPlayerA;
+            this.winnerPlayerB = doublesAPlayerB;
+            this.loserDoubles = doublesB;
+            this.loserPlayerA = doublesBPlayerA;
+            this.loserPlayerB = doublesBPlayerB;
+        } else {
+            this.winnerPlayerA = doublesBPlayerA;
+            this.winnerPlayerB = doublesBPlayerB;
+            this.loserDoubles = doublesA;
+            this.loserPlayerA = doublesAPlayerA;
+            this.loserPlayerB = doublesAPlayerB;
+        }
+    }
+
+    // --- GETTERS ---
+    public Doubles_Entity getDoublesA() { return doublesA; }
+    public Doubles_Entity getDoublesB() { return doublesB; }
+
+    public Player_Entity getDoublesAPlayerA() { return doublesAPlayerA; }
+    public Player_Entity getDoublesAPlayerB() { return doublesAPlayerB; }
+    public Player_Entity getDoublesBPlayerA() { return doublesBPlayerA; }
+    public Player_Entity getDoublesBPlayerB() { return doublesBPlayerB; }
+
+    public Doubles_Entity getWinner() { return winnerDoubles; }
+    public Player_Entity getWinnerPlayerA() { return winnerPlayerA; }
+    public Player_Entity getWinnerPlayerB() { return winnerPlayerB; }
+
+    public Doubles_Entity getLoserDoubles() { return loserDoubles; }
+    public Player_Entity getLoserPlayerA() { return loserPlayerA; }
+    public Player_Entity getLoserPlayerB() { return loserPlayerB; }
+}
+
+
+================================================
 FILE: backend_Java/src/main/java/com/stephen/Frame/Frame_Entity.java
 ================================================
 package com.stephen.Frame;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.stephen.Match.Match_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 
@@ -1466,7 +1586,12 @@ public abstract class Frame_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
     @SequenceGenerator(name = "frame_seq", sequenceName = "frame_seq", allocationSize = 1)
-    private Long Id;
+    private Long frameId;
+
+    @ManyToOne
+    @JoinColumn(name = "match_id")
+    @JsonBackReference
+    private Match_Entity match;
 
     @Column(name = "is_played", nullable = false)
     private boolean isPlayed = false;
@@ -1487,7 +1612,7 @@ public abstract class Frame_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return Id; }
+    public Long getId() { return frameId; }
 
     public boolean isPlayed() { return isPlayed; }
     public void setPlayed(boolean played) { this.isPlayed = played; }
@@ -1542,15 +1667,13 @@ package com.stephen.Frame;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Doubles.Frame_DoublesRequest;
+import com.stephen.Frame.DTO.Frame_DoublesRequest;
 import com.stephen.Frame.Killer.Frame_Killer;
 import com.stephen.Frame.Killer.Frame_KillerLives;
 import com.stephen.Frame.Killer.Frame_KillerLivesRepository;
-import com.stephen.Frame.Killer.Frame_KillerRequest;
-import com.stephen.Frame.Killer.Frame_KillerResultRequest;
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Singles.Frame_Request_Singles;
+import com.stephen.Frame.DTO.Frame_KillerRequest;
+import com.stephen.Frame.DTO.Frame_KillerResultRequest;
+import com.stephen.Frame.DTO.Frame_SinglesRequest;
 import com.stephen.Match.Match_EventPublisher;
 import com.stephen.Match.Match_ResolutionService;
 import com.stephen.Match.Match_Repository_Slot;
@@ -1611,7 +1734,7 @@ public class Frame_Service {
         slotRepo.findByFrameId(frameId).ifPresent(slot -> {
             slot.markComplete();
             slotRepo.save(slot);
-            Long matchId = slot.getMatch().getId();
+            Long matchId = slot.getMatch().getMatchId();
             matchResolutionService.checkAndResolveMatch(matchId);
             matchEventPublisher.publishMatchUpdate(matchId);
         });
@@ -1621,7 +1744,7 @@ public class Frame_Service {
 
 
     // --- SINGLES ---
-    public Frame_Singles createSinglesFrame(Frame_Request_Singles req) {
+    public Frame_Singles createSinglesFrame(Frame_SinglesRequest req) {
         Player_Entity playerA = playerRepo.findById(req.getPlayerAid())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerAid()));
         Player_Entity playerB = playerRepo.findById(req.getPlayerBid())
@@ -1754,7 +1877,7 @@ public class Frame_Service {
             slotRepo.findByFrameId(frameId).ifPresent(slot -> {
                 slot.markComplete();
                 slotRepo.save(slot);
-                Long matchId = slot.getMatch().getId();
+                Long matchId = slot.getMatch().getMatchId();
                 matchResolutionService.checkAndResolveMatch(matchId);
                 matchEventPublisher.publishMatchUpdate(matchId);
             });
@@ -1778,6 +1901,76 @@ public class Frame_Service {
 
 
 ================================================
+FILE: backend_Java/src/main/java/com/stephen/Frame/Frame_Singles.java
+================================================
+package com.stephen.Frame;
+
+import com.stephen.Player.Player_Entity;
+import com.stephen.Team.Team_Entity;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "frames_singles")
+@DiscriminatorValue("SINGLES")
+public class Frame_Singles extends Frame_Entity {
+
+    @ManyToOne
+    @JoinColumn(name = "player_a_id", nullable = false)
+    private Player_Entity playerA;
+
+    @ManyToOne
+    @JoinColumn(name = "player_b_id", nullable = false)
+    private Player_Entity playerB;
+
+    @ManyToOne
+    @JoinColumn(name = "team_a_id")
+    private Team_Entity teamA;
+
+    @ManyToOne
+    @JoinColumn(name = "team_b_id")
+    private Team_Entity teamB;
+
+    @ManyToOne
+    @JoinColumn(name = "winner_id")
+    private Player_Entity winner;
+
+    @ManyToOne
+    @JoinColumn(name = "loser_id")
+    private Player_Entity loser;
+
+    protected Frame_Singles() {}
+
+    public Frame_Singles(Player_Entity playerA, Player_Entity playerB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+    }
+
+    public Frame_Singles(Player_Entity playerA, Player_Entity playerB, Team_Entity teamA, Team_Entity teamB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.teamA = teamA;
+        this.teamB = teamB;
+    }
+
+    public boolean hasTeamContext() {
+        return teamA != null && teamB != null;
+    }
+
+    public Player_Entity getPlayerA() { return playerA; }
+    public Player_Entity getPlayerB() { return playerB; }
+
+    public Team_Entity getTeamA() { return teamA; }
+    public Team_Entity getTeamB() { return teamB; }
+
+    public Player_Entity getWinner() { return winner; }
+    public void setWinner(Player_Entity winner) { this.winner = winner; }
+
+    public Player_Entity getLoser() { return loser; }
+    public void setLoser(Player_Entity loser) { this.loser = loser; }
+}
+
+
+================================================
 FILE: backend_Java/src/main/java/com/stephen/Frame/FrameNotFoundException.java
 ================================================
 package com.stephen.Frame;
@@ -1790,131 +1983,9 @@ public class FrameNotFoundException extends RuntimeException {
 
 
 ================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Doubles/Frame_Doubles.java
+FILE: backend_Java/src/main/java/com/stephen/Frame/DTO/Frame_DoublesRequest.java
 ================================================
-package com.stephen.Frame.Doubles;
-
-import com.stephen.Doubles.Doubles_Entity;
-import com.stephen.Frame.Frame_Entity;
-import com.stephen.Player.Player_Entity;
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "frames_doubles")
-@DiscriminatorValue("DOUBLES")
-public class Frame_Doubles extends Frame_Entity {
-
-    // --- TEAMS ---
-    @ManyToOne
-    @JoinColumn(name = "doubles_a_id", nullable = false)
-    private Doubles_Entity doublesA;
-
-    @ManyToOne
-    @JoinColumn(name = "doubles_b_id", nullable = false)
-    private Doubles_Entity doublesB;
-
-    // --- PLAYER SNAPSHOT ---
-    @ManyToOne
-    @JoinColumn(name = "doubles_a_player_a_id")
-    private Player_Entity doublesAPlayerA;
-
-    @ManyToOne
-    @JoinColumn(name = "doubles_a_player_b_id")
-    private Player_Entity doublesAPlayerB;
-
-    @ManyToOne
-    @JoinColumn(name = "doubles_b_player_a_id")
-    private Player_Entity doublesBPlayerA;
-
-    @ManyToOne
-    @JoinColumn(name = "doubles_b_player_b_id")
-    private Player_Entity doublesBPlayerB;
-
-    // --- RESULT ---
-    @ManyToOne
-    @JoinColumn(name = "winner_doubles_id")
-    private Doubles_Entity winnerDoubles;
-
-    @ManyToOne
-    @JoinColumn(name = "winner_player_a_id")
-    private Player_Entity winnerPlayerA;
-
-    @ManyToOne
-    @JoinColumn(name = "winner_player_b_id")
-    private Player_Entity winnerPlayerB;
-
-    @ManyToOne
-    @JoinColumn(name = "loser_doubles_id")
-    private Doubles_Entity loserDoubles;
-
-    @ManyToOne
-    @JoinColumn(name = "loser_player_a_id")
-    private Player_Entity loserPlayerA;
-
-    @ManyToOne
-    @JoinColumn(name = "loser_player_b_id")
-    private Player_Entity loserPlayerB;
-
-    protected Frame_Doubles() {}
-
-    public Frame_Doubles(Doubles_Entity doublesA, Doubles_Entity doublesB) {
-        this.doublesA = doublesA;
-        this.doublesB = doublesB;
-        // snapshot players at frame creation time
-        if (!doublesA.isBye()) {
-            this.doublesAPlayerA = doublesA.getPlayer1();
-            this.doublesAPlayerB = doublesA.getPlayer2();
-        }
-        if (!doublesB.isBye()) {
-            this.doublesBPlayerA = doublesB.getPlayer1();
-            this.doublesBPlayerB = doublesB.getPlayer2();
-        }
-        if (doublesA.isBye() || doublesB.isBye()) {
-            this.setBye(true);
-        }
-    }
-
-    // --- RESULT HELPERS ---
-    public void setWinner(Doubles_Entity winner) {
-        this.winnerDoubles = winner;
-        if (winner.equals(doublesA)) {
-            this.winnerPlayerA = doublesAPlayerA;
-            this.winnerPlayerB = doublesAPlayerB;
-            this.loserDoubles = doublesB;
-            this.loserPlayerA = doublesBPlayerA;
-            this.loserPlayerB = doublesBPlayerB;
-        } else {
-            this.winnerPlayerA = doublesBPlayerA;
-            this.winnerPlayerB = doublesBPlayerB;
-            this.loserDoubles = doublesA;
-            this.loserPlayerA = doublesAPlayerA;
-            this.loserPlayerB = doublesAPlayerB;
-        }
-    }
-
-    // --- GETTERS ---
-    public Doubles_Entity getDoublesA() { return doublesA; }
-    public Doubles_Entity getDoublesB() { return doublesB; }
-
-    public Player_Entity getDoublesAPlayerA() { return doublesAPlayerA; }
-    public Player_Entity getDoublesAPlayerB() { return doublesAPlayerB; }
-    public Player_Entity getDoublesBPlayerA() { return doublesBPlayerA; }
-    public Player_Entity getDoublesBPlayerB() { return doublesBPlayerB; }
-
-    public Doubles_Entity getWinner() { return winnerDoubles; }
-    public Player_Entity getWinnerPlayerA() { return winnerPlayerA; }
-    public Player_Entity getWinnerPlayerB() { return winnerPlayerB; }
-
-    public Doubles_Entity getLoserDoubles() { return loserDoubles; }
-    public Player_Entity getLoserPlayerA() { return loserPlayerA; }
-    public Player_Entity getLoserPlayerB() { return loserPlayerB; }
-}
-
-
-================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Doubles/Frame_DoublesRequest.java
-================================================
-package com.stephen.Frame.Doubles;
+package com.stephen.Frame.DTO;
 
 public class Frame_DoublesRequest {
     private Long doublesAid;
@@ -1925,6 +1996,92 @@ public class Frame_DoublesRequest {
 
     public Long getDoublesBid() { return doublesBid; }
     public void setDoublesBid(Long Id) { this.doublesBid = Id; }
+}
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/Frame/DTO/Frame_KillerRequest.java
+================================================
+package com.stephen.Frame.DTO;
+
+import java.util.List;
+
+public class Frame_KillerRequest {
+
+    /**
+     * Ids of all players participating in this killer frame.
+     * The service initialises each player with startingLives in Frame_KillerLives.
+     */
+    private List<Long> playerIds;
+    private int startingLives;
+
+    public Frame_KillerRequest() {}
+
+    public List<Long> getPlayerIds() { return playerIds; }
+    public void setPlayerIds(List<Long> playerIds) { this.playerIds = playerIds; }
+
+    public int getStartingLives() { return startingLives; }
+    public void setStartingLives(int startingLives) { this.startingLives = startingLives; }
+}
+
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/Frame/DTO/Frame_KillerResultRequest.java
+================================================
+package com.stephen.Frame.DTO;
+
+public class Frame_KillerResultRequest {
+
+    /**
+     * The player whose lives are being updated this frame.
+     */
+    private Long playerId;
+
+    /**
+     * Lives remaining for this player after the frame.
+     * When this reaches 0 the player is eliminated — enforced by the service.
+     */
+    private int livesRemaining;
+
+    private boolean breakDish;
+
+    public Frame_KillerResultRequest() {}
+
+    public Long getPlayerId() { return playerId; }
+    public void setPlayerId(Long playerId) { this.playerId = playerId; }
+
+    public int getLivesRemaining() { return livesRemaining; }
+    public void setLivesRemaining(int livesRemaining) { this.livesRemaining = livesRemaining; }
+
+    public boolean isBreakDish() { return breakDish; }
+    public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }
+}
+
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/Frame/DTO/Frame_SinglesRequest.java
+================================================
+package com.stephen.Frame.DTO;
+
+public class Frame_SinglesRequest {
+    private Long playerAid;
+    private Long playerBid;
+    private Long teamAid;
+    private Long teamBid;
+
+    public Long getPlayerAid() { return playerAid; }
+    public void setPlayerAid(Long Id) { this.playerAid = Id; }
+
+    public Long getPlayerBid() { return playerBid; }
+    public void setPlayerBid(Long Id) { this.playerBid = Id; }
+
+    public Long getTeamAid() { return teamAid; }
+    public void setTeamAid(Long Id) { this.teamAid = Id; }
+
+    public Long getTeamBid() { return teamBid; }
+    public void setTeamBid(Long Id) { this.teamBid = Id; }
 }
 
 
@@ -2024,163 +2181,6 @@ public interface Frame_KillerLivesRepository extends JpaRepository<Frame_KillerL
     java.util.Optional<Frame_KillerLives> findByFrameIdAndPlayerId(Long frameId, Long playerId);
 }
 
-
-
-================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Killer/Frame_KillerRequest.java
-================================================
-package com.stephen.Frame.Killer;
-
-import java.util.List;
-
-public class Frame_KillerRequest {
-
-    /**
-     * Ids of all players participating in this killer frame.
-     * The service initialises each player with startingLives in Frame_KillerLives.
-     */
-    private List<Long> playerIds;
-    private int startingLives;
-
-    public Frame_KillerRequest() {}
-
-    public List<Long> getPlayerIds() { return playerIds; }
-    public void setPlayerIds(List<Long> playerIds) { this.playerIds = playerIds; }
-
-    public int getStartingLives() { return startingLives; }
-    public void setStartingLives(int startingLives) { this.startingLives = startingLives; }
-}
-
-
-
-================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Killer/Frame_KillerResultRequest.java
-================================================
-package com.stephen.Frame.Killer;
-
-public class Frame_KillerResultRequest {
-
-    /**
-     * The player whose lives are being updated this frame.
-     */
-    private Long playerId;
-
-    /**
-     * Lives remaining for this player after the frame.
-     * When this reaches 0 the player is eliminated — enforced by the service.
-     */
-    private int livesRemaining;
-
-    private boolean breakDish;
-
-    public Frame_KillerResultRequest() {}
-
-    public Long getPlayerId() { return playerId; }
-    public void setPlayerId(Long playerId) { this.playerId = playerId; }
-
-    public int getLivesRemaining() { return livesRemaining; }
-    public void setLivesRemaining(int livesRemaining) { this.livesRemaining = livesRemaining; }
-
-    public boolean isBreakDish() { return breakDish; }
-    public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }
-}
-
-
-
-================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Singles/Frame_Request_Singles.java
-================================================
-package com.stephen.Frame.Singles;
-
-public class Frame_Request_Singles {
-    private Long playerAid;
-    private Long playerBid;
-    private Long teamAid;
-    private Long teamBid;
-
-    public Long getPlayerAid() { return playerAid; }
-    public void setPlayerAid(Long Id) { this.playerAid = Id; }
-
-    public Long getPlayerBid() { return playerBid; }
-    public void setPlayerBid(Long Id) { this.playerBid = Id; }
-
-    public Long getTeamAid() { return teamAid; }
-    public void setTeamAid(Long Id) { this.teamAid = Id; }
-
-    public Long getTeamBid() { return teamBid; }
-    public void setTeamBid(Long Id) { this.teamBid = Id; }
-}
-
-
-================================================
-FILE: backend_Java/src/main/java/com/stephen/Frame/Singles/Frame_Singles.java
-================================================
-package com.stephen.Frame.Singles;
-
-import com.stephen.Frame.Frame_Entity;
-import com.stephen.Player.Player_Entity;
-import com.stephen.Team.Team_Entity;
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "frames_singles")
-@DiscriminatorValue("SINGLES")
-public class Frame_Singles extends Frame_Entity {
-
-    @ManyToOne
-    @JoinColumn(name = "player_a_id", nullable = false)
-    private Player_Entity playerA;
-
-    @ManyToOne
-    @JoinColumn(name = "player_b_id", nullable = false)
-    private Player_Entity playerB;
-
-    @ManyToOne
-    @JoinColumn(name = "team_a_id")
-    private Team_Entity teamA;
-
-    @ManyToOne
-    @JoinColumn(name = "team_b_id")
-    private Team_Entity teamB;
-
-    @ManyToOne
-    @JoinColumn(name = "winner_id")
-    private Player_Entity winner;
-
-    @ManyToOne
-    @JoinColumn(name = "loser_id")
-    private Player_Entity loser;
-
-    protected Frame_Singles() {}
-
-    public Frame_Singles(Player_Entity playerA, Player_Entity playerB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
-    }
-
-    public Frame_Singles(Player_Entity playerA, Player_Entity playerB, Team_Entity teamA, Team_Entity teamB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
-        this.teamA = teamA;
-        this.teamB = teamB;
-    }
-
-    public boolean hasTeamContext() {
-        return teamA != null && teamB != null;
-    }
-
-    public Player_Entity getPlayerA() { return playerA; }
-    public Player_Entity getPlayerB() { return playerB; }
-
-    public Team_Entity getTeamA() { return teamA; }
-    public Team_Entity getTeamB() { return teamB; }
-
-    public Player_Entity getWinner() { return winner; }
-    public void setWinner(Player_Entity winner) { this.winner = winner; }
-
-    public Player_Entity getLoser() { return loser; }
-    public void setLoser(Player_Entity loser) { this.loser = loser; }
-}
 
 
 ================================================
@@ -2317,8 +2317,11 @@ FILE: backend_Java/src/main/java/com/stephen/Match/Match_Entity.java
 ================================================
 package com.stephen.Match;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.stephen.Frame.Frame_Entity;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "matches")
@@ -2330,6 +2333,10 @@ public abstract class Match_Entity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
     @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
     private Long matchId;
+
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Frame_Entity> frames;
 
     @Column(name = "frame_count", nullable = false)
     private int frameCount;
@@ -2353,21 +2360,53 @@ public abstract class Match_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return matchId; }
+    public Long getMatchId() {
+        return matchId;
+    }
 
-    public int getFrameCount() { return frameCount; }
-    public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
+    public List<Frame_Entity> getFrames() {
+        return frames;
+    }
 
-    public boolean isPlayed() { return isPlayed; }
-    public void setPlayed(boolean played) { this.isPlayed = played; }
+    public void setFrames(List<Frame_Entity> frames) {
+        this.frames = frames;
+    }
 
-    public boolean isBye() { return isBye; }
-    public void setBye(boolean bye) { this.isBye = bye; }
+    public int getFrameCount() {
+        return frameCount;
+    }
 
-    public boolean isDraw() { return isDraw; }
-    public void setDraw(boolean draw) { this.isDraw = draw; }
+    public void setFrameCount(int frameCount) {
+        this.frameCount = frameCount;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public boolean isPlayed() {
+        return isPlayed;
+    }
+
+    public void setPlayed(boolean played) {
+        this.isPlayed = played;
+    }
+
+    public boolean isBye() {
+        return isBye;
+    }
+
+    public void setBye(boolean bye) {
+        this.isBye = bye;
+    }
+
+    public boolean isDraw() {
+        return isDraw;
+    }
+
+    public void setDraw(boolean draw) {
+        this.isDraw = draw;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 }
 
 
@@ -2451,8 +2490,8 @@ FILE: backend_Java/src/main/java/com/stephen/Match/Match_ResolutionService.java
 ================================================
 package com.stephen.Match;
 
-import com.stephen.Frame.Doubles.Frame_Doubles;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Doubles;
+import com.stephen.Frame.Frame_Singles;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -2564,9 +2603,9 @@ package com.stephen.Match;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Repository;
-import com.stephen.Frame.Singles.Frame_Singles;
+import com.stephen.Frame.Frame_Singles;
 import com.stephen.Match.DTO.Match_Request_Doubles;
 import com.stephen.Match.DTO.Match_Request_Singles;
 import com.stephen.Match.DTO.Match_Request_Team;
@@ -3070,8 +3109,8 @@ FILE: backend_Java/src/main/java/com/stephen/Match/Match_StateMapper.java
 ================================================
 package com.stephen.Match;
 
-import com.stephen.Frame.Singles.Frame_Singles;
-import com.stephen.Frame.Doubles.Frame_Doubles;
+import com.stephen.Frame.Frame_Singles;
+import com.stephen.Frame.Frame_Doubles;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -3080,7 +3119,7 @@ public class Match_StateMapper {
 
     public Match_StateDTO toDTO(Match_Entity match, List<Match_Slot> slots) {
         Match_StateDTO dto = new Match_StateDTO();
-        dto.setMatchId(match.getId());
+        dto.setMatchId(match.getMatchId());
         dto.setPlayed(match.isPlayed());
         dto.setDraw(match.isDraw());
         dto.setBye(match.isBye());
@@ -3367,7 +3406,7 @@ FILE: backend_Java/src/main/java/com/stephen/Player/Player_Controller.java
 ================================================
 package com.stephen.Player;
 
-import com.stephen.Player.dto.Player_Request;
+import com.stephen.Player.DTO.Player_Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -3558,7 +3597,7 @@ FILE: backend_Java/src/main/java/com/stephen/Player/Player_Service.java
 ================================================
 package com.stephen.Player;
 
-import com.stephen.Player.dto.Player_Request;
+import com.stephen.Player.DTO.Player_Request;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -3646,7 +3685,7 @@ public class PlayerNotFoundException extends RuntimeException {
 ================================================
 FILE: backend_Java/src/main/java/com/stephen/Player/dto/Player_Request.java
 ================================================
-package com.stephen.Player.dto;
+package com.stephen.Player.DTO;
 
 public class Player_Request {
     private String firstName;
@@ -8595,22 +8634,4 @@ FILE: frontend_Flutter/macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.
       "scale" : "1x"
     },
     {
-      "size" : "512x512",
-      "idiom" : "mac",
-      "filename" : "app_icon_1024.png",
-      "scale" : "2x"
-    }
-  ],
-  "info" : {
-    "version" : 1,
-    "author" : "xcode"
-  }
-}
-
-
-
-================================================
-FILE: frontend_Flutter/macos/Runner/Base.lproj/MainMenu.xib
-================================================
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.
+      "s

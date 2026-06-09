@@ -201,9 +201,9 @@ public class Tournament_Service {
     // READS
     // -------------------------------------------------------------------------
 
-    public Tournament_Entity getById(Long Id) {
-        return tournamentRepository.findById(Id)
-                .orElseThrow(() -> new TournamentNotFoundException(Id));
+    public Tournament_Entity getById(Long tournamentId) {
+        return tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new TournamentNotFoundException(tournamentId));
     }
 
     public List<Tournament_Entity> getAll() {

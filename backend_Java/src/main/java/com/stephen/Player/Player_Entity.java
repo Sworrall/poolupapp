@@ -10,7 +10,7 @@ public class Player_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
     @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -56,13 +56,13 @@ public class Player_Entity {
     public String getFullName() {
         if (isBye) return "BYE";
         String name = (nickName != null && !nickName.isBlank())
-                ? firstName + " \"" + nickName + "\" " + lastName
+                ? firstName + '"' + nickName + '"' + lastName
                 : firstName + " " + lastName;
         return (isCaptain ? "(C) " : "") + name;
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -89,7 +89,7 @@ public class Player_Entity {
     public String getName() {
         if (isBye) return "BYE";
         String name = (nickName != null && !nickName.isBlank())
-                ? firstName + " \"" + nickName + "\" " + lastName
+                ? firstName + '"' + nickName + '"' + lastName
                 : firstName + " " + lastName;
         return (isCaptain ? "(C) " : "") + name;
     }
