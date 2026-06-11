@@ -1,10 +1,12 @@
 package com.stephen.Player;
 
 import com.stephen.Player.DTO.Player_Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.stephen.Player.DTO.Player_Response;
+import com.stephen.PostgreSQL.Api_Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +14,6 @@ import java.util.Map;
 @RequestMapping("/api")
 public class Player_Controller {
 
-    private static final Logger log = LoggerFactory.getLogger(Player_Controller.class);
     private final Player_Service playerService;
 
     public Player_Controller(Player_Service playerService) {
@@ -30,8 +31,11 @@ public class Player_Controller {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<Player_Entity>> getAllPlayers() {
-        return ResponseEntity.ok(playerService.getAllPlayers());
+    public ResponseEntity<Api_Response<Player_Response>> getPlayers() {
+        List<Player_Entity> players = playerService.getAllPlayers();
+        return ResponseEntity.ok(
+                new Api_Response<>(new Player_Response(players))
+        );
     }
 
     @GetMapping("/players/{id}")
