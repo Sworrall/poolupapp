@@ -1,7 +1,6 @@
-package com.stephen.Frame.Killer;
+package com.stephen.Frame;
 
 
-import com.stephen.Frame.Frame_Entity;
 import jakarta.persistence.*;
 
 @Entity

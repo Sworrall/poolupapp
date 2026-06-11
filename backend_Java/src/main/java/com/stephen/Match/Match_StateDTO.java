@@ -1,4 +1,4 @@
-package com.stephen.Match.DTO;
+package com.stephen.Match;
 
 import java.util.List;
 

@@ -24,8 +24,17 @@ public class Doubles_Controller {
     }
 
     @GetMapping
-    public ResponseEntity<List<Doubles_Entity>> getAllDoubles() {
-        return ResponseEntity.ok(doublesService.getAllDoubles());
+    public ResponseEntity<Doubles_ListResponse> getAllDoubles() {
+
+        List<Doubles_Response> results =
+                doublesService.getAllDoubles()
+                        .stream()
+                        .map(Doubles_Response::fromEntity)
+                        .toList();
+
+        return ResponseEntity.ok(
+                new Doubles_ListResponse(results)
+        );
     }
 
     @GetMapping("/{id}")

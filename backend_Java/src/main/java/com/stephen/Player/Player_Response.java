@@ -1,4 +1,4 @@
-package com.stephen.Player.DTO;
+package com.stephen.Player;
 
 import java.util.List;
 

@@ -1,4 +1,22 @@
 devup / devdown
 
+boot postgresql:
+    START:
+        BASH:
+            brew services start postgresql@16
+        BASH:
+            pg_ctl -D /opt/homebrew/var/postgresql@16 start
+    TEST:
+        BASH:
+            pg_isready
+
+SpringBoot:
+    START:
+        BASH:
+            mvn spring-boot:run
+    TEST:
+        BASH:
+
+
 test connection:
     lsof -i :8080

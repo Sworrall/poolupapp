@@ -1,4 +1,4 @@
-package com.stephen.Frame.Killer;
+package com.stephen.Frame;
 
 import com.stephen.Player.Player_Entity;
 import jakarta.persistence.*;

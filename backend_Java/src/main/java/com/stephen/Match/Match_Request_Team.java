@@ -1,4 +1,4 @@
-package com.stephen.Match.DTO;
+package com.stephen.Match;
 
 public class Match_Request_Team {
     private Long teamAid;

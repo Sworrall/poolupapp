@@ -2,7 +2,6 @@ package com.stephen.Match;
 
 import com.stephen.Frame.Frame_Singles;
 import com.stephen.Frame.Frame_Doubles;
-import com.stephen.Match.DTO.Match_StateDTO;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -48,11 +47,11 @@ public class Match_StateMapper {
 
         if (slot.getPlayerA() != null) {
             dto.setPlayerAId(slot.getPlayerA().getId());
-            dto.setPlayerAName(slot.getPlayerA().getFullName());
+            dto.setPlayerAName(slot.getPlayerA().getName());
         }
         if (slot.getPlayerB() != null) {
             dto.setPlayerBId(slot.getPlayerB().getId());
-            dto.setPlayerBName(slot.getPlayerB().getFullName());
+            dto.setPlayerBName(slot.getPlayerB().getName());
         }
         if (slot.getFrame() != null) {
             dto.setFrameId(slot.getFrame().getId());

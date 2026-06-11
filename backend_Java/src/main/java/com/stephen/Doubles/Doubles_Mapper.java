@@ -1,0 +1,31 @@
+package com.stephen.Doubles;
+
+public class Doubles_Mapper {
+
+    public static Doubles_Response toResponse(Doubles_Entity d) {
+
+        return new Doubles_Response(
+                d.getId(),
+                d.getTeamName(),
+
+                d.getPlayer1() != null ? d.getPlayer1().getId() : null,
+                d.getPlayer1() != null ? d.getPlayer1().getName() : null,
+
+                d.getPlayer2() != null ? d.getPlayer2().getId() : null,
+                d.getPlayer2() != null ? d.getPlayer2().getName() : null,
+
+                d.getCaptain() != null ? d.getCaptain().getId() : null,
+                d.getCaptain() != null ? d.getCaptain().getName() : null,
+
+                d.getContactDetails() != null
+                        ? d.getContactDetails().getPhoneNumber()
+                        : null,
+
+                d.getContactDetails() != null
+                        ? d.getContactDetails().getAddress()
+                        : null,
+
+                d.isBye()
+        );
+    }
+}

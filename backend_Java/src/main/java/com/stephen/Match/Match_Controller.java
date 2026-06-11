@@ -1,8 +1,5 @@
 package com.stephen.Match;
 
-import com.stephen.Match.DTO.Match_Request_Doubles;
-import com.stephen.Match.DTO.Match_Request_Singles;
-import com.stephen.Match.DTO.Match_Request_Team;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

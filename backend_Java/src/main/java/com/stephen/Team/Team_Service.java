@@ -1,11 +1,12 @@
 package com.stephen.Team;
 
+import com.stephen.Player.PlayerNotFoundException;
 import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
-import com.stephen.Player.PlayerNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class Team_Service {
@@ -18,63 +19,83 @@ public class Team_Service {
         this.playerRepo = playerRepo;
     }
 
-    public Team_Entity createTeam(Team_Request req) {
+    public Team_DetailResponse createTeam(Team_Request req) {
         Team_Entity team = new Team_Entity();
         team.setTeamName(req.getTeamName());
         team.setFirebaseUid(req.getFirebaseUid());
+
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
-            team.setContactDetails(new Team_ContactDetails(
-                    req.getPhoneNumber(), req.getAddress()
-            ));
+            team.setContactDetails(
+                    new Team_ContactDetails(req.getPhoneNumber(), req.getAddress())
+            );
         }
-        return teamRepo.save(team);
+
+        return Team_Mapper.toDetailDTO(teamRepo.save(team));
     }
 
-    public Optional<Team_Entity> getById(Long id) {
-        return teamRepo.findById(id);
+    public List<Team_ListResponse> getAllTeams() {
+        return teamRepo.findAll()
+                .stream()
+                .map(Team_Mapper::toListDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Team_Entity> getAllTeams() {
-        return teamRepo.findAll();
-    }
-
-    public Team_Entity updateTeam(Long id, Team_Request req) {
+    public Team_DetailResponse getById(Long id) {
         Team_Entity team = teamRepo.findById(id)
                 .orElseThrow(() -> new TeamNotFoundException(id));
+
+        return Team_Mapper.toDetailDTO(team);
+    }
+
+    public Team_DetailResponse updateTeam(Long id, Team_Request req) {
+        Team_Entity team = teamRepo.findById(id)
+                .orElseThrow(() -> new TeamNotFoundException(id));
+
         team.setTeamName(req.getTeamName());
+
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
-            team.setContactDetails(new Team_ContactDetails(
-                    req.getPhoneNumber(), req.getAddress()
-            ));
+            team.setContactDetails(
+                    new Team_ContactDetails(req.getPhoneNumber(), req.getAddress())
+            );
         }
-        return teamRepo.save(team);
+
+        return Team_Mapper.toDetailDTO(teamRepo.save(team));
     }
 
-    public Team_Entity addPlayer(Long teamId, Long playerId) {
+    public Team_DetailResponse addPlayer(Long teamId, Long playerId) {
         Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
+
         Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
         team.addPlayer(player);
-        return teamRepo.save(team);
+
+        return Team_Mapper.toDetailDTO(teamRepo.save(team));
     }
 
-    public Team_Entity removePlayer(Long teamId, Long playerId) {
+    public Team_DetailResponse removePlayer(Long teamId, Long playerId) {
         Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
+
         Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
         team.removePlayer(player);
-        return teamRepo.save(team);
+
+        return Team_Mapper.toDetailDTO(teamRepo.save(team));
     }
 
-    public Team_Entity setCaptain(Long teamId, Long playerId) {
+    public Team_DetailResponse setCaptain(Long teamId, Long playerId) {
         Team_Entity team = teamRepo.findById(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
+
         Player_Entity player = playerRepo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
         team.setCaptain(player);
-        return teamRepo.save(team);
+
+        return Team_Mapper.toDetailDTO(teamRepo.save(team));
     }
 
     public void deleteTeam(Long id) {

@@ -1,6 +1,4 @@
-package com.stephen.Player.DTO;
-
-import com.stephen.Player.Player_Entity;
+package com.stephen.Player;
 
 public class Player_DTO {
 
@@ -19,7 +17,7 @@ public class Player_DTO {
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
         this.nickName = entity.getNickName();
-        this.fullName = entity.getFullName();
+        this.fullName = entity.getName();
         this.captain = entity.isCaptain();
         this.bye = entity.isBye();
         this.firebaseUid = entity.getFirebaseUid();
