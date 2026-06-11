@@ -1,5 +1,8 @@
 package com.stephen.Player;
 
+import java.util.stream.Collectors;
+
+import com.stephen.Player.DTO.Player_DTO;
 import com.stephen.Player.DTO.Player_Request;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -69,5 +72,12 @@ public class Player_Service {
 
     public void deletePlayer(Long playerId) {
         playerRepo.deleteById(playerId);
+    }
+
+    public List<Player_DTO> getAllPlayersDTO() {
+        return playerRepo.findAll()
+                .stream()
+                .map(Player_DTO::new)
+                .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.stephen.Player;
 
+import com.stephen.Player.DTO.Player_DTO;
 import com.stephen.Player.DTO.Player_Request;
 import com.stephen.Player.DTO.Player_Response;
 import com.stephen.PostgreSQL.Api_Response;
@@ -25,16 +26,13 @@ public class Player_Controller {
         return ResponseEntity.ok("Backend is alive!");
     }
 
-    @PostMapping("/players")
-    public ResponseEntity<Player_Entity> createPlayer(@RequestBody Player_Request req) {
-        return ResponseEntity.ok(playerService.createPlayer(req));
-    }
-
     @GetMapping("/players")
     public ResponseEntity<Api_Response<Player_Response>> getPlayers() {
-        List<Player_Entity> players = playerService.getAllPlayers();
+        List<Player_DTO> players = playerService.getAllPlayersDTO();
         return ResponseEntity.ok(
-                new Api_Response<>(new Player_Response(players))
+                new Api_Response<>(
+                        new Player_Response(players)
+                )
         );
     }
 

@@ -52,14 +52,6 @@ public class Player_Entity {
         this.createdAt = Instant.now();
     }
 
-    // --- DERIVED ---
-    public String getFullName() {
-        if (isBye) return "BYE";
-        String name = (nickName != null && !nickName.isBlank())
-                ? firstName + '"' + nickName + '"' + lastName
-                : firstName + " " + lastName;
-        return (isCaptain ? "(C) " : "") + name;
-    }
 
     // --- GETTERS & SETTERS ---
     public Long getId() { return id; }
@@ -89,7 +81,7 @@ public class Player_Entity {
     public String getName() {
         if (isBye) return "BYE";
         String name = (nickName != null && !nickName.isBlank())
-                ? firstName + '"' + nickName + '"' + lastName
+                ? firstName + " \"" + nickName + "\" " + lastName
                 : firstName + " " + lastName;
         return (isCaptain ? "(C) " : "") + name;
     }

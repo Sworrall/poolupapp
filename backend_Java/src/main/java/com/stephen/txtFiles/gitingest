@@ -645,7 +645,7 @@ public class StatEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stat_entry_seq")
     @SequenceGenerator(name = "stat_entry_seq", sequenceName = "stat_entry_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "holder_id", nullable = false)
     private Long holderId;
@@ -760,7 +760,7 @@ public class StatEntry {
     }
 
     // --- GETTERS ---
-    public Long getId()               { return Id; }
+    public Long getId()               { return id; }
     public Long getHolderId()         { return holderId; }
     public HolderType getHolderType() { return holderType; }
     public Long getEventId()          { return eventId; }
@@ -982,7 +982,7 @@ public class Doubles_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doubles_seq")
     @SequenceGenerator(name = "doubles_seq", sequenceName = "doubles_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "team_name")
     private String teamName;
@@ -1045,7 +1045,7 @@ public class Doubles_Entity {
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {
@@ -1171,21 +1171,21 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public Optional<Doubles_Entity> getById(Long Id) {
-        return doublesRepo.findById(Id);
+    public Optional<Doubles_Entity> getById(Long id) {
+        return doublesRepo.findById(id);
     }
 
-    public Optional<Doubles_Entity> getByFirebaseUid(String uId) {
-        return doublesRepo.findByFirebaseUid(uId);
+    public Optional<Doubles_Entity> getByFirebaseUid(String uid) {
+        return doublesRepo.findByFirebaseUid(uid);
     }
 
     public List<Doubles_Entity> getAllDoubles() {
         return doublesRepo.findAll();
     }
 
-    public Doubles_Entity updateDoubles(Long Id, Doubles_Request req) {
-        Doubles_Entity doubles = doublesRepo.findById(Id)
-                .orElseThrow(() -> new DoublesNotFoundException(Id));
+    public Doubles_Entity updateDoubles(Long id, Doubles_Request req) {
+        Doubles_Entity doubles = doublesRepo.findById(id)
+                .orElseThrow(() -> new DoublesNotFoundException(id));
 
         if (req.getPlayer1Id() != null && req.getPlayer2Id() != null) {
             Player_Entity p1 = playerRepo.findById(req.getPlayer1Id())
@@ -1213,8 +1213,8 @@ public class Doubles_Service {
         return doublesRepo.save(doubles);
     }
 
-    public void deleteDoubles(Long Id) {
-        doublesRepo.deleteById(Id);
+    public void deleteDoubles(Long id) {
+        doublesRepo.deleteById(id);
     }
 }
 
@@ -1227,8 +1227,8 @@ package com.stephen.Doubles;
 
 public class DoublesNotFoundException extends RuntimeException {
 
-    public DoublesNotFoundException(Long Id) {
-        super("Doubles not found: " + Id);
+    public DoublesNotFoundException(Long id) {
+        super("Doubles not found: " + id);
     }
 }
 
@@ -1417,9 +1417,9 @@ public class Frame_Controller {
 
     @PostMapping("/{id}/result")
     public ResponseEntity<Frame_Entity> recordResult(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Frame_ResultRequest req) {
-        return ResponseEntity.ok(frameService.recordResult(Id, req));
+        return ResponseEntity.ok(frameService.recordResult(id, req));
     }
 
     /**
@@ -1429,9 +1429,9 @@ public class Frame_Controller {
      */
     @PostMapping("/killer/{id}/result")
     public ResponseEntity<Frame_Killer> recordKillerResult(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Frame_KillerResultRequest req) {
-        return ResponseEntity.ok(frameService.recordKillerResult(Id, req));
+        return ResponseEntity.ok(frameService.recordKillerResult(id, req));
     }
 
     @GetMapping("/unplayed")
@@ -1586,7 +1586,7 @@ public abstract class Frame_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "frame_seq")
     @SequenceGenerator(name = "frame_seq", sequenceName = "frame_seq", allocationSize = 1)
-    private Long frameId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -1612,7 +1612,7 @@ public abstract class Frame_Entity {
         this.createdAt = Instant.now();
     }
 
-    public Long getId() { return frameId; }
+    public Long getId() { return id; }
 
     public boolean isPlayed() { return isPlayed; }
     public void setPlayed(boolean played) { this.isPlayed = played; }
@@ -1653,7 +1653,7 @@ public class Frame_ResultRequest {
     private boolean breakDish;
 
     public Long getWinnerId() { return winnerId; }
-    public void setWinnerId(Long Id) { this.winnerId = Id; }
+    public void setWinnerId(Long id) { this.winnerId = id; }
 
     public boolean isBreakDish() { return breakDish; }
     public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }
@@ -1976,8 +1976,8 @@ FILE: backend_Java/src/main/java/com/stephen/Frame/FrameNotFoundException.java
 package com.stephen.Frame;
 
 public class FrameNotFoundException extends RuntimeException {
-    public FrameNotFoundException(Long Id) {
-        super("Frame not found: " + Id);
+    public FrameNotFoundException(Long id) {
+        super("Frame not found: " + id);
     }
 }
 
@@ -1992,10 +1992,10 @@ public class Frame_DoublesRequest {
     private Long doublesBid;
 
     public Long getDoublesAid() { return doublesAid; }
-    public void setDoublesAid(Long Id) { this.doublesAid = Id; }
+    public void setDoublesAid(Long id) { this.doublesAid = id; }
 
     public Long getDoublesBid() { return doublesBid; }
-    public void setDoublesBid(Long Id) { this.doublesBid = Id; }
+    public void setDoublesBid(Long id) { this.doublesBid = id; }
 }
 
 
@@ -2049,7 +2049,7 @@ public class Frame_KillerResultRequest {
     public Frame_KillerResultRequest() {}
 
     public Long getPlayerId() { return playerId; }
-    public void setPlayerId(Long playerId) { this.playerId = playerId; }
+    public void setPlayerId(Long id) { this.playerId = id; }
 
     public int getLivesRemaining() { return livesRemaining; }
     public void setLivesRemaining(int livesRemaining) { this.livesRemaining = livesRemaining; }
@@ -2072,16 +2072,16 @@ public class Frame_SinglesRequest {
     private Long teamBid;
 
     public Long getPlayerAid() { return playerAid; }
-    public void setPlayerAid(Long Id) { this.playerAid = Id; }
+    public void setPlayerAid(Long id) { this.playerAid = id; }
 
     public Long getPlayerBid() { return playerBid; }
-    public void setPlayerBid(Long Id) { this.playerBid = Id; }
+    public void setPlayerBid(Long id) { this.playerBid = id; }
 
     public Long getTeamAid() { return teamAid; }
-    public void setTeamAid(Long Id) { this.teamAid = Id; }
+    public void setTeamAid(Long id) { this.teamAid = id; }
 
     public Long getTeamBid() { return teamBid; }
-    public void setTeamBid(Long Id) { this.teamBid = Id; }
+    public void setTeamBid(Long id) { this.teamBid = id; }
 }
 
 
@@ -2127,7 +2127,7 @@ public class Frame_KillerLives {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "killer_lives_seq")
     @SequenceGenerator(name = "killer_lives_seq", sequenceName = "killer_lives_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "frame_id", nullable = false)
@@ -2148,7 +2148,7 @@ public class Frame_KillerLives {
         this.livesRemaining = startingLives;
     }
 
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
     public Frame_Killer getFrame() { return frame; }
     public Player_Entity getPlayer() { return player; }
     public int getLivesRemaining() { return livesRemaining; }
@@ -2172,7 +2172,7 @@ public interface Frame_KillerLivesRepository extends JpaRepository<Frame_KillerL
      * All player-lives records for a given killer frame.
      * Used to retrieve current lives state during result recording.
      */
-    List<Frame_KillerLives> findByFrameId(Long frameId);
+    List<Frame_KillerLives> findByFrameId(Long id);
 
     /**
      * Lives record for a specific player within a specific frame.
@@ -2221,31 +2221,31 @@ public class Match_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Match_Entity> getMatch(@PathVariable Long Id) {
-        return matchService.getById(Id)
+    public ResponseEntity<Match_Entity> getMatch(@PathVariable Long id) {
+        return matchService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/slots")
-    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long Id) {
-        return ResponseEntity.ok(matchService.getSlotsForMatch(Id));
+    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long id) {
+        return ResponseEntity.ok(matchService.getSlotsForMatch(id));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-a")
     public ResponseEntity<Match_Slot> assignPlayerA(
-            @PathVariable Long matchId,
+            @PathVariable Long id,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerA(matchId, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerA(id, slotNumber, req));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-b")
     public ResponseEntity<Match_Slot> assignPlayerB(
-            @PathVariable Long matchId,
+            @PathVariable Long id,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerB(matchId, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerB(id, slotNumber, req));
     }
 
     @GetMapping("/unplayed")
@@ -2332,7 +2332,7 @@ public abstract class Match_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
     @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
-    private Long matchId;
+    private Long id;
 
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -2361,7 +2361,7 @@ public abstract class Match_Entity {
     }
 
     public Long getMatchId() {
-        return matchId;
+        return id;
     }
 
     public List<Frame_Entity> getFrames() {
@@ -2427,8 +2427,8 @@ public class Match_EventPublisher {
         this.publisher = publisher;
     }
 
-    public void publishMatchUpdate(Long matchId) {
-        publisher.publishEvent(new Match_UpdateEvent(this, matchId));
+    public void publishMatchUpdate(Long id) {
+        publisher.publishEvent(new Match_UpdateEvent(this, id));
     }
 }
 
@@ -2442,7 +2442,7 @@ public class Match_PlayerRequest_Slot {
     private Long playerId;
 
     public Long getPlayerId() { return playerId; }
-    public void setPlayerId(Long Id) { this.playerId = Id; }
+    public void setPlayerId(Long id) { this.playerId = id; }
 }
 
 
@@ -2451,18 +2451,20 @@ FILE: backend_Java/src/main/java/com/stephen/Match/Match_Repository.java
 ================================================
 package com.stephen.Match;
 
+import com.stephen.Frame.Frame_Entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
 public interface Match_Repository extends JpaRepository<Match_Entity, Long> {
     List<Match_Entity> findByIsPlayed(boolean isPlayed);
     List<Match_Entity> findByIsBye(boolean isBye);
-    Optional<Match_Slot> findByFrameId(Long frameId);
-    Optional<Match_Slot> findByFrameIdAndIsPlayed(Long frameId, boolean isPlayed);
-    Optional<Match_Slot> findByFrameIdAndIsBye(Long frameId, boolean isBye);
+    Optional<Match_Slot> findByFrames_Id(Long id);
+    Optional<Match_Slot> findByFrames_IdAndIsPlayed(Long frameId, boolean isPlayed);
+    Optional<Match_Slot> findByFrames_IdAndIsBye(Long frameId, boolean isBye);
 }
 
 
@@ -2478,10 +2480,10 @@ import java.util.Optional;
 
 @Repository
 public interface Match_Repository_Slot extends JpaRepository<Match_Slot, Long> {
-    List<Match_Slot> findByMatchId(Long matchId);
-    Optional<Match_Slot> findByMatchIdAndSlotNumber(Long matchId, int slotNumber);
-    List<Match_Slot> findByMatchIdAndStatus(Long matchId, Match_Slot.Status status);
-    Optional<Match_Slot> findByFrameId(Long frameId);  // ← add this
+    List<Match_Slot> findByMatchId(Long id);
+    Optional<Match_Slot> findByMatchIdAndSlotNumber(Long id, int slotNumber);
+    List<Match_Slot> findByMatchIdAndStatus(Long id, Match_Slot.Status status);
+    Optional<Match_Slot> findByFrameId(Long id);
 }
 
 
@@ -2509,11 +2511,11 @@ public class Match_ResolutionService {
     }
 
     @Transactional
-    public void checkAndResolveMatch(Long matchId) {
-        Match_Entity match = matchRepo.findById(matchId)
-                .orElseThrow(() -> new MatchNotFoundException(matchId));
+    public void checkAndResolveMatch(Long id) {
+        Match_Entity match = matchRepo.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
 
-        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
+        List<Match_Slot> slots = slotRepo.findByMatchId(id);
 
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
@@ -2751,10 +2753,10 @@ public class Match_Service {
 
     // --- MATCH RESOLUTION ---
     @Transactional
-    public void checkAndResolveMatch(Long matchId) {
-        Match_Entity match = matchRepo.findById(matchId)
-                .orElseThrow(() -> new MatchNotFoundException(matchId));
-        List<Match_Slot> slots = slotRepo.findByMatchId(matchId);
+    public void checkAndResolveMatch(Long id) {
+        Match_Entity match = matchRepo.findById(id)
+                .orElseThrow(() -> new MatchNotFoundException(id));
+        List<Match_Slot> slots = slotRepo.findByMatchId(id);
         boolean allComplete = slots.stream()
                 .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
         if (!allComplete) return;
@@ -2822,12 +2824,12 @@ public class Match_Service {
     }
 
     // --- QUERIES ---
-    public Optional<Match_Entity> getById(Long Id) {
-        return matchRepo.findById(Id);
+    public Optional<Match_Entity> getById(Long id) {
+        return matchRepo.findById(id);
     }
 
-    public List<Match_Slot> getSlotsForMatch(Long matchId) {
-        return slotRepo.findByMatchId(matchId);
+    public List<Match_Slot> getSlotsForMatch(Long id) {
+        return slotRepo.findByMatchId(id);
     }
 
     public List<Match_Entity> getUnplayed() {
@@ -2835,10 +2837,10 @@ public class Match_Service {
     }
 
     // --- HELPERS ---
-    private Match_Slot getSlot(Long matchId, int slotNumber) {
-        return slotRepo.findByMatchIdAndSlotNumber(matchId, slotNumber)
+    private Match_Slot getSlot(Long id, int slotNumber) {
+        return slotRepo.findByMatchIdAndSlotNumber(id, slotNumber)
                 .orElseThrow(() -> new RuntimeException(
-                        "Slot " + slotNumber + " not found for match " + matchId));
+                        "Slot " + slotNumber + " not found for match " + id));
     }
 }
 
@@ -2939,7 +2941,7 @@ public class Match_Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_slot_seq")
     @SequenceGenerator(name = "match_slot_seq", sequenceName = "match_slot_seq", allocationSize = 1)
-    private Long Id;
+    private Long matchSlotId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "match_id", nullable = false)
@@ -3005,7 +3007,7 @@ public class Match_Slot {
     public boolean isReady() { return status == Status.READY; }
     public boolean isComplete() { return status == Status.COMPLETE; }
 
-    public Long getId() { return Id; }
+    public Long getMatchSlotId() { return matchSlotId; }
     public Match_Entity getMatch() { return match; }
     public int getSlotNumber() { return slotNumber; }
     public Status getStatus() { return status; }
@@ -3016,101 +3018,13 @@ public class Match_Slot {
 
 
 ================================================
-FILE: backend_Java/src/main/java/com/stephen/Match/Match_StateDTO.java
-================================================
-package com.stephen.Match;
-
-import java.util.List;
-
-public class Match_StateDTO {
-
-    private Long matchId;
-    private String matchType;
-    private boolean isPlayed;
-    private boolean isDraw;
-    private boolean isBye;
-    private int frameCount;
-    private Long winnerId;
-    private Long loserId;
-    private List<SlotStateDTO> slots;
-
-    public static class SlotStateDTO {
-        private int slotNumber;
-        private String status;
-        private Long playerAId;
-        private String playerAName;
-        private Long playerBId;
-        private String playerBName;
-        private Long frameId;
-        private Long frameWinnerId;
-        private boolean breakDish;
-
-        // getters & setters
-        public int getSlotNumber() { return slotNumber; }
-        public void setSlotNumber(int slotNumber) { this.slotNumber = slotNumber; }
-
-        public String getStatus() { return status; }
-        public void setStatus(String status) { this.status = status; }
-
-        public Long getPlayerAId() { return playerAId; }
-        public void setPlayerAId(Long playerAId) { this.playerAId = playerAId; }
-
-        public String getPlayerAName() { return playerAName; }
-        public void setPlayerAName(String playerAName) { this.playerAName = playerAName; }
-
-        public Long getPlayerBId() { return playerBId; }
-        public void setPlayerBId(Long playerBId) { this.playerBId = playerBId; }
-
-        public String getPlayerBName() { return playerBName; }
-        public void setPlayerBName(String playerBName) { this.playerBName = playerBName; }
-
-        public Long getFrameId() { return frameId; }
-        public void setFrameId(Long frameId) { this.frameId = frameId; }
-
-        public Long getFrameWinnerId() { return frameWinnerId; }
-        public void setFrameWinnerId(Long frameWinnerId) { this.frameWinnerId = frameWinnerId; }
-
-        public boolean isBreakDish() { return breakDish; }
-        public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }
-    }
-
-    // getters & setters
-    public Long getMatchId() { return matchId; }
-    public void setMatchId(Long matchId) { this.matchId = matchId; }
-
-    public String getMatchType() { return matchType; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
-
-    public boolean isPlayed() { return isPlayed; }
-    public void setPlayed(boolean played) { isPlayed = played; }
-
-    public boolean isDraw() { return isDraw; }
-    public void setDraw(boolean draw) { isDraw = draw; }
-
-    public boolean isBye() { return isBye; }
-    public void setBye(boolean bye) { isBye = bye; }
-
-    public int getFrameCount() { return frameCount; }
-    public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
-
-    public Long getWinnerId() { return winnerId; }
-    public void setWinnerId(Long winnerId) { this.winnerId = winnerId; }
-
-    public Long getLoserId() { return loserId; }
-    public void setLoserId(Long loserId) { this.loserId = loserId; }
-
-    public List<SlotStateDTO> getSlots() { return slots; }
-    public void setSlots(List<SlotStateDTO> slots) { this.slots = slots; }
-}
-
-
-================================================
 FILE: backend_Java/src/main/java/com/stephen/Match/Match_StateMapper.java
 ================================================
 package com.stephen.Match;
 
 import com.stephen.Frame.Frame_Singles;
 import com.stephen.Frame.Frame_Doubles;
+import com.stephen.Match.DTO.Match_StateDTO;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -3259,6 +3173,7 @@ FILE: backend_Java/src/main/java/com/stephen/Match/Match_WebSocketHandler.java
 ================================================
 package com.stephen.Match;
 
+import com.stephen.Match.DTO.Match_StateDTO;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -3307,8 +3222,8 @@ FILE: backend_Java/src/main/java/com/stephen/Match/MatchNotFoundException.java
 package com.stephen.Match;
 
 public class MatchNotFoundException extends RuntimeException {
-    public MatchNotFoundException(Long Id) {
-        super("Match not found: " + Id);
+    public MatchNotFoundException(Long id) {
+        super("Match not found: " + id);
     }
 }
 
@@ -3324,9 +3239,9 @@ public class Match_Request_Doubles {
     private int frameCount;
 
     public Long getDoublesAid() { return doublesAid; }
-    public void setDoublesAid(Long Id) { this.doublesAid = Id; }
+    public void setDoublesAid(Long id) { this.doublesAid = id; }
     public Long getDoublesBid() { return doublesBid; }
-    public void setDoublesBid(Long Id) { this.doublesBid = Id; }
+    public void setDoublesBid(Long id) { this.doublesBid = id; }
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
 }
@@ -3345,13 +3260,13 @@ public class Match_Request_Singles {
     private int frameCount;
 
     public Long getPlayerAId() { return playerAId; }
-    public void setPlayerAId(Long Id) { this.playerAId = Id; }
+    public void setPlayerAId(Long id) { this.playerAId = id; }
     public Long getPlayerBId() { return playerBId; }
-    public void setPlayerBId(Long Id) { this.playerBId = Id; }
+    public void setPlayerBId(Long id) { this.playerBId = id; }
     public Long getTeamAId() { return teamAId; }
-    public void setTeamAId(Long Id) { this.teamAId = Id; }
+    public void setTeamAId(Long id) { this.teamAId = id; }
     public Long getTeamBId() { return teamBId; }
-    public void setTeamBId(Long Id) { this.teamBId = Id; }
+    public void setTeamBId(Long id) { this.teamBId = id; }
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
 }
@@ -3368,11 +3283,100 @@ public class Match_Request_Team {
     private int frameCount;
 
     public Long getTeamAid() { return teamAid; }
-    public void setTeamAid(Long Id) { this.teamAid = Id; }
+    public void setTeamAid(Long id) { this.teamAid = id; }
     public Long getTeamBid() { return teamBid; }
-    public void setTeamBid(Long Id) { this.teamBid = Id; }
+    public void setTeamBid(Long id) { this.teamBid = id; }
     public int getFrameCount() { return frameCount; }
     public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
+}
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/Match/DTO/Match_StateDTO.java
+================================================
+package com.stephen.Match.DTO;
+
+import java.util.List;
+
+public class Match_StateDTO {
+
+    private Long matchId;
+    private String matchType;
+    private boolean isPlayed;
+    private boolean isDraw;
+    private boolean isBye;
+    private int frameCount;
+    private Long winnerId;
+    private Long loserId;
+    private List<SlotStateDTO> slots;
+
+    public static class SlotStateDTO {
+        private int slotNumber;
+        private String status;
+        private Long playerAId;
+        private String playerAName;
+        private Long playerBId;
+        private String playerBName;
+        private Long frameId;
+        private Long frameWinnerId;
+        private boolean breakDish;
+
+        // getters & setters
+        public int getSlotNumber() { return slotNumber; }
+        public void setSlotNumber(int slotNumber) { this.slotNumber = slotNumber; }
+
+        public String getStatus() { return status; }
+        public void setStatus(String status) { this.status = status; }
+
+        public Long getPlayerAId() { return playerAId; }
+        public void setPlayerAId(Long playerAId) { this.playerAId = playerAId; }
+
+        public String getPlayerAName() { return playerAName; }
+        public void setPlayerAName(String playerAName) { this.playerAName = playerAName; }
+
+        public Long getPlayerBId() { return playerBId; }
+        public void setPlayerBId(Long playerBId) { this.playerBId = playerBId; }
+
+        public String getPlayerBName() { return playerBName; }
+        public void setPlayerBName(String playerBName) { this.playerBName = playerBName; }
+
+        public Long getFrameId() { return frameId; }
+        public void setFrameId(Long frameId) { this.frameId = frameId; }
+
+        public Long getFrameWinnerId() { return frameWinnerId; }
+        public void setFrameWinnerId(Long frameWinnerId) { this.frameWinnerId = frameWinnerId; }
+
+        public boolean isBreakDish() { return breakDish; }
+        public void setBreakDish(boolean breakDish) { this.breakDish = breakDish; }
+    }
+
+    // getters & setters
+    public Long getMatchId() { return matchId; }
+    public void setMatchId(Long id) { this.matchId = id; }
+
+    public String getMatchType() { return matchType; }
+    public void setMatchType(String matchType) { this.matchType = matchType; }
+
+    public boolean isPlayed() { return isPlayed; }
+    public void setPlayed(boolean played) { isPlayed = played; }
+
+    public boolean isDraw() { return isDraw; }
+    public void setDraw(boolean draw) { isDraw = draw; }
+
+    public boolean isBye() { return isBye; }
+    public void setBye(boolean bye) { isBye = bye; }
+
+    public int getFrameCount() { return frameCount; }
+    public void setFrameCount(int frameCount) { this.frameCount = frameCount; }
+
+    public Long getWinnerId() { return winnerId; }
+    public void setWinnerId(Long id) { this.winnerId = id; }
+
+    public Long getLoserId() { return loserId; }
+    public void setLoserId(Long id) { this.loserId = id; }
+
+    public List<SlotStateDTO> getSlots() { return slots; }
+    public void setSlots(List<SlotStateDTO> slots) { this.slots = slots; }
 }
 
 
@@ -3407,10 +3411,12 @@ FILE: backend_Java/src/main/java/com/stephen/Player/Player_Controller.java
 package com.stephen.Player;
 
 import com.stephen.Player.DTO.Player_Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.stephen.Player.DTO.Player_Response;
+import com.stephen.PostgreSQL.Api_Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -3418,7 +3424,6 @@ import java.util.Map;
 @RequestMapping("/api")
 public class Player_Controller {
 
-    private static final Logger log = LoggerFactory.getLogger(Player_Controller.class);
     private final Player_Service playerService;
 
     public Player_Controller(Player_Service playerService) {
@@ -3436,8 +3441,11 @@ public class Player_Controller {
     }
 
     @GetMapping("/players")
-    public ResponseEntity<List<Player_Entity>> getAllPlayers() {
-        return ResponseEntity.ok(playerService.getAllPlayers());
+    public ResponseEntity<Api_Response<Player_Response>> getPlayers() {
+        List<Player_Entity> players = playerService.getAllPlayers();
+        return ResponseEntity.ok(
+                new Api_Response<>(new Player_Response(players))
+        );
     }
 
     @GetMapping("/players/{id}")
@@ -3487,7 +3495,7 @@ public class Player_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
     @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -3533,13 +3541,13 @@ public class Player_Entity {
     public String getFullName() {
         if (isBye) return "BYE";
         String name = (nickName != null && !nickName.isBlank())
-                ? firstName + " \"" + nickName + "\" " + lastName
+                ? firstName + '"' + nickName + '"' + lastName
                 : firstName + " " + lastName;
         return (isCaptain ? "(C) " : "") + name;
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -3566,7 +3574,7 @@ public class Player_Entity {
     public String getName() {
         if (isBye) return "BYE";
         String name = (nickName != null && !nickName.isBlank())
-                ? firstName + " \"" + nickName + "\" " + lastName
+                ? firstName + '"' + nickName + '"' + lastName
                 : firstName + " " + lastName;
         return (isCaptain ? "(C) " : "") + name;
     }
@@ -3630,8 +3638,8 @@ public class Player_Service {
         }
     }
 
-    public Optional<Player_Entity> getById(Long Id) {
-        return playerRepo.findById(Id);
+    public Optional<Player_Entity> getById(Long playerId) {
+        return playerRepo.findById(playerId);
     }
 
     public Optional<Player_Entity> getByFirebaseUid(String uid) {
@@ -3642,9 +3650,9 @@ public class Player_Service {
         return playerRepo.findAll();
     }
 
-    public Player_Entity updatePlayer(Long Id, Player_Request req) {
-        Player_Entity player = playerRepo.findById(Id)
-                .orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity updatePlayer(Long playerId, Player_Request req) {
+        Player_Entity player = playerRepo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setFirstName(req.getFirstName());
         player.setLastName(req.getLastName());
         player.setNickName(req.getNickName());
@@ -3652,20 +3660,20 @@ public class Player_Service {
         return playerRepo.save(player);
     }
 
-    public Player_Entity makeCaptain(Long Id) {
-        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity makeCaptain(Long playerId) {
+        Player_Entity player = playerRepo.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setCaptain(true);
         return playerRepo.save(player);
     }
 
-    public Player_Entity removeCaptain(Long Id) {
-        Player_Entity player = playerRepo.findById(Id).orElseThrow(() -> new PlayerNotFoundException(Id));
+    public Player_Entity removeCaptain(Long playerId) {
+        Player_Entity player = playerRepo.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
         player.setCaptain(false);
         return playerRepo.save(player);
     }
 
-    public void deletePlayer(Long Id) {
-        playerRepo.deleteById(Id);
+    public void deletePlayer(Long playerId) {
+        playerRepo.deleteById(playerId);
     }
 }
 
@@ -3676,14 +3684,14 @@ FILE: backend_Java/src/main/java/com/stephen/Player/PlayerNotFoundException.java
 package com.stephen.Player;
 
 public class PlayerNotFoundException extends RuntimeException {
-    public PlayerNotFoundException(Long Id) {
-        super("Player not found: " + Id);
+    public PlayerNotFoundException(Long id) {
+        super("Player not found: " + id);
     }
 }
 
 
 ================================================
-FILE: backend_Java/src/main/java/com/stephen/Player/dto/Player_Request.java
+FILE: backend_Java/src/main/java/com/stephen/Player/DTO/Player_Request.java
 ================================================
 package com.stephen.Player.DTO;
 
@@ -3709,6 +3717,57 @@ public class Player_Request {
 
     public String getFirebaseUid() { return firebaseUid; }
     public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
+}
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/Player/DTO/Player_Response.java
+================================================
+package com.stephen.Player.DTO;
+
+
+import com.stephen.Player.Player_Entity;
+
+import java.util.List;
+
+public class Player_Response {
+
+    private List<Player_Entity> players;
+
+    public Player_Response(List<Player_Entity> players) {
+        this.players = players;
+    }
+
+    public List<Player_Entity> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player_Entity> players) {
+        this.players = players;
+    }
+}
+
+
+================================================
+FILE: backend_Java/src/main/java/com/stephen/PostgreSQL/Api_Response.java
+================================================
+package com.stephen.PostgreSQL;
+
+public class Api_Response<T> {
+
+    private T data;
+
+    public Api_Response(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }
 
 
@@ -3904,17 +3963,17 @@ public class Team_Controller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Team_Entity> getTeam(@PathVariable Long Id) {
-        return teamService.getById(Id)
+    public ResponseEntity<Team_Entity> getTeam(@PathVariable Long id) {
+        return teamService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Team_Entity> updateTeam(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody Team_Request req) {
-        return ResponseEntity.ok(teamService.updateTeam(Id, req));
+        return ResponseEntity.ok(teamService.updateTeam(id, req));
     }
 
     @PostMapping("/{teamId}/players/{playerId}")
@@ -3939,8 +3998,8 @@ public class Team_Controller {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long Id) {
-        teamService.deleteTeam(Id);
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
+        teamService.deleteTeam(id);
         return ResponseEntity.noContent().build();
     }
 }
@@ -3965,7 +4024,7 @@ public class Team_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
     @SequenceGenerator(name = "team_seq", sequenceName = "team_seq", allocationSize = 1)
-    private Long Id;
+    private Long id;
 
     @Column(name = "team_name", nullable = false)
     private String teamName;
@@ -4034,7 +4093,7 @@ public class Team_Entity {
     }
 
     // --- GETTERS & SETTERS ---
-    public Long getId() { return Id; }
+    public Long getId() { return id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) {
@@ -4140,17 +4199,17 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public Optional<Team_Entity> getById(Long Id) {
-        return teamRepo.findById(Id);
+    public Optional<Team_Entity> getById(Long id) {
+        return teamRepo.findById(id);
     }
 
     public List<Team_Entity> getAllTeams() {
         return teamRepo.findAll();
     }
 
-    public Team_Entity updateTeam(Long Id, Team_Request req) {
-        Team_Entity team = teamRepo.findById(Id)
-                .orElseThrow(() -> new TeamNotFoundException(Id));
+    public Team_Entity updateTeam(Long id, Team_Request req) {
+        Team_Entity team = teamRepo.findById(id)
+                .orElseThrow(() -> new TeamNotFoundException(id));
         team.setTeamName(req.getTeamName());
         if (req.getPhoneNumber() != null || req.getAddress() != null) {
             team.setContactDetails(new Team_ContactDetails(
@@ -4187,8 +4246,8 @@ public class Team_Service {
         return teamRepo.save(team);
     }
 
-    public void deleteTeam(Long Id) {
-        teamRepo.deleteById(Id);
+    public void deleteTeam(Long id) {
+        teamRepo.deleteById(id);
     }
 }
 
@@ -4199,8 +4258,8 @@ FILE: backend_Java/src/main/java/com/stephen/Team/TeamNotFoundException.java
 package com.stephen.Team;
 
 public class TeamNotFoundException extends RuntimeException {
-    public TeamNotFoundException(Long Id) {
-        super("Team not found: " + Id);
+    public TeamNotFoundException(Long id) {
+        super("Team not found: " + id);
     }
 }
 
@@ -4297,8 +4356,8 @@ public class Tournament_Controller {
     // -------------------------------------------------------------------------
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tournament_Entity> getById(@PathVariable Long Id) {
-        return ResponseEntity.ok(tournamentService.getById(Id));
+    public ResponseEntity<Tournament_Entity> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(tournamentService.getById(id));
     }
 
     @GetMapping
@@ -4323,8 +4382,8 @@ public class Tournament_Controller {
      */
     @GetMapping("/{id}/fixtures")
     public ResponseEntity<Map<Integer, List<Tournament_Match>>> getFixtures(
-            @PathVariable Long Id) {
-        return ResponseEntity.ok(tournamentService.getFixturesByRound(Id));
+            @PathVariable Long id) {
+        return ResponseEntity.ok(tournamentService.getFixturesByRound(id));
     }
 
     /**
@@ -4332,9 +4391,9 @@ public class Tournament_Controller {
      */
     @GetMapping("/{id}/fixtures/round/{roundNumber}")
     public ResponseEntity<List<Tournament_Match>> getFixturesForRound(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @PathVariable int roundNumber) {
-        return ResponseEntity.ok(tournamentService.getFixturesForRound(Id, roundNumber));
+        return ResponseEntity.ok(tournamentService.getFixturesForRound(id, roundNumber));
     }
 
 
@@ -4348,9 +4407,9 @@ public class Tournament_Controller {
      * Marks the tournament complete and resolves the podium when the final round is done.
      */
     @PostMapping("/{id}/ko/advance")
-    public ResponseEntity<Tournament_KO> advanceKORound(@PathVariable Long Id) {
-        log.info("POST /tournaments/{}/ko/advance", Id);
-        return ResponseEntity.ok(tournamentService.advanceKORound(Id));
+    public ResponseEntity<Tournament_KO> advanceKORound(@PathVariable Long id) {
+        log.info("POST /tournaments/{}/ko/advance", id);
+        return ResponseEntity.ok(tournamentService.advanceKORound(id));
     }
 
     /**
@@ -4358,17 +4417,17 @@ public class Tournament_Controller {
      * Validates all matches are complete before marking.
      */
     @PostMapping("/{id}/complete")
-    public ResponseEntity<Tournament_Entity> markComplete(@PathVariable Long Id) {
-        log.info("POST /tournaments/{}/complete", Id);
-        return ResponseEntity.ok(tournamentService.markComplete(Id));
+    public ResponseEntity<Tournament_Entity> markComplete(@PathVariable Long id) {
+        log.info("POST /tournaments/{}/complete", id);
+        return ResponseEntity.ok(tournamentService.markComplete(id));
     }
 
     /**
      * Checks whether all matches in a tournament are complete.
      */
     @GetMapping("/{id}/complete/check")
-    public ResponseEntity<Boolean> checkAllComplete(@PathVariable Long Id) {
-        return ResponseEntity.ok(tournamentService.checkAllComplete(Id));
+    public ResponseEntity<Boolean> checkAllComplete(@PathVariable Long id) {
+        return ResponseEntity.ok(tournamentService.checkAllComplete(id));
     }
 
 
@@ -4382,10 +4441,10 @@ public class Tournament_Controller {
      */
     @PostMapping("/{id}/positions")
     public ResponseEntity<Tournament_Entity> setPositions(
-            @PathVariable Long Id,
+            @PathVariable Long id,
             @RequestBody List<Long> positions) {
-        log.info("POST /tournaments/{}/positions — {}", Id, positions);
-        return ResponseEntity.ok(tournamentService.setPositions(Id, positions));
+        log.info("POST /tournaments/{}/positions — {}", id, positions);
+        return ResponseEntity.ok(tournamentService.setPositions(id, positions));
     }
 
 
@@ -4399,10 +4458,10 @@ public class Tournament_Controller {
      */
     @PostMapping("/{id}/promote")
     public ResponseEntity<List<Long>> getPromoted(
-            @PathVariable Long Id,
+            @PathVariable Long tournamentId,
             @RequestParam int count,
             @RequestBody List<Long> rankedPartyIds) {
-        return ResponseEntity.ok(tournamentService.getPromoted(Id, rankedPartyIds, count));
+        return ResponseEntity.ok(tournamentService.getPromoted(tournamentId, rankedPartyIds, count));
     }
 
     /**
@@ -4410,10 +4469,10 @@ public class Tournament_Controller {
      */
     @PostMapping("/{id}/demote")
     public ResponseEntity<List<Long>> getDemoted(
-            @PathVariable Long Id,
+            @PathVariable Long tournamentId,
             @RequestParam int count,
             @RequestBody List<Long> rankedPartyIds) {
-        return ResponseEntity.ok(tournamentService.getDemoted(Id, rankedPartyIds, count));
+        return ResponseEntity.ok(tournamentService.getDemoted(tournamentId, rankedPartyIds, count));
     }
 
 
@@ -4461,7 +4520,7 @@ public abstract class Tournament_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     /**
      * Discriminates which party type participates in this tournament.
@@ -4517,7 +4576,7 @@ public abstract class Tournament_Entity {
 
     // --- GETTERS ---
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public PartyType getPartyType() {
@@ -4961,7 +5020,7 @@ public class Tournament_Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tournament_id", nullable = false)
@@ -4997,7 +5056,7 @@ public class Tournament_Match {
 
     // --- GETTERS ---
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public Tournament_Entity getTournament() {
@@ -5048,25 +5107,25 @@ public interface Tournament_Match_Repository extends JpaRepository<Tournament_Ma
      *   - outer list index = roundNumber  (KO round / GroupStage group / 0 for flat formats)
      *   - inner list index = sequence
      */
-    List<Tournament_Match> findByTournamentIdOrderByRoundNumberAscSequenceAsc(Long tournamentId);
+    List<Tournament_Match> findByTournamentIdOrderByRoundNumberAscSequenceAsc(Long id);
 
     /**
      * All fixtures for a specific round/group within a tournament.
      * Used by KO service to retrieve only the current round's matches.
      */
-    List<Tournament_Match> findByTournamentIdAndRoundNumberOrderBySequenceAsc(Long tournamentId, int roundNumber);
+    List<Tournament_Match> findByTournamentIdAndRoundNumberOrderBySequenceAsc(Long id, int roundNumber);
 
     /**
      * Highest round number recorded for a tournament.
      * Used by KO service to determine the current round index without loading all fixtures.
      */
-    @Query("SELECT MAX(tm.roundNumber) FROM Tournament_Match tm WHERE tm.tournament.id = :tournamentId")
+    @Query("SELECT MAX(tm.roundNumber) FROM TournamentMatch tm WHERE tm.tournament.id = :tournamentId")
     Integer findMaxRoundNumber(@Param("tournamentId") Long tournamentId);
 
     /**
      * Count of fixtures in a given round. Used to validate round completeness.
      */
-    long countByTournamentIdAndRoundNumber(Long tournamentId, int roundNumber);
+    long countByTournamentIdAndRoundNumber(Long id, int roundNumber);
 }
 
 
@@ -5388,9 +5447,9 @@ public class Tournament_Service {
     // READS
     // -------------------------------------------------------------------------
 
-    public Tournament_Entity getById(Long Id) {
-        return tournamentRepository.findById(Id)
-                .orElseThrow(() -> new TournamentNotFoundException(Id));
+    public Tournament_Entity getById(Long tournamentId) {
+        return tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new TournamentNotFoundException(tournamentId));
     }
 
     public List<Tournament_Entity> getAll() {
@@ -5746,8 +5805,8 @@ package com.stephen.Tournament;
 
 public class TournamentNotFoundException extends RuntimeException {
 
-    public TournamentNotFoundException(Long Id) {
-        super("Tournament not found: " + Id);
+    public TournamentNotFoundException(Long id) {
+        super("Tournament not found: " + id);
     }
 }
 
@@ -5756,7 +5815,18 @@ public class TournamentNotFoundException extends RuntimeException {
 ================================================
 FILE: backend_Java/src/main/java/com/stephen/txtFiles/errorfinder
 ================================================
-2026-06-02 21:52:54 [WARN] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'tournament_Controller' defined in file [/Users/stephen/IdeaProjects/PoolWorkspace/backend_Java/target/classes/com/stephen/Tournament/Tournament_Controller.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'tournament_Service' defined in file [/Users/stephen/IdeaProjects/PoolWorkspace/backend_Java/target/classes/com/stephen/Tournament/Tournament_Service.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'tournament_Repository_Match' defined in com.stephen.Tournament.Tournament_Match_Repository defined in @EnableJpaRepositories declared on DebugJpaConfig: Could not create query for public abstract java.lang.Integer com.stephen.Tournament.Tournament_Match_Repository.findMaxRoundNumber(java.lang.Long); Reason: Validation failed for query for method public abstract java.lang.Integer com.stephen.Tournament.Tournament_Match_Repository.findMaxRoundNumber(java.lang.Long)
+Error creating bean with name 'match_Repository'
+defined in com.stephen.Match.Match_Repository
+defined in @EnableJpaRepositories
+declared on DebugJpaConfig:
+Could not create query for public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean); Reason:
+Failed to create query for method public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean);
+No property 'frameId' found for type 'Match_Entity';
+Did you mean 'frames'
 
 
 ================================================
@@ -8606,32 +8676,4 @@ FILE: frontend_Flutter/macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.
     {
       "size" : "128x128",
       "idiom" : "mac",
-      "filename" : "app_icon_128.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "128x128",
-      "idiom" : "mac",
-      "filename" : "app_icon_256.png",
-      "scale" : "2x"
-    },
-    {
-      "size" : "256x256",
-      "idiom" : "mac",
-      "filename" : "app_icon_256.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "256x256",
-      "idiom" : "mac",
-      "filename" : "app_icon_512.png",
-      "scale" : "2x"
-    },
-    {
-      "size" : "512x512",
-      "idiom" : "mac",
-      "filename" : "app_icon_512.png",
-      "scale" : "1x"
-    },
-    {
-      "s
+      "filename" : "app_icon_128
