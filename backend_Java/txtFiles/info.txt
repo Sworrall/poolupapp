@@ -1,0 +1,4 @@
+* Entity = database model
+* Service = business logic
+* Mapper = DTO conversion
+* Controller = HTTP

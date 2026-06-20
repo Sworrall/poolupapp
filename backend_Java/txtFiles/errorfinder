@@ -1,0 +1,12 @@
+Error creating bean with name 'match_Repository'
+defined in com.stephen.Match.Match_Repository
+defined in @EnableJpaRepositories
+declared on DebugJpaConfig:
+Could not create query for public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean); Reason:
+Failed to create query for method public abstract
+java.util.Optional
+    com.stephen.Match.Match_Repository.findByFrameIdAndIsPlayed(java.lang.Long,boolean);
+No property 'frameId' found for type 'Match_Entity';
+Did you mean 'frames'

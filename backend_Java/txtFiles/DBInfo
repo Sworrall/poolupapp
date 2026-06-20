@@ -1,0 +1,13 @@
+BASH:
+    psql -U stephen -d breakdish -h localhost
+
+BASH:
+    breakdish=# \conninfo
+
+RETURN:
+    You are connected to database "breakdish"
+    as user "stephen"
+    on host "localhost"
+    (address "::1")
+    at port "5432".
+    breakdish=#

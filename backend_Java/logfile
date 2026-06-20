@@ -1,0 +1,14 @@
+2026-06-09 12:23:12.707 BST [14749] LOG:  starting PostgreSQL 16.14 (Homebrew) on aarch64-apple-darwin25.4.0, compiled by Apple clang version 21.0.0 (clang-2100.0.123.102), 64-bit
+2026-06-09 12:23:12.709 BST [14749] LOG:  listening on IPv6 address "::1", port 5432
+2026-06-09 12:23:12.709 BST [14749] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-06-09 12:23:12.710 BST [14749] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2026-06-09 12:23:12.712 BST [14752] LOG:  database system was shut down at 2026-06-09 12:21:36 BST
+2026-06-09 12:23:12.715 BST [14749] LOG:  database system is ready to accept connections
+2026-06-09 12:25:05.830 BST [15288] FATAL:  database "stephen" does not exist
+2026-06-09 12:25:05.838 BST [14749] LOG:  received fast shutdown request
+2026-06-09 12:25:05.839 BST [14749] LOG:  aborting any active transactions
+2026-06-09 12:25:05.840 BST [14749] LOG:  background worker "logical replication launcher" (PID 14755) exited with exit code 1
+2026-06-09 12:25:05.840 BST [14750] LOG:  shutting down
+2026-06-09 12:25:05.840 BST [14750] LOG:  checkpoint starting: shutdown immediate
+2026-06-09 12:25:05.843 BST [14750] LOG:  checkpoint complete: wrote 45 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.003 s; sync files=11, longest=0.001 s, average=0.001 s; distance=255 kB, estimate=255 kB; lsn=0/155D8F0, redo lsn=0/155D8F0
+2026-06-09 12:25:05.845 BST [14749] LOG:  database system is shut down

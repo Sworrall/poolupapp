@@ -1,0 +1,17 @@
+Statscope isn't used at all. so. Claude came up with a amazing idea. use it as a filter in frame / match for
+SQL and add more fields (Global / Standalone / Tournament / League / Season)
+
+TODO: BaseStats_Key
+    - Add StatScope scope as a third field
+    - Add @Column(name = "scope") annotation
+    - Update constructors to include scope
+    - Update equals() and hashCode() to include scope
+
+TODO: StatField
+    - Add TOURNAMENT_WIN, TOURNAMENT_LOSS, TOURNAMENT_TOTAL
+    - Add LEAGUE_WIN, LEAGUE_LOSS, LEAGUE_TOTAL
+
+TODO: Frame and Match
+    - Add StatScope scope field
+    - Set scope when event is created (STANDALONE, TOURNAMENT, LEAGUE)
+
