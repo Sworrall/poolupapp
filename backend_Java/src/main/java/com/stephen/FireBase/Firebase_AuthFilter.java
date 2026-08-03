@@ -16,11 +16,9 @@ import java.io.IOException;
 @Component
 public class Firebase_AuthFilter extends OncePerRequestFilter {
 
-    private static final Logger log = LoggerFactory.getLogger(Firebase_AuthFilter.class);
+    private final Firebase_AuthService authService;
 
-    private final Auth_Service authService;
-
-    public Auth_Filter(Auth_Service authService) {
+    public Firebase_AuthFilter(Firebase_AuthService authService) {
         this.authService = authService;
     }
 

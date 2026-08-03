@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Auth_Service {
+public class Firebase_AuthService {
 
-    private static final Logger log = LoggerFactory.getLogger(Auth_Service.class);
+    private static final Logger log = LoggerFactory.getLogger(Firebase_AuthService.class);
 
     public FirebaseToken verifyToken(String idToken) throws Exception {
         FirebaseToken decoded = FirebaseAuth.getInstance().verifyIdToken(idToken);

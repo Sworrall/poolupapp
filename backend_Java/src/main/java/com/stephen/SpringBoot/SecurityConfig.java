@@ -1,6 +1,6 @@
 package com.stephen.SpringBoot;
 
-import com.stephen.FireBase.Auth_Filter;
+import com.stephen.FireBase.Firebase_AuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +15,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final Auth_Filter authFilter;
+    private final Firebase_AuthFilter authFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(Auth_Filter authFilter, CorsConfigurationSource corsConfigurationSource) {
+    public SecurityConfig(Firebase_AuthFilter authFilter, CorsConfigurationSource corsConfigurationSource) {
         this.authFilter = authFilter;
         this.corsConfigurationSource = corsConfigurationSource;
     }

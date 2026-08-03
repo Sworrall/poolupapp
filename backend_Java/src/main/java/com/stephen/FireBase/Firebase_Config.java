@@ -13,15 +13,15 @@ import java.io.InputStream;
 import java.io.IOException;
 
 @Component
-public class Config {
+public class Firebase_Config {
 
-    private static final Logger log = LoggerFactory.getLogger(Config.class);
+    private static final Logger log = LoggerFactory.getLogger(Firebase_Config.class);
 
     @PostConstruct
     public void initialise() {
         log.info("Firebase config initialised");
         try {
-            InputStream serviceAccount = Config.class
+            InputStream serviceAccount = Firebase_Config.class
                     .getClassLoader()
                     .getResourceAsStream("poolapp-ca624-firebase-adminsdk-fbsvc-2b87049878.json");
 
