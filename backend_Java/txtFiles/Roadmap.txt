@@ -2,6 +2,12 @@
 - TOURNAMENTS
 -- SEASON
 --- DATABASE
+
+cd ~/Coding/Java/PoolWorkspace/Frontend-ReactNative
+npm install
+npx expo start -c
+
+
 --------------------------------------- PROJECT MAP ----------------------------------
 src
     main

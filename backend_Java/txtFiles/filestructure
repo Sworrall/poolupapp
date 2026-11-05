@@ -1,189 +1,170 @@
-Stephen
-    IdeaProjects
-        Pool
-            FireBase
-                FireBase.txt
-            logs
-                app.log
-                app1.log
-                app2.log
-                app3.log
-                app4.log
-                app5.log
-            out
-                production
-                    pool
-                        (empty folder)
-            pom.xml
-            pool.imi
-            src
-                main
-                    java
-                        com
-                            stephen
-                                AA_Main
-                                    Main.java
-                                BaseStats
-                                    BaseStats_Key.java
-                                    BaseStats_Service.java
-                                    BaseStats.java
-                                    StatField.java
-                                    StatHolder.java
-                                    StatScope.java
-                                Doubles
-                                    Doubles.java
-                                    Doubles_ContactDetails.java
-                                FireBase
-                                    BaseStats_Repository.java
-                                    Doubles_Repository.java
-                                    FirebaseConfig.java
-                                    Frame_Repository.java
-                                    Match_Repository.java
-                                    Player_Repository.java
-                                    Team_Repository.java
-                                    Tournament_Repository.java
-                                Frame
-                                    FrameFactory
-                                        FrameFactory_Doubles.java
-                                        FrameFactory_Killer.java
-                                        FrameFactory_Singles.java
-                                        FrameFactory_Team.java
-                                        FrameFactory.java
-                                    Frame_Doubles.java
-                                    Frame_Killer.java
-                                    Frame_Singles.java
-                                    Frame_Team.java
-                                    Frame.java
-                                Functions
-                                    DataCallback.java
-                                    Functions.java
-                                    ID.java
-                                    UserInput.java
-                                Leaderboard
-                                    Leaderboard.java
-                                    Ranking_Elimination.java
-                                    Ranking_Points.java
-                                    Ranking.java
-                                Match
-                                    MatchFactory
-                                        MatchFactory.java
-                                        MatchFactory_Team.java
-                                    Match_Doubles.java
-                                    Match_Singles.java
-                                    Match_Team.java
-                                    Match.java
-                                Player
-                                    Player_ContactDetails.java
-                                    Player.java
-                                Team
-                                    Team_ContactDetails.java
-                                    Team.java
-                                Tournament
-                                    Tournament_GroupStage.java
-                                    Tournament_Killer.java
-                                    Tournament_KO.java
-                                    Tournament_RoundRobin.java
-                                    Tournament.java
-                                txtFiles
-                                    FileStructure.txt
-                                    info.txt
-                                    StatsDataStructure.txt
-                                    Ideas.txt
-                                    RoadMap.txt
-                    resources
-                        logback.xml
-                        firebase.json
-            target
-                classes
-                    com
-                        stephen
-                            AA_Main
-                                Main.java
-                            BaseStats
-                                BaseStats_Key.java
-                                BaseStats_Service.java
-                                BaseStats.java
-                                StatField.java
-                                StatHolder.java
-                                StatScope.java
-                            Doubles
-                                Doubles.java
-                                Doubles_ContactDetails.java
-                            FireBase
-                                BaseStats_Repository.java
-                                Doubles_Repository.java
-                                FirebaseConfig.java
-                                Frame_Repository.java
-                                Match_Repository.java
-                                Player_Repository.java
-                                Team_Repository.java
-                                Tournament_Repository.java
-                            Frame
-                                FrameFactory
-                                    FrameFactory_Doubles.java
-                                    FrameFactory_Killer.java
-                                    FrameFactory_Singles.java
-                                    FrameFactory_Team.java
-                                    FrameFactory.java
-                                Frame_Doubles.java
-                                Frame_Killer.java
-                                Frame_Singles.java
-                                Frame_Team.java
-                                Frame.java
-                            Functions
-                                DataCallback.java
-                                Functions.java
-                                ID.java
-                                UserInput.java
-                            Leaderboard
-                                Leaderboard.java
-                                Ranking_Elimination.java
-                                Ranking_Points.java
-                                Ranking.java
-                            Match
-                                MatchFactory
-                                    MatchFactory.java
-                                    MatchFactory_Team.java
-                                Match_Doubles.java
-                                Match_Singles.java
-                                Match_Team.java
-                                Match.java
-                            Player
-                                Player_ContactDetails.java
-                                Player.java
-                            Team
-                                Team_ContactDetails.java
-                                Team.java
-                            Tournament
-                                Tournament_GroupStage.java
-                                Tournament_Killer.java
-                                Tournament_KO.java
-                                Tournament_RoundRobin.java
-                                Tournament.java
-                    logback.xml
-                    main
-                        java
-                            com
-                                stephen
-                                    txtFiles
-                                        errorFinder.txt
-                                        fileStructure.txt
-                                        info.txt
-                                        StatsDataStructure.txt
-                                        Ideas.txt
-                                        RoadMap.txt
-                        resources
-                            logback.xml
-                            firebase.json
-                generated-sources
-                    annotations
-                        (empty folder)
-                maven-archiver
-                    pom.properties
-                maven-status
-                    maven-compiler-plugin
-                        compile
-                            default compile
-                                createdFiles.lst
-                                inputFiles.lst
-                pool-1.0-SNAPSHOT.jar
+Directory structure:
+└── sworrall-poolupapp/
+    ├── backend_Java/
+    │   ├── logfile
+    │   ├── pom.xml
+    │   ├── src/
+    │   │   └── main/
+    │   │       ├── java/
+    │   │       │   └── com/
+    │   │       │       └── stephen/
+    │   │       │           ├── AA_Main/
+    │   │       │           │   ├── Main.java
+    │   │       │           │   └── test.java
+    │   │       │           ├── BaseStats/
+    │   │       │           │   ├── BaseStats_Key.java
+    │   │       │           │   ├── BaseStats_Repository.java
+    │   │       │           │   ├── BaseStats_Service.java
+    │   │       │           │   ├── HolderType.java
+    │   │       │           │   ├── StatEntry.java
+    │   │       │           │   ├── StatField.java
+    │   │       │           │   ├── StatHolder.java
+    │   │       │           │   └── StatScope.java
+    │   │       │           ├── Doubles/
+    │   │       │           │   ├── Doubles_ContactDetails.java
+    │   │       │           │   ├── Doubles_Controller.java
+    │   │       │           │   ├── Doubles_Entity.java
+    │   │       │           │   ├── Doubles_ListResponse.java
+    │   │       │           │   ├── Doubles_Mapper.java
+    │   │       │           │   ├── Doubles_Repository.java
+    │   │       │           │   ├── Doubles_Request.java
+    │   │       │           │   ├── Doubles_Response.java
+    │   │       │           │   ├── Doubles_Service.java
+    │   │       │           │   └── DoublesNotFoundException.java
+    │   │       │           ├── FireBase/
+    │   │       │           │   ├── Firebase_AuthFilter.java
+    │   │       │           │   ├── Firebase_AuthService.java
+    │   │       │           │   └── Firebase_Config.java
+    │   │       │           ├── Frame/
+    │   │       │           │   ├── Frame_Controller.java
+    │   │       │           │   ├── Frame_Doubles.java
+    │   │       │           │   ├── Frame_DoublesRequest.java
+    │   │       │           │   ├── Frame_Entity.java
+    │   │       │           │   ├── Frame_Killer.java
+    │   │       │           │   ├── Frame_KillerLives.java
+    │   │       │           │   ├── Frame_KillerLivesRepository.java
+    │   │       │           │   ├── Frame_KillerRequest.java
+    │   │       │           │   ├── Frame_KillerResultRequest.java
+    │   │       │           │   ├── Frame_Repository.java
+    │   │       │           │   ├── Frame_ResultRequest.java
+    │   │       │           │   ├── Frame_Service.java
+    │   │       │           │   ├── Frame_Singles.java
+    │   │       │           │   ├── Frame_SinglesRequest.java
+    │   │       │           │   └── FrameNotFoundException.java
+    │   │       │           ├── Match/
+    │   │       │           │   ├── Match_Controller.java
+    │   │       │           │   ├── Match_Doubles.java
+    │   │       │           │   ├── Match_Entity.java
+    │   │       │           │   ├── Match_EventPublisher.java
+    │   │       │           │   ├── Match_PlayerRequest_Slot.java
+    │   │       │           │   ├── Match_Repository.java
+    │   │       │           │   ├── Match_Repository_Slot.java
+    │   │       │           │   ├── Match_Request_Doubles.java
+    │   │       │           │   ├── Match_Request_Singles.java
+    │   │       │           │   ├── Match_Request_Team.java
+    │   │       │           │   ├── Match_ResolutionService.java
+    │   │       │           │   ├── Match_Service.java
+    │   │       │           │   ├── Match_Singles.java
+    │   │       │           │   ├── Match_Slot.java
+    │   │       │           │   ├── Match_StateDTO.java
+    │   │       │           │   ├── Match_StateMapper.java
+    │   │       │           │   ├── Match_Team.java
+    │   │       │           │   ├── Match_UpdateEvent.java
+    │   │       │           │   ├── Match_WebSocketHandler.java
+    │   │       │           │   └── MatchNotFoundException.java
+    │   │       │           ├── Player/
+    │   │       │           │   ├── Player_ContactDetails.java
+    │   │       │           │   ├── Player_Controller.java
+    │   │       │           │   ├── Player_DTO.java
+    │   │       │           │   ├── Player_Entity.java
+    │   │       │           │   ├── Player_Repository.java
+    │   │       │           │   ├── Player_Request.java
+    │   │       │           │   ├── Player_Response.java
+    │   │       │           │   ├── Player_Service.java
+    │   │       │           │   └── PlayerNotFoundException.java
+    │   │       │           ├── PostgreSQL/
+    │   │       │           │   └── Api_Response.java
+    │   │       │           ├── SpringBoot/
+    │   │       │           │   ├── Cors_Config.java
+    │   │       │           │   ├── DebugJpaConfig.java
+    │   │       │           │   ├── DevSecurityConfig.java
+    │   │       │           │   ├── SecurityConfig.java
+    │   │       │           │   └── WebSocketConfig.java
+    │   │       │           ├── Team/
+    │   │       │           │   ├── Team_ContactDetails.java
+    │   │       │           │   ├── Team_Controller.java
+    │   │       │           │   ├── Team_DetailResponse.java
+    │   │       │           │   ├── Team_Entity.java
+    │   │       │           │   ├── Team_ListResponse.java
+    │   │       │           │   ├── Team_Mapper.java
+    │   │       │           │   ├── Team_PlayerSummaryResponse.java
+    │   │       │           │   ├── Team_Repository.java
+    │   │       │           │   ├── Team_Request.java
+    │   │       │           │   ├── Team_Service.java
+    │   │       │           │   └── TeamNotFoundException.java
+    │   │       │           └── Tournament/
+    │   │       │               ├── PartyType.java
+    │   │       │               ├── Tournament_Controller.java
+    │   │       │               ├── Tournament_Entity.java
+    │   │       │               ├── Tournament_GroupStage.java
+    │   │       │               ├── Tournament_GroupStage_Request.java
+    │   │       │               ├── Tournament_Killer.java
+    │   │       │               ├── Tournament_Killer_Request.java
+    │   │       │               ├── Tournament_KO.java
+    │   │       │               ├── Tournament_KO_Request.java
+    │   │       │               ├── Tournament_Match.java
+    │   │       │               ├── Tournament_Match_Repository.java
+    │   │       │               ├── Tournament_Repository.java
+    │   │       │               ├── Tournament_RoundRobin.java
+    │   │       │               ├── Tournament_RoundRobin_Request.java
+    │   │       │               ├── Tournament_Service.java
+    │   │       │               └── TournamentNotFoundException.java
+    │   │       └── resources/
+    │   │           └── logback.xml
+    │   └── txtFiles/
+    │       ├── DBInfo
+    │       ├── errorfinder
+    │       ├── filestructure
+    │       ├── FireBase_DataStructure
+    │       ├── Ideas.txt
+    │       ├── info.txt
+    │       ├── Postman.txt
+    │       ├── Roadmap.txt
+    │       ├── StartTest
+    │       ├── TODO
+    │       └── FireBase/
+    │           └── FireBase.txt
+    └── pool-league/
+        ├── AGENTS.md
+        ├── app.json
+        ├── babel.config.js
+        ├── CLAUDE.md
+        ├── global.css
+        ├── metro.config.js
+        ├── nativewind-env.d.ts
+        ├── package.json
+        ├── tailwind.config.js
+        ├── tsconfig.json
+        ├── .npmrc
+        ├── app/
+        │   ├── _layout.tsx
+        │   └── (tabs)/
+        │       ├── _layout.tsx
+        │       ├── index.tsx
+        │       ├── league.tsx
+        │       ├── matches.tsx
+        │       ├── profile.tsx
+        │       ├── settings.tsx
+        │       ├── tournament.tsx
+        │       └── tournaments.tsx
+        ├── components/
+        │   └── ui/
+        │       ├── PlaceholderScreen.tsx
+        │       └── ScreenShell.tsx
+        ├── constants/
+        │   └── theme.ts
+        ├── lib/
+        │   ├── api.ts
+        │   └── config.ts
+        └── .claude/
+            └── settings.json
