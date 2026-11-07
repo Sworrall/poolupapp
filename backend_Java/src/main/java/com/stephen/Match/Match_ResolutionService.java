@@ -1,7 +1,9 @@
 package com.stephen.Match;
 
+import com.stephen.BaseStats.BaseStats_Service;
 import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Singles;
+import com.stephen.Tournament.Tournament_Match_Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -9,11 +11,15 @@ import java.util.List;
 @Service
 public class Match_ResolutionService {
 
+    private final Tournament_Match_Repository tournamentMatchRepo;
+    private final BaseStats_Service baseStats_Service;
     private final Match_Repository matchRepo;
     private final Match_Repository_Slot slotRepo;
 
-    public Match_ResolutionService(Match_Repository matchRepo,
+    public Match_ResolutionService(Tournament_Match_Repository tournamentMatchRepo, BaseStats_Service baseStatsService, Match_Repository matchRepo,
                                    Match_Repository_Slot slotRepo) {
+        this.tournamentMatchRepo = tournamentMatchRepo;
+        baseStats_Service = baseStatsService;
         this.matchRepo = matchRepo;
         this.slotRepo = slotRepo;
     }
@@ -23,21 +29,16 @@ public class Match_ResolutionService {
         Match_Entity match = matchRepo.findById(id)
                 .orElseThrow(() -> new MatchNotFoundException(id));
 
-        List<Match_Slot> slots = slotRepo.findByMatchId(id);
-
-        boolean allComplete = slots.stream()
-                .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
-        if (!allComplete) return;
-
-        switch (match) {
-            case Match_Singles m -> resolveSingles(m, slots);
-            case Match_Doubles m -> resolveDoubles(m, slots);
-            case Match_Team m -> resolveTeam(m, slots);
-            default -> {
-            }
-        }
+        if (match.isPlayed()) return;               // already resolved: never double-count
 
         matchRepo.save(match);
+
+        if (match.isPlayed() && !match.isBye()) {   // bye matches have a null party B
+            Long tournamentId = tournamentMatchRepo.findByMatchId(id)
+                    .map(tm -> tm.getTournament().getId())
+                    .orElse(null);
+            baseStats_Service.applyMatchResult(match, tournamentId, null);
+        }
     }
 
     private void resolveSingles(Match_Singles match, List<Match_Slot> slots) {

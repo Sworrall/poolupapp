@@ -146,25 +146,6 @@ public class Match_Service {
     }
 
     // --- MATCH RESOLUTION ---
-    @Transactional
-    public void checkAndResolveMatch(Long id) {
-        Match_Entity match = matchRepo.findById(id)
-                .orElseThrow(() -> new MatchNotFoundException(id));
-        List<Match_Slot> slots = slotRepo.findByMatchId(id);
-        boolean allComplete = slots.stream()
-                .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
-        if (!allComplete) return;
-
-        switch (match) {
-            case Match_Singles singlesMatch -> resolveSinglesMatch(singlesMatch, slots);
-            case Match_Doubles doublesMatch -> resolveDoublesMatch(doublesMatch, slots);
-            case Match_Team teamMatch -> resolveTeamMatch(teamMatch, slots);
-            default -> {
-            }
-        }
-        matchRepo.save(match);
-    }
-
     private void resolveSinglesMatch(Match_Singles match, List<Match_Slot> slots) {
         long winsA = slots.stream()
                 .filter(s -> s.getFrame() != null)

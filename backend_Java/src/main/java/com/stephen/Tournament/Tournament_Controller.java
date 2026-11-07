@@ -66,9 +66,9 @@ public class Tournament_Controller {
     // READS
     // -------------------------------------------------------------------------
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Tournament_Entity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(tournamentService.getById(id));
+    @GetMapping("/{tournamentId}")
+    public ResponseEntity<Tournament_Entity> getById(@PathVariable Long tournamentId) {
+        return ResponseEntity.ok(tournamentService.getById(tournamentId));
     }
 
     @GetMapping
@@ -91,20 +91,20 @@ public class Tournament_Controller {
      * Returns all fixtures for a tournament, grouped by round/group index.
      * Reconstructs the original matchList structure for the client.
      */
-    @GetMapping("/{id}/fixtures")
+    @GetMapping("/{tournamentId}/fixtures")
     public ResponseEntity<Map<Integer, List<Tournament_Match>>> getFixtures(
-            @PathVariable Long id) {
-        return ResponseEntity.ok(tournamentService.getFixturesByRound(id));
+            @PathVariable Long tournamentId) {
+        return ResponseEntity.ok(tournamentService.getFixturesByRound(tournamentId));
     }
 
     /**
      * Returns fixtures for a specific round or group index.
      */
-    @GetMapping("/{id}/fixtures/round/{roundNumber}")
+    @GetMapping("/{tournamentId}/fixtures/round/{roundNumber}")
     public ResponseEntity<List<Tournament_Match>> getFixturesForRound(
-            @PathVariable Long id,
+            @PathVariable Long tournamentId,
             @PathVariable int roundNumber) {
-        return ResponseEntity.ok(tournamentService.getFixturesForRound(id, roundNumber));
+        return ResponseEntity.ok(tournamentService.getFixturesForRound(tournamentId, roundNumber));
     }
 
 
@@ -117,28 +117,28 @@ public class Tournament_Controller {
      * Validates all current round matches are complete before advancing.
      * Marks the tournament complete and resolves the podium when the final round is done.
      */
-    @PostMapping("/{id}/ko/advance")
-    public ResponseEntity<Tournament_KO> advanceKORound(@PathVariable Long id) {
-        log.info("POST /tournaments/{}/ko/advance", id);
-        return ResponseEntity.ok(tournamentService.advanceKORound(id));
+    @PostMapping("/{tournamentId}/ko/advance")
+    public ResponseEntity<Tournament_KO> advanceKORound(@PathVariable Long tournamentId) {
+        log.info("POST /tournaments/{}/ko/advance", tournamentId);
+        return ResponseEntity.ok(tournamentService.advanceKORound(tournamentId));
     }
 
     /**
      * Marks a RoundRobin, GroupStage, or Killer tournament complete.
      * Validates all matches are complete before marking.
      */
-    @PostMapping("/{id}/complete")
-    public ResponseEntity<Tournament_Entity> markComplete(@PathVariable Long id) {
-        log.info("POST /tournaments/{}/complete", id);
-        return ResponseEntity.ok(tournamentService.markComplete(id));
+    @PostMapping("/{tournamentId}/complete")
+    public ResponseEntity<Tournament_Entity> markComplete(@PathVariable Long tournamentId) {
+        log.info("POST /tournaments/{}/complete", tournamentId);
+        return ResponseEntity.ok(tournamentService.markComplete(tournamentId));
     }
 
     /**
      * Checks whether all matches in a tournament are complete.
      */
-    @GetMapping("/{id}/complete/check")
-    public ResponseEntity<Boolean> checkAllComplete(@PathVariable Long id) {
-        return ResponseEntity.ok(tournamentService.checkAllComplete(id));
+    @GetMapping("/{tournamentId}/complete/check")
+    public ResponseEntity<Boolean> checkAllComplete(@PathVariable Long tournamentId) {
+        return ResponseEntity.ok(tournamentService.checkAllComplete(tournamentId));
     }
 
 
@@ -150,12 +150,12 @@ public class Tournament_Controller {
      * Sets the podium positions for a tournament manually.
      * Body: ordered list of party Ids [place1, place2, place3, place4].
      */
-    @PostMapping("/{id}/positions")
+    @PostMapping("/{tournamentId}/positions")
     public ResponseEntity<Tournament_Entity> setPositions(
-            @PathVariable Long id,
+            @PathVariable Long tournamentId,
             @RequestBody List<Long> positions) {
-        log.info("POST /tournaments/{}/positions — {}", id, positions);
-        return ResponseEntity.ok(tournamentService.setPositions(id, positions));
+        log.info("POST /tournaments/{}/positions — {}", tournamentId, positions);
+        return ResponseEntity.ok(tournamentService.setPositions(tournamentId, positions));
     }
 
 
@@ -167,7 +167,7 @@ public class Tournament_Controller {
      * Returns the top N promoted party Ids from a pre-ranked list.
      * The caller supplies the ranked list (from leaderboard/ranking service).
      */
-    @PostMapping("/{id}/promote")
+    @PostMapping("/{tournamentId}/promote")
     public ResponseEntity<List<Long>> getPromoted(
             @PathVariable Long tournamentId,
             @RequestParam int count,
@@ -178,7 +178,7 @@ public class Tournament_Controller {
     /**
      * Returns the bottom N demoted party Ids from a pre-ranked list.
      */
-    @PostMapping("/{id}/demote")
+    @PostMapping("/{tournamentId}/demote")
     public ResponseEntity<List<Long>> getDemoted(
             @PathVariable Long tournamentId,
             @RequestParam int count,

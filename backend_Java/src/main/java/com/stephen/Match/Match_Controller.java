@@ -43,18 +43,18 @@ public class Match_Controller {
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-a")
     public ResponseEntity<Match_Slot> assignPlayerA(
-            @PathVariable Long id,
+            @PathVariable Long matchId,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerA(id, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerA(matchId, slotNumber, req));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-b")
     public ResponseEntity<Match_Slot> assignPlayerB(
-            @PathVariable Long id,
+            @PathVariable Long matchId,
             @PathVariable int slotNumber,
             @RequestBody Match_PlayerRequest_Slot req) {
-        return ResponseEntity.ok(matchService.assignPlayerB(id, slotNumber, req));
+        return ResponseEntity.ok(matchService.assignPlayerB(matchId, slotNumber, req));
     }
 
     @GetMapping("/unplayed")

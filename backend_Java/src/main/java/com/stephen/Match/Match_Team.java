@@ -9,11 +9,11 @@ import jakarta.persistence.*;
 public class Match_Team extends Match_Entity {
 
     @ManyToOne
-    @JoinColumn(name = "team_a_id", nullable = false)
+    @JoinColumn(name = "team_a_id")
     private Team_Entity teamA;
 
     @ManyToOne
-    @JoinColumn(name = "team_b_id", nullable = false)
+    @JoinColumn(name = "team_b_id")
     private Team_Entity teamB;
 
     @ManyToOne

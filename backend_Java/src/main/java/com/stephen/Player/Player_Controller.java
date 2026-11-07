@@ -32,21 +32,21 @@ public class Player_Controller {
         );
     }
 
-    @GetMapping("/players/{id}")
+    @GetMapping("/players/{playerId}")
     public ResponseEntity<Player_Entity> getPlayer(@PathVariable Long id) {
         return playerService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/players/{id}")
+    @PutMapping("/players/{playerId}")
     public ResponseEntity<Player_Entity> updatePlayer(
             @PathVariable Long id,
             @RequestBody Player_Request req) {
         return ResponseEntity.ok(playerService.updatePlayer(id, req));
     }
 
-    @PatchMapping("/players/{id}/captain")
+    @PatchMapping("/players/{playerId}/captain")
     public ResponseEntity<Player_Entity> setCaptain(
             @PathVariable Long id,
             @RequestBody Map<String, Boolean> body) {
@@ -56,7 +56,7 @@ public class Player_Controller {
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/players/{id}")
+    @DeleteMapping("/players/{playerId}")
     public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
         playerService.deletePlayer(id);
         return ResponseEntity.noContent().build();

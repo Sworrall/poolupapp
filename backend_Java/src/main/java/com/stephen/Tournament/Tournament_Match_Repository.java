@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface Tournament_Match_Repository extends JpaRepository<Tournament_Match, Long> {
@@ -34,4 +36,6 @@ public interface Tournament_Match_Repository extends JpaRepository<Tournament_Ma
      * Count of fixtures in a given round. Used to validate round completeness.
      */
     long countByTournamentIdAndRoundNumber(Long id, int roundNumber);
+
+    Optional<Tournament_Match> findByMatchId(Long matchId);
 }

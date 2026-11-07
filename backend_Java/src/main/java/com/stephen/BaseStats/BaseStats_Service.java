@@ -18,10 +18,10 @@ public class BaseStats_Service {
     private static final Long GLOBAL_EVENT_ID = 0L;
     private static final Logger log = LoggerFactory.getLogger(BaseStats_Service.class);
 
-    private final BaseStats_Repository statsRepo;
+    private static BaseStats_Repository statsRepo = null;
 
     public BaseStats_Service(BaseStats_Repository statsRepo) {
-        this.statsRepo = statsRepo;
+        BaseStats_Service.statsRepo = statsRepo;
     }
 
 
@@ -36,10 +36,10 @@ public class BaseStats_Service {
      * Every stat increment touches two rows: the event-scoped row and the global row.
      */
     @Transactional
-    public void applyEvent(Long holderId, HolderType holderType,
-                           Long eventId, StatScope eventScope,
-                           Long matchId, Long tournamentId, Long teamId,
-                           StatField field) {
+    public static void applyEvent(Long holderId, HolderType holderType,
+                                  Long eventId, StatScope eventScope,
+                                  Long matchId, Long tournamentId, Long teamId,
+                                  StatField field) {
         // Event-scoped stat row
         StatEntry eventStat = getOrCreate(
                 holderId, holderType, eventId, eventScope, matchId, tournamentId, teamId);
@@ -97,7 +97,7 @@ public class BaseStats_Service {
      * @param teamId       team context — null for standalone events
      */
     @Transactional
-    public void applyFrameResult(Frame_Entity frame, Long matchId, Long tournamentId, Long teamId) {
+    public static void applyFrameResult(Frame_Entity frame, Long matchId, Long tournamentId, Long teamId) {
         if (!frame.isPlayed()) {
             log.error("Attempted to apply frame result for unplayed frame: {}", frame.getId());
             throw new IllegalArgumentException("Frame not played: " + frame.getId());
@@ -111,8 +111,8 @@ public class BaseStats_Service {
         }
     }
 
-    private void applyFrameSingles(Frame_Singles frame, Long matchId,
-                                   Long tournamentId, Long teamId) {
+    private static void applyFrameSingles(Frame_Singles frame, Long matchId,
+                                          Long tournamentId, Long teamId) {
         Long frameId  = frame.getId();
         Long winnerId = frame.getWinner().getId();
         Long loserId  = frame.getLoser().getId();
@@ -135,8 +135,8 @@ public class BaseStats_Service {
                 winnerId, loserId, frameId);
     }
 
-    private void applyFrameDoubles(Frame_Doubles frame, Long matchId,
-                                   Long tournamentId, Long teamId) {
+    private static void applyFrameDoubles(Frame_Doubles frame, Long matchId,
+                                          Long tournamentId, Long teamId) {
         Long frameId  = frame.getId();
         Long winnerId = frame.getWinner().getId();
         Long loserId  = frame.getDoublesA().getId().equals(winnerId)
@@ -278,9 +278,9 @@ public class BaseStats_Service {
     // INTERNAL HELPERS
     // -------------------------------------------------------------------------
 
-    private StatEntry getOrCreate(Long holderId, HolderType holderType,
-                                  Long eventId, StatScope eventScope,
-                                  Long matchId, Long tournamentId, Long teamId) {
+    private static StatEntry getOrCreate(Long holderId, HolderType holderType,
+                                         Long eventId, StatScope eventScope,
+                                         Long matchId, Long tournamentId, Long teamId) {
         return statsRepo.findByHolderIdAndHolderTypeAndEventIdAndEventScopeAndTeamId(
                         holderId, holderType, eventId, eventScope, teamId)
                 .orElse(new StatEntry(holderId, holderType,

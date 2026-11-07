@@ -1,19 +1,23 @@
 package com.stephen.Frame;
 
+import com.stephen.BaseStats.BaseStats_Service;
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
 import com.stephen.Match.Match_EventPublisher;
 import com.stephen.Match.Match_ResolutionService;
 import com.stephen.Match.Match_Repository_Slot;
+import com.stephen.Match.Match_Slot;
 import com.stephen.Player.Player_Entity;
 import com.stephen.Player.Player_Repository;
 import com.stephen.Player.PlayerNotFoundException;
 import com.stephen.Team.Team_Entity;
 import com.stephen.Team.Team_Repository;
 import com.stephen.Team.TeamNotFoundException;
+import com.stephen.Tournament.Tournament_Match_Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class Frame_Service {
@@ -26,6 +30,8 @@ public class Frame_Service {
     private final Match_EventPublisher matchEventPublisher;
     private final Match_ResolutionService matchResolutionService;
     private final Frame_KillerLivesRepository killerLivesRepo;
+    private final BaseStats_Service baseStats_Service;
+    private final Tournament_Match_Repository tournamentMatchRepo;
 
     public Frame_Service(Frame_Repository frameRepo,
                          Player_Repository playerRepo,
@@ -34,7 +40,7 @@ public class Frame_Service {
                          Match_Repository_Slot slotRepo,
                          Match_EventPublisher matchEventPublisher,
                          Match_ResolutionService matchResolutionService,
-                         Frame_KillerLivesRepository killerLivesRepo) {
+                         Frame_KillerLivesRepository killerLivesRepo, BaseStats_Service baseStatsService, Tournament_Match_Repository tournamentMatchRepo) {
         this.frameRepo = frameRepo;
         this.playerRepo = playerRepo;
         this.teamRepo = teamRepo;
@@ -43,6 +49,8 @@ public class Frame_Service {
         this.matchEventPublisher = matchEventPublisher;
         this.matchResolutionService = matchResolutionService;
         this.killerLivesRepo = killerLivesRepo;
+        this.baseStats_Service = baseStatsService;
+        this.tournamentMatchRepo = tournamentMatchRepo;
     }
 
     // --- RECORD RESULT ---
@@ -59,14 +67,22 @@ public class Frame_Service {
             default -> throw new IllegalStateException("Unknown frame type for id: " + frameId);
         }
 
-        slotRepo.findByFrameId(frameId).ifPresent(slot -> {
-            slot.markComplete();
-            slotRepo.save(slot);
-            Long matchId = slot.getMatch().getMatchId();
+        Optional<Match_Slot> slot = slotRepo.findByFrameId(frameId);
+        Long matchId = slot.map(s -> s.getMatch().getMatchId()).orElse(null);
+        Long tournamentId = (matchId == null) ? null
+                : tournamentMatchRepo.findByMatchId(matchId)
+                .map(tm -> tm.getTournament().getId())
+                .orElse(null);
+
+// record stats whether or not the frame belongs to a match
+        BaseStats_Service.applyFrameResult(frame, matchId, tournamentId, null);
+
+        slot.ifPresent(s -> {
+            s.markComplete();
+            slotRepo.save(s);
             matchResolutionService.checkAndResolveMatch(matchId);
             matchEventPublisher.publishMatchUpdate(matchId);
         });
-
         return frame;
     }
 

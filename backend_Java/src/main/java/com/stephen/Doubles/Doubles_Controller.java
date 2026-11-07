@@ -23,7 +23,7 @@ public class Doubles_Controller {
         return ResponseEntity.ok(doublesService.createDoubles(req));
     }
 
-    @GetMapping
+    @GetMapping("/Doubles")
     public ResponseEntity<Doubles_ListResponse> getAllDoubles() {
 
         List<Doubles_Response> results =
@@ -37,14 +37,14 @@ public class Doubles_Controller {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/Doubles/{doublesId}")
     public ResponseEntity<Doubles_Entity> getDoubles(@PathVariable Long id) {
         return doublesService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/Doubles/{doublesId}")
     public ResponseEntity<Doubles_Entity> updateDoubles(
             @PathVariable Long id,
             @RequestBody Doubles_Request req) {
@@ -52,7 +52,7 @@ public class Doubles_Controller {
         return ResponseEntity.ok(doublesService.updateDoubles(id, req));
     }
 
-    @PatchMapping("/{doublesId}/captain/{playerId}")
+    @PatchMapping("/Doubles/{doublesId}/captain/{playerId}")
     public ResponseEntity<Doubles_Entity> setCaptain(
             @PathVariable Long doublesId,
             @PathVariable Long playerId) {
@@ -60,7 +60,7 @@ public class Doubles_Controller {
         return ResponseEntity.ok(doublesService.setCaptain(doublesId, playerId));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/Doubles/{doublesId}")
     public ResponseEntity<Void> deleteDoubles(@PathVariable Long id) {
         log.info("DELETE /api/doubles/{}", id);
         doublesService.deleteDoubles(id);

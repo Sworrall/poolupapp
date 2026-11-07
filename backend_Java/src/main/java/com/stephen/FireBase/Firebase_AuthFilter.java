@@ -1,17 +1,16 @@
 package com.stephen.FireBase;
 
-import com.google.firebase.auth.FirebaseToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+// todo - once API calls through SQL are working properly, work on auth service and security
 
 @Component
 public class Firebase_AuthFilter extends OncePerRequestFilter {
@@ -29,12 +28,11 @@ public class Firebase_AuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         filterChain.doFilter(request, response);
-        return;
 
 
 //        String authHeader = request.getHeader("Authorization");
