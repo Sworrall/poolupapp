@@ -37,16 +37,12 @@ public class Tournament_Match {
     @JoinColumn(name = "match_id", nullable = false)
     private Match_Entity match;
 
-    /**
-     * Round index (KO) or group index (GroupStage).
-     * Always 0 for RoundRobin and Killer.
-     */
+    // Round index (KO) or group index (GroupStage).
+    // Always 0 for RoundRobin and Killer.
     @Column(name = "round_number", nullable = false)
     private int roundNumber;
 
-    /**
-     * Position within the round/group. Preserves fixture order.
-     */
+    // Position within the round/group. Preserves fixture order.
     @Column(name = "sequence", nullable = false)
     private int sequence;
 

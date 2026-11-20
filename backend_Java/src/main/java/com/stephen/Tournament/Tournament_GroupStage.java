@@ -7,22 +7,16 @@ import java.util.List;
 @DiscriminatorValue("GROUP_STAGE")
 public class Tournament_GroupStage extends Tournament_Entity {
 
-    /**
-     * Number of groups to split participants into.
-     * The service enforces a minimum of 4 parties per group when building fixtures.
-     */
+    //Number of groups to split participants into.
+    //The service enforces a minimum of 4 parties per group when building fixtures.
     @Column(name = "group_count")
     private Integer groupCount;
 
-    /**
-     * Number of frames per match within the group stage.
-     */
+    // Number of frames per match within the group stage.
     @Column(name = "frame_count")
     private Integer frameCount;
 
-    /**
-     * Whether participants are randomly assigned to groups.
-     */
+    // Whether participants are randomly assigned to groups.
     @Column(name = "is_random", nullable = false)
     private boolean isRandom = true;
 

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/frames")
+@RequestMapping("/api/frame")
 public class Frame_Controller {
 
     private final Frame_Service frameService;

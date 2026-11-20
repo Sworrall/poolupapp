@@ -153,21 +153,38 @@ public class StatEntry {
 
     // --- GETTERS ---
     public Long getId()               { return id; }
+
     public Long getHolderId()         { return holderId; }
+
     public HolderType getHolderType() { return holderType; }
+
     public Long getEventId()          { return eventId; }
+
     public StatScope getEventScope()  { return eventScope; }
+
     public Long getMatchId()          { return matchId; }
+
     public Long getTournamentId()     { return tournamentId; }
+
     public Long getTeamId()           { return teamId; }
+
     public int getFrameWin()          { return frameWin; }
+
     public int getFrameLoss()         { return frameLoss; }
+
     public int getFrameBreakDish()    { return frameBreakDish; }
+
     public int getFrameTotal()        { return frameTotal; }
+
     public int getMatchWin()          { return matchWin; }
+
     public int getMatchLoss()         { return matchLoss; }
+
     public int getMatchDraw()         { return matchDraw; }
+
     public int getMatchTotal()        { return matchTotal; }
+
     public Instant getCreatedAt()     { return createdAt; }
+
     public Instant getUpdatedAt()     { return updatedAt; }
 }

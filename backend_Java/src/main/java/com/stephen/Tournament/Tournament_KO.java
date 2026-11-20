@@ -7,9 +7,7 @@ import java.util.List;
 @DiscriminatorValue("KO")
 public class Tournament_KO extends Tournament_Entity {
 
-    /**
-     * Number of frames per match in each KO round.
-     */
+    // Number of frames per match in each KO rounds
     @Column(name = "frame_count")
     private Integer frameCount;
 

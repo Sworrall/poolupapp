@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/tournaments")
+@RequestMapping("/api/tournament")
 public class Tournament_Controller {
 
     private static final Logger log = LoggerFactory.getLogger(Tournament_Controller.class);

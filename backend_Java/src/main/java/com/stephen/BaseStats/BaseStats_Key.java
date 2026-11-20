@@ -2,7 +2,6 @@ package com.stephen.BaseStats;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +9,7 @@ import java.util.Objects;
 
 @Embeddable
 public class BaseStats_Key {
+    private static final Logger log = LoggerFactory.getLogger(BaseStats_Key.class);
 
     @Column(name = "event_id", nullable = false)
     private Long eventId;
@@ -20,15 +20,13 @@ public class BaseStats_Key {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        BaseStats_Key that = (BaseStats_Key) o;
-        return Objects.equals(getEventId(), that.getEventId()) && Objects.equals(getTeamId(), that.getTeamId());    }
+        BaseStats_Key key = (BaseStats_Key) o;
+        return Objects.equals(getEventId(), key.getEventId()) && Objects.equals(getTeamId(), key.getTeamId());    }
 
     @Override
     public int hashCode() {
         return Objects.hash(getEventId(), getTeamId());
     }
-
-    private static final Logger log = LoggerFactory.getLogger(BaseStats_Key.class);
 
     public BaseStats_Key(Long eventId) {
         this(eventId, null);
