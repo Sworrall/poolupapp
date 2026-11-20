@@ -14,6 +14,11 @@ public class Frame_Controller {
         this.frameService = frameService;
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> publicPing() {
+        return ResponseEntity.ok("Frame_Controller is alive!");
+    }
+
     @PostMapping("/singles")
     public ResponseEntity<Frame_Singles> createSingles(@RequestBody Frame_SinglesRequest req) {
         return ResponseEntity.ok(frameService.createSinglesFrame(req));
@@ -29,11 +34,11 @@ public class Frame_Controller {
         return ResponseEntity.ok(frameService.createKillerFrame(req));
     }
 
-    @PostMapping("/{id}/result")
+    @PostMapping("/{frameId}/result")
     public ResponseEntity<Frame_Entity> recordResult(
-            @PathVariable Long id,
+            @PathVariable Long frameId,
             @RequestBody Frame_ResultRequest req) {
-        return ResponseEntity.ok(frameService.recordResult(id, req));
+        return ResponseEntity.ok(frameService.recordResult(frameId, req));
     }
 
     /**
@@ -41,11 +46,11 @@ public class Frame_Controller {
      * Separate endpoint from /result since killer frames use a different
      * request shape (playerId + livesRemaining vs winnerId).
      */
-    @PostMapping("/killer/{id}/result")
+    @PostMapping("/killer/{frameId}/result")
     public ResponseEntity<Frame_Killer> recordKillerResult(
-            @PathVariable Long id,
+            @PathVariable Long frameId,
             @RequestBody Frame_KillerResultRequest req) {
-        return ResponseEntity.ok(frameService.recordKillerResult(id, req));
+        return ResponseEntity.ok(frameService.recordKillerResult(frameId, req));
     }
 
     @GetMapping("/unplayed")

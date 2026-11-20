@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/team")
+@RequestMapping("/api/Team")
 public class Team_Controller {
 
     private final Team_Service teamService;
 
     public Team_Controller(Team_Service teamService) {
         this.teamService = teamService;
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> publicPing() {
+        return ResponseEntity.ok("Team_Controller is alive!");
     }
 
     @PostMapping
@@ -26,15 +31,15 @@ public class Team_Controller {
     }
 
     @GetMapping("/Teams/{teamId}")
-    public ResponseEntity<Team_DetailResponse> getTeam(@PathVariable Long id) {
-        return ResponseEntity.ok(teamService.getById(id));
+    public ResponseEntity<Team_DetailResponse> getTeam(@PathVariable Long teamId) {
+        return ResponseEntity.ok(teamService.getById(teamId));
     }
 
     @PutMapping("/Teams/{Teams}")
     public ResponseEntity<Team_DetailResponse> updateTeam(
-            @PathVariable Long id,
+            @PathVariable Long teamId,
             @RequestBody Team_Request req) {
-        return ResponseEntity.ok(teamService.updateTeam(id, req));
+        return ResponseEntity.ok(teamService.updateTeam(teamId, req));
     }
 
     @PostMapping("/Teams/{teamId}/players/{playerId}")
@@ -58,9 +63,9 @@ public class Team_Controller {
         return ResponseEntity.ok(teamService.setCaptain(teamId, playerId));
     }
 
-    @DeleteMapping("/Teams/teamId}")
-    public ResponseEntity<Void> deleteTeam(@PathVariable Long id) {
-        teamService.deleteTeam(id);
+    @DeleteMapping("/Teams/{teamId}")   // missing the opening {
+    public ResponseEntity<Void> deleteTeam(@PathVariable Long teamId) {
+        teamService.deleteTeam(teamId);
         return ResponseEntity.noContent().build();
     }
 }

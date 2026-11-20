@@ -14,6 +14,11 @@ public class Match_Controller {
         this.matchService = matchService;
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> publicPing() {
+        return ResponseEntity.ok("Match_Controller is alive!");
+    }
+
     @PostMapping("/singles")
     public ResponseEntity<Match_Singles> createSingles(@RequestBody Match_Request_Singles req) {
         return ResponseEntity.ok(matchService.createSinglesMatch(req));
@@ -29,16 +34,16 @@ public class Match_Controller {
         return ResponseEntity.ok(matchService.createTeamMatch(req));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Match_Entity> getMatch(@PathVariable Long id) {
-        return matchService.getById(id)
+    @GetMapping("/{matchId}")
+    public ResponseEntity<Match_Entity> getMatch(@PathVariable Long matchId) {
+        return matchService.getById(matchId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/slots")
-    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long id) {
-        return ResponseEntity.ok(matchService.getSlotsForMatch(id));
+    @GetMapping("/{matchId}/slots")
+    public ResponseEntity<List<Match_Slot>> getSlots(@PathVariable Long matchId) {
+        return ResponseEntity.ok(matchService.getSlotsForMatch(matchId));
     }
 
     @PatchMapping("/{matchId}/slots/{slotNumber}/player-a")

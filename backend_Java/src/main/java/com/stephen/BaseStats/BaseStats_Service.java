@@ -36,7 +36,7 @@ public class BaseStats_Service {
      * Every stat increment touches two rows: the event-scoped row and the global row.
      */
     @Transactional
-    public static void applyEvent(
+    public void applyEvent(
             Long holderId,
             HolderType holderType,
             Long eventId,
@@ -65,7 +65,7 @@ public class BaseStats_Service {
                 StatScope.GLOBAL,
                 null,
                 null,
-                teamId);
+                null);
         globalStat.increment(field);
         statsRepo.save(globalStat);
 
@@ -138,7 +138,7 @@ public class BaseStats_Service {
      * @param teamId       team context — null for standalone events
      */
     @Transactional
-    public static void applyFrameResult(
+    public void applyFrameResult(
             Frame_Entity frame,
             Long matchId,
             Long tournamentId,
@@ -156,7 +156,7 @@ public class BaseStats_Service {
         }
     }
 
-    private static void applyFrameSingles(
+    private void applyFrameSingles(
             Frame_Singles frame,
             Long matchId,
             Long tournamentId,
@@ -220,7 +220,7 @@ public class BaseStats_Service {
                 frameId);
     }
 
-    private static void applyFrameDoubles(
+    private void applyFrameDoubles(
             Frame_Doubles frame,
             Long matchId,
             Long tournamentId,
@@ -531,7 +531,7 @@ public class BaseStats_Service {
     // INTERNAL HELPERS
     // -------------------------------------------------------------------------
 
-    private static StatEntry getOrCreate(
+    private StatEntry getOrCreate(
             Long holderId,
             HolderType holderType,
             Long eventId,

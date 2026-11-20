@@ -28,12 +28,22 @@ public class Match_ResolutionService {
     public void checkAndResolveMatch(Long id) {
         Match_Entity match = matchRepo.findById(id)
                 .orElseThrow(() -> new MatchNotFoundException(id));
+        if (match.isPlayed()) return;
 
-        if (match.isPlayed()) return;               // already resolved: never double-count
+        List<Match_Slot> slots = slotRepo.findByMatchId(id);
+        boolean allComplete = slots.stream()
+                .allMatch(s -> s.isComplete() || s.getStatus() == Match_Slot.Status.BYE);
+        if (!allComplete) return;
 
+        switch (match) {
+            case Match_Singles m -> resolveSingles(m, slots);
+            case Match_Doubles m -> resolveDoubles(m, slots);
+            case Match_Team m -> resolveTeam(m, slots);
+            default -> { }
+        }
         matchRepo.save(match);
 
-        if (match.isPlayed() && !match.isBye()) {   // bye matches have a null party B
+        if (match.isPlayed() && !match.isBye()) {
             Long tournamentId = tournamentMatchRepo.findByMatchId(id)
                     .map(tm -> tm.getTournament().getId())
                     .orElse(null);

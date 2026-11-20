@@ -2,7 +2,6 @@ package com.stephen.Match;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
-import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Repository;
 import com.stephen.Frame.Frame_Singles;
 import com.stephen.Player.Player_Entity;
@@ -145,43 +144,8 @@ public class Match_Service {
         }
     }
 
+
     // --- MATCH RESOLUTION ---
-    private void resolveSinglesMatch(Match_Singles match, List<Match_Slot> slots) {
-        long winsA = slots.stream()
-                .filter(s -> s.getFrame() != null)
-                .filter(s -> ((Frame_Singles) s.getFrame()).getWinner() != null &&
-                        ((Frame_Singles) s.getFrame()).getWinner().equals(match.getPlayerA()))
-                .count();
-        long winsB = slots.size() - winsA;
-        applyResult(match, winsA, winsB,
-                match.getPlayerA(), match.getPlayerB(),
-                match::setWinner, match::setLoser);
-    }
-
-    private void resolveDoublesMatch(Match_Doubles match, List<Match_Slot> slots) {
-        long winsA = slots.stream()
-                .filter(s -> s.getFrame() != null)
-                .filter(s -> ((Frame_Doubles) s.getFrame()).getWinner() != null &&
-                        ((Frame_Doubles) s.getFrame()).getWinner().equals(match.getDoublesA()))
-                .count();
-        long winsB = slots.size() - winsA;
-        applyResult(match, winsA, winsB,
-                match.getDoublesA(), match.getDoublesB(),
-                match::setWinner, match::setLoser);
-    }
-
-    private void resolveTeamMatch(Match_Team match, List<Match_Slot> slots) {
-        long winsA = slots.stream()
-                .filter(s -> s.getFrame() != null)
-                .filter(s -> ((Frame_Singles) s.getFrame()).getWinner() != null &&
-                        match.getTeamA().getPlayers().contains(((Frame_Singles) s.getFrame()).getWinner()))
-                .count();
-        long winsB = slots.size() - winsA;
-        applyResult(match, winsA, winsB,
-                match.getTeamA(), match.getTeamB(),
-                match::setWinner, match::setLoser);
-    }
-
     private <T> void applyResult(Match_Entity match, long winsA, long winsB,
                                  T partyA, T partyB,
                                  java.util.function.Consumer<T> setWinner,
