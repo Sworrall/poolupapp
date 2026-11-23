@@ -1,0 +1,83 @@
+1) UI
+    lib/api.ts
+        - fetch sends a GET to port 8080.
+        - There is no body, so no Content-Type header is needed.
+        - '''GET /api/player/players'''
+        - Accept: application/json
+
+2) SECURITY FILTER
+    SecurityConfig, Firebase_AuthFilter
+        - CORS is applied and every request is permitted.
+        - The Firebase filter currently skips any path starting with /api/,
+            so authorisation is effectively off for now.
+
+        - '''authorizeHttpRequests -> anyRequest().permitAll()'''
+        - shouldNotFilter("/api/players") -> true
+
+3) CONTROLLER
+    Player_Controller.getPlayers()
+        - Spring joins
+            @RequestMapping("/api/player")
+            with
+            @GetMapping("/players")
+            to find this method. It only delegates to the service.
+        - '''playerService.getAllPlayersDTO()'''
+
+4) SERVICE
+    Player_Service.getAllPlayersDTO()
+        - Asks the repository for every player, then converts each one to a DTO in a stream.
+        -'''playerRepo.findAll().stream().map(Player_DTO::new)'''
+
+5) REPOSITORY
+    Player_Repository
+        - findAll() is inherited from JpaRepository, so you wrote no code for it. Hibernate generates the SQL.
+        ''' SELECT id,
+                first_name,
+                last_name,
+                nick_name,
+                phone_number,
+                is_bye,
+                is_captain,
+                firebase_uid,
+                created_at
+            FROM players'''
+
+6) PostgreSQL
+    table : Players
+        - Postgres runs the query and returns one row per player.
+        - This is the turning point: everything from here begins returning back to the user
+            | id | first_name | last_name | is_captain | ...
+            -----+------------+-----------+------------+----
+            |  1 | Alice      | Test      | f          | ...
+
+7) HIBERNATE
+    Player_Entity
+        - Each row becomes a Player_Entity through the protected no-arg constructor.
+        - The phone_number column fills the embedded Player_ContactDetails.
+            List<Player_Entity>
+                [0] id=1, firstName=Alice, lastName=Test,
+                    contactDetails.phoneNumber=null
+
+8) SERVICE
+    new Player_DTO(entity)
+        - Copies only the fields the client should see.
+        - fullName comes from getName(), which adds the (C) prefix for captains and quotes any nickname.
+            List<Player_DTO>
+                [0] fullName="Alice Test", captain=false
+
+9) CONTROLLER
+    API_Response, Player_Response
+        - The list is wrapped twice, so the client always reads data.players.
+        - The controller returns it inside a ResponseEntity with status 200.
+            new Api_Response<>(new Player_Response(players))
+
+10) JACKSON
+    JSON written to the response
+        - Jackson serialises through the getters.
+        - isCaptain() becomes captain and isBye() becomes bye, because the is prefix is dropped.
+            {"data":{
+                "players":[{
+                    "id":1,"firstName":"Alice","lastName":"Test",
+                    "nickName":null,"fullName":"Alice Test",
+                    "captain":false,"bye":false,
+                    "firebaseUid":"uid-1","phoneNumber":null}]}}

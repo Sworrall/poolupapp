@@ -18,9 +18,10 @@ public class Tournament_RoundRobin extends Tournament_Entity {
     protected Tournament_RoundRobin() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_RoundRobin(List<Long> partyIds, PartyType partyType, int frameCount) {
-        super(partyIds, partyType);
+    public Tournament_RoundRobin(List<Long> partyIds, PartyType partyType, int frameCount, boolean isTwoLeg) {
+        super(partyIds, partyType, isTwoLeg);
         this.frameCount = frameCount;
+
     }
 
     // --- GETTERS ---

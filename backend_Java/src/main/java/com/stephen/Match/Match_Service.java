@@ -2,6 +2,7 @@ package com.stephen.Match;
 
 import com.stephen.Doubles.Doubles_Entity;
 import com.stephen.Doubles.Doubles_Repository;
+import com.stephen.Frame.Frame_Doubles;
 import com.stephen.Frame.Frame_Repository;
 import com.stephen.Frame.Frame_Singles;
 import com.stephen.Player.Player_Entity;
@@ -94,7 +95,13 @@ public class Match_Service {
 
     private void createSlots(Match_Entity match, int frameCount) {
         for (int i = 1; i <= frameCount; i++) {
-            slotRepo.save(new Match_Slot(match, i));
+            Match_Slot slot = slotRepo.save(new Match_Slot(match, i));
+            if (match instanceof Match_Singles singles) {
+                slot.assignPlayerA(singles.getPlayerA());
+                slot.assignPlayerB(singles.getPlayerB());
+                slotRepo.save(slot);
+                createFrameForSlot(slot);
+            }
         }
     }
 
@@ -105,6 +112,9 @@ public class Match_Service {
         Player_Entity player = playerRepo.findById(req.getPlayerId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerA(player);
+        if (slot.getFrame() != null) {
+            throw new IllegalStateException("Slot " + slotNumber + " already has a frame");
+        }
         slotRepo.save(slot);
         if (slot.isReady()) createFrameForSlot(slot);
         return slot;
@@ -116,6 +126,9 @@ public class Match_Service {
         Player_Entity player = playerRepo.findById(req.getPlayerId())
                 .orElseThrow(() -> new PlayerNotFoundException(req.getPlayerId()));
         slot.assignPlayerB(player);
+        if (slot.getFrame() != null) {
+            throw new IllegalStateException("Slot " + slotNumber + " already has a frame");
+        }
         slotRepo.save(slot);
         if (slot.isReady()) createFrameForSlot(slot);
         return slot;
@@ -123,33 +136,35 @@ public class Match_Service {
 
     private void createFrameForSlot(Match_Slot slot) {
         Match_Entity match = slot.getMatch();
-        if (match instanceof Match_Team teamMatch) {
-            Frame_Singles frame = new Frame_Singles(
-                    slot.getPlayerA(),
-                    slot.getPlayerB(),
-                    teamMatch.getTeamA(),
-                    teamMatch.getTeamB()
-            );
+         if (match instanceof Match_Singles singlesMatch) {
+            Frame_Singles frame = singlesMatch.hasTeamContext()
+                ? new Frame_Singles(slot.getPlayerA(), slot.getPlayerB(),
+                singlesMatch.getTeamA(), singlesMatch.getTeamB())
+                : new Frame_Singles(slot.getPlayerA(), slot.getPlayerB());
             frameRepo.save(frame);
             slot.linkFrame(frame);
             slotRepo.save(slot);
-        } else if (match instanceof Match_Singles singlesMatch) {
-            Frame_Singles frame = new Frame_Singles(
-                    slot.getPlayerA(),
-                    slot.getPlayerB()
-            );
-            frameRepo.save(frame);
-            slot.linkFrame(frame);
-            slotRepo.save(slot);
-        }
+        } else {
+             if (match instanceof  Match_Doubles doublesMatch) {
+                 Frame_Doubles frame = new Frame_Doubles(
+                         doublesMatch.getDoublesA(),
+                         doublesMatch.getDoublesB());
+                 frameRepo.save(frame);
+                 slot.linkFrame(frame);
+                 slotRepo.save(slot);
+             }
+         }
     }
 
 
     // --- MATCH RESOLUTION ---
-    private <T> void applyResult(Match_Entity match, long winsA, long winsB,
-                                 T partyA, T partyB,
-                                 java.util.function.Consumer<T> setWinner,
-                                 java.util.function.Consumer<T> setLoser) {
+    private <T> void applyResult(
+            Match_Entity match,
+            long winsA, long winsB,
+            T partyA,
+            T partyB,
+            java.util.function.Consumer<T> setWinner,
+            java.util.function.Consumer<T> setLoser) {
         if (winsA > winsB) {
             setWinner.accept(partyA);
             setLoser.accept(partyB);

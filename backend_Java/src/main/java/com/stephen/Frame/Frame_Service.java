@@ -74,8 +74,8 @@ public class Frame_Service {
                 .map(tm -> tm.getTournament().getId())
                 .orElse(null);
 
-// record stats whether or not the frame belongs to a match
-        BaseStats_Service.applyFrameResult(frame, matchId, tournamentId, null);
+        // record stats whether or not the frame belongs to a match
+        baseStats_Service.applyFrameResult(frame, matchId, tournamentId, null);
 
         slot.ifPresent(s -> {
             s.markComplete();

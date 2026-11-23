@@ -36,8 +36,7 @@ public abstract class Tournament_Entity {
     @ElementCollection
     @CollectionTable(
             name = "tournament_party",
-            joinColumns = @JoinColumn(name = "tournament_id")
-    )
+            joinColumns = @JoinColumn(name = "tournament_id"))
     @Column(name = "party_id")
     @OrderColumn(name = "party_order")
     private List<Long> partyIds = new ArrayList<>();
@@ -62,10 +61,18 @@ public abstract class Tournament_Entity {
     @Column(name = "is_complete", nullable = false)
     private boolean isComplete = false;
 
+    @Column(name = "is_two_leg", nullable = false)
+    private  boolean isTwoLeg = false;
+
     // --- JPA ---
     protected Tournament_Entity() {}
 
     // --- CONSTRUCTOR ---
+    protected Tournament_Entity(List<Long> partyIds, PartyType partyType, boolean isTwoLeg){
+        this.partyIds = new ArrayList<>(partyIds);
+        this.partyType = partyType;
+        this.isTwoLeg = isTwoLeg;
+    }
     protected Tournament_Entity(List<Long> partyIds, PartyType partyType) {
         this.partyIds = new ArrayList<>(partyIds);
         this.partyType = partyType;
@@ -108,6 +115,8 @@ public abstract class Tournament_Entity {
         return isComplete;
     }
 
+    public  boolean isTwoLeg() {return  isTwoLeg;}
+
     // --- SETTERS ---
     public void setPartyIds(List<Long> partyIds) {
         this.partyIds = new ArrayList<>(partyIds);
@@ -137,18 +146,19 @@ public abstract class Tournament_Entity {
         isComplete = complete;
     }
 
+    public  void setTwoLeg(boolean twoLeg) {isTwoLeg = twoLeg;}
+
     /**
      * Convenience setter — accepts an ordered list of at least 4 Ids.
      * Consistent with original setPositions() behaviour.
      */
     public void setPositions(List<Long> positions) {
-        if (positions.size() < 4) {
-            log.error("setPositions requires at least 4 Ids, received {}", positions.size());
-            throw new IllegalArgumentException("Need at least 4 positions");
+        if (positions == null || positions.isEmpty()) {
+            throw new IllegalArgumentException("Need at least 1 position");
         }
         this.place1Id = positions.get(0);
-        this.place2Id = positions.get(1);
-        this.place3Id = positions.get(2);
-        this.place4Id = positions.get(3);
+        this.place2Id = positions.size() > 1 ? positions.get(1) : null;
+        this.place3Id = positions.size() > 2 ? positions.get(2) : null;
+        this.place4Id = positions.size() > 3 ? positions.get(3) : null;
     }
 }

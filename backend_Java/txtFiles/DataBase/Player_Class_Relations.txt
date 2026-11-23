@@ -1,0 +1,31 @@
+* Entity = database model
+* Service = business logic
+* Mapper = DTO conversion
+* Controller = HTTP
+
+1) - UI / Postman input
+        (POST / GET / PUT / PATCH / DELETE)
+
+2) - Player_Controller
+        Maps URL's to Methods
+        Player Request
+
+3) - Player_Service
+        Rules and DTO Building
+
+4) - Player_Repository
+        Springboot Data JPA
+
+5) - PostgreSQL (END POINT)
+        Player BD table
+
+6) - SQL via hibernate (bounce back to 4)
+        fields map to columns
+
+7) - Player_Entity (bounce back to 3)
+
+8) - Player_DTO (bounce back to 2)
+
+9) - API Response
+        wraps DTO Response
+

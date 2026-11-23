@@ -1,0 +1,91 @@
+1) UI
+    lib/api.ts
+        - fetch sends a POST.
+        - Because there is a body, the wrapper adds Content-Type and stringifies the object.
+            POST /api/player/players
+            Content-Type: application/json
+
+            {"firstName":"Alice","lastName":"Test",
+             "firebaseUid":"uid-1"}
+
+2) SECURITY FILTERS
+    SecurityConfig, Firebase_AuthFilter
+        - Same as before: CORS applied, everything permitted, Firebase filter skipped for /api/ paths.
+        - CSRF is disabled, which is why a POST goes through.
+            '''csrf(AbstractHttpConfigurer::disable) '''
+            authorizeHttpRequests -> permitAll()
+
+3) JACKSON
+    JSON -> Player_Request
+        - Because the parameter has @RequestBody, Jackson builds a Player_Request using its empty constructor and setters.
+        - Unknown JSON fields are ignored.
+            Player_Request
+                firstName="Alice", lastName="Test"
+                nickName=null, phoneNumber=null
+                firebaseUid="uid-1"
+
+4) CONTROLLER
+    Player_Controller.createPlayer()
+        - This method does not exist yet.
+        - Once you add it, it only forwards the request object to the service.
+            playerService.createPlayer(req)
+
+5) SERVICE
+    Player_Service.createPlayer()
+        - Checks that the Firebase UID is unused, then copies the fields onto a new Player_Entity.
+        - A duplicate throws IllegalArgumentException.
+            playerRepo.existsByFirebaseUid("uid-1") -> false
+            Player_Entity player = new Player_Entity();
+            player.setFirstName("Alice");
+            player.setLastName("Test");
+
+6) REPOSITORY
+    Player_Respository.save()
+        - The id is null, so JPA treats it as new.
+        - It takes the next value from player_seq and runs @PrePersist, which sets createdAt.
+            SELECT nextval('player_seq')
+            INSERT into players
+              (created_at, firebase_uid, first_name, is_bye,
+               is_captain, last_name, nick_name,
+               phone_number, id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+7) POSTGRESQL
+    table : Players
+        - Postgres enforces NOT NULL on the names and UNIQUE on firebase_uid.
+        - A violation comes back as an error instead of a row count.
+            INSERT 0 1
+
+8) SERVICE
+    Player_Service.createPlayer()
+        - save() returns the entity with its generated id.
+        - If the unique constraint had fired, the service catches DataIntegrityViolationException
+        and rethrows IllegalArgumentException.
+            Player_Entity{id=1, firstName=Alice, ...}
+
+9) CONTROLLER
+    new Player_DTO(entity)
+        - The controller converts the entity to a DTO.
+        - Player_Controller has no @ExceptionHandler, so an IllegalArgumentException would surface as a 500,
+        not the 400 that Doubles_Controller gives.
+            ResponseEntity.ok(new Player_DTO(saved))
+
+10 JACKSON
+    JSON written to the response
+        - Jackson serialises the DTO and the client receives status 200 with the new id,
+        which it can use for later calls.
+            {
+            "id":1,
+            "firstName":"Alice",
+            "lastName":"Test",
+             "nickName":null,
+             "fullName":"Alice Test",
+             "captain":false,
+             "bye":false,
+             "firebaseUid":"uid-1",
+             "phoneNumber":null
+             }
+
+
+
+

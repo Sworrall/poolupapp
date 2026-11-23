@@ -15,3 +15,13 @@ TODO
     - Auth filter and the Firebase key check before you enable auth
     - Wiring the frontend to the backend
 
+TODO ****************************************************************************************************
+    -------------------------------- Limits to know about------------------------------------------------
+    - Doubles tournaments get fixtures and slots,
+        but Match_Service only creates frames for singles and team matches,
+        so doubles can't be scored through slots yet.
+    - Team tournaments get slots, and you assign players per slot with the existing endpoints.
+    - Ties in standings break on wins, then name. There's no head-to-head or frame difference yet.
+    - Match_Controller still has no exception handlers,
+        so the new "slot already has a frame" error would show as a 500 until you add handlers there.
+        A single @RestControllerAdvice would fix that everywhere.

@@ -1,0 +1,13 @@
+Testing a 4-player KO in Postman
+    - Create four players (unique firebaseUid each).
+    - POST /api/tournament/ko with {"partyIds":[1,2,3,4],"partyType":"SINGLES","frameCount":3}.
+    - GET /api/tournament/{id}/fixtures and note the matchIds.
+    - For each match, GET /api/match/{matchId}/slots (the frames already exist),
+        then POST /api/frame/{frameId}/result for every frame.
+        A match only resolves once all its frames are recorded.
+    - POST /api/tournament/{id}/ko/advance creates round 1.
+        Repeat for round 1, and the advance after the final completes the tournament and sets the podium.
+
+    For round robin,
+        use "/roundrobin", play the matches, then GET .../standings and POST .../complete.
+

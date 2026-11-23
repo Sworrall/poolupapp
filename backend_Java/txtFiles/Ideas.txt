@@ -1,6 +1,3 @@
-Simple roadmap
-
-
 IDEAS
     - MVP
 	- Season simulation
@@ -11,24 +8,14 @@ IDEAS
 	- Team MVP
 	- Dream Team (future Dev)
 
-Project direction
-	- Error Capture (SLF4J)
-	- FireBase DB
-	- UI
-	- Multithreading / server hosting
-
 General Performance section — Career/Global stats:
-    - Global MatchWinRateBar (all time)
-    - Global FrameWinRateBar (all time)
+    - Global MatchWinRateBar (all time / season)
+    - Global FrameWinRateBar (all time / season)
     - Accolades / Achievements:
-    - 🏆 Highest match win streak
-    - 🏆 Highest frame win streak
-    - 🎱 Most BDs in a single match
-    - 🎱 Total career BDs
-    - Maybe total tournaments played / won?
-    (this 8ball pool app)
+        - 🏆 Highest match win streak
+        - 🏆 Highest frame win streak
+        - 🎱 Most BDs in a single match
+        - 🎱 Total career BDs
+        - Maybe total tournaments played / won?
 
 UI IDEAS
-    - Reactions to matches (thumbs up / heart / 8-ball / GG / WP / unlucky)
-    - make it more social?
-    - stats updates? / post achievements?

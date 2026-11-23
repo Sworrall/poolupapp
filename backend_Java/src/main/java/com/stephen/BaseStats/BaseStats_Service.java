@@ -53,7 +53,7 @@ public class BaseStats_Service {
                 eventScope,
                 matchId,
                 tournamentId,
-                teamId);
+                null);
         eventStat.increment(field);
         statsRepo.save(eventStat);
 

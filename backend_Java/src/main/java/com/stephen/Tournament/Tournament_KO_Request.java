@@ -12,10 +12,11 @@ public class Tournament_KO_Request {
     public Tournament_KO_Request() {}
 
     // --- CONSTRUCTOR ---
-    public Tournament_KO_Request(List<Long> partyIds, PartyType partyType, int frameCount) {
+    public Tournament_KO_Request(List<Long> partyIds, PartyType partyType, int frameCount, boolean isTwoLeg) {
         this.partyIds = partyIds;
         this.partyType = partyType;
         this.frameCount = frameCount;
+
     }
 
     // --- GETTERS ---

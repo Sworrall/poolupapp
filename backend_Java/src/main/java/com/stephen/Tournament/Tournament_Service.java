@@ -65,7 +65,10 @@ public class Tournament_Service {
         Collections.shuffle(partyIds);
 
         Tournament_RoundRobin tournament = new Tournament_RoundRobin(
-                partyIds, request.getPartyType(), request.getFrameCount());
+                partyIds,
+                request.getPartyType(),
+                request.getFrameCount(),
+                request.getIsTwoLeg());
         tournamentRepository.save(tournament);
 
         // All pairs — each party plays every other party once
